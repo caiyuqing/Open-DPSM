@@ -80,12 +80,12 @@ prepObj = preprocessing()
 filename_movie = dataDir +"\\" + movieName
 prepObj.videoFileName = filename_movie
 prepObj.preprocessingVideo()
-video_nFrame = prepObj.videoObjPrep.vidInfo['frameN_end']
-video_height = prepObj.videoObjPrep.vidInfo['height']
-video_width = prepObj.videoObjPrep.vidInfo['width']
+video_nFrame = prepObj.vidInfo['frameN_end']
+video_height = prepObj.vidInfo['height']
+video_width = prepObj.vidInfo['width']
 video_ratio = video_height / video_width 
-video_duration = prepObj.videoObjPrep.vidInfo['duration_end']
-video_fps = prepObj.videoObjPrep.vidInfo['fps_end']
+video_duration = prepObj.vidInfo['duration_end']
+video_fps = prepObj.vidInfo['fps_end']
 print(f"Video number of frame: {video_nFrame}")
 print(f"Video height x width: {video_height}x{video_width}; aspect ratio (width:height): {1/video_ratio}")
 print(f"Video duration: {video_duration}")
@@ -168,7 +168,7 @@ eeObj.maxlum = maxlum
 eeObj.useApp = useApp
 eeObj.videoScreenSameRatio = videoScreenSameRatio 
 eeObj.videoStretched = videoStretched    
-eeObj.vidInfo = prepObj.videoObjPrep.vidInfo # extract vidInfo from preprocessing object
+eeObj.vidInfo = prepObj.vidInfo # extract vidInfo from preprocessing object
 
 # process eyetracking data
 if gazecentered: # if there is eyetracking data, do gaze-contingent visual events extraction

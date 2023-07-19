@@ -16,6 +16,7 @@ from scipy.interpolate import PchipInterpolator
 from matplotlib import pyplot as plt
 import pickle
 from moviepy.editor import *
+import cv2
 class preprocessing:
     def __init__(self):
         self.removeEyeblink = True
@@ -26,11 +27,14 @@ class preprocessing:
         #self.eyelinkDataDir = self.dataDir + "/EyelinkDataExample.pickle"
         self.eyelinkSampleRate = 500
         self.nFramesSeqImageDiff = 2
+        self.timeStamps = np.zeros((0))  # append video timestamps
+        self.frameCount = 0  # count number of image frames in vode
+        self.altTimeStamps = False
         #self.eyelink_width = 1023.0
         #self.eyelink_height = 767.0
     def preprocessingEyelink(self):
         self.preprocessingVideo()
-        numVideoFrames = self.videoObjPrep.vidInfo['frameN_end'] 
+        numVideoFrames = self.vidInfo['frameN_end'] 
         self.load_eyelinkData()
         if self.removeEyeblink:
             self.removeEyelinkBlinks(self.eyelinkData)
@@ -46,8 +50,8 @@ class preprocessing:
             self.gazexdata_br = gazex
             self.gazeydata_br = gazey
         lengthEyelinkData = self.timeStampsSec_br[-1]
-        self.fps_end = round(1/(lengthEyelinkData/self.videoObjPrep.vidInfo['frameN_end']))
-        self.videoObjPrep.vidInfo['fps_end'] = self.fps_end
+        self.fps_end = round(1/(lengthEyelinkData/self.vidInfo['frameN_end']))
+        self.vidInfo['fps_end'] = self.fps_end
         self.synchronize()
         self.sampledgazexData= self.prepare_sampleData_gaze(self.gazexdata_syn, numVideoFrames)
         self.sampledgazeyData= self.prepare_sampleData_gaze(self.gazeydata_syn, numVideoFrames)
@@ -57,16 +61,16 @@ class preprocessing:
         self.sampledgazexData_videoCoor=  self.sampledgazexData/self.eyelink_width * (self.video_x-1)
         self.sampledgazeyData_videoCoor=  self.sampledgazeyData/self.eyelink_height * (self.video_y-1)
     def preprocessingVideo(self):
-        self.loadVideo(self.videoFileName)  # load a video into a capture object videoObjPrep.cap
-        self.getVideoInfo()  # store video info like number of frames to videoObjPrep.vidInfo
+        self.loadVideo(self.videoFileName)  # load a video into a capture object
+        self.getVideoInfo()  # store video info like number of frames 
         # get video coordinate
         self.video_x = self.vidInfo['width']
         self.video_y = self.vidInfo['height']
         # determine the real number of the frames in the movie
         frameCount = 0
         while True:  # Capture frame-by-frame
-            videoObjPrep.readFrame()  # reads a frame from video
-            if videoObjPrep.ret:
+            self.readFrame()  # reads a frame from video
+            if self.ret:
                 frameCount = frameCount+1
             else:
                 break        
@@ -78,12 +82,9 @@ class preprocessing:
         if frameCount != frames:
             print("MoviePy and CV2 generate different result, use frame number from CV2")
             
-        videoObjPrep.vidInfo['frameN_end'] = frameCount
-        videoObjPrep.vidInfo['fps_end'] = fps
-        videoObjPrep.vidInfo['duration_end'] = duration
-
-
-        self.videoObjPrep = videoObjPrep
+        self.vidInfo['frameN_end'] = frameCount
+        self.vidInfo['fps_end'] = fps
+        self.vidInfo['duration_end'] = duration
 
     def load_eyelinkData(self):
         with open(self.eyelinkDataDir, "rb") as handle:
@@ -324,3 +325,34 @@ class preprocessing:
 
         self.vidInfo["height"] = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         self.vidInfo["width"] = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    def readFrame(self):
+        """
+
+        Read next frame from self.cap and stores as self.frame
+        Also increase self.frameCount and append timestamp to self.timeStamps
+
+        Parameters
+        ----------
+        None
+
+
+        Return
+        ----------
+        None; Creates self.frame; appends self.timeStamps
+
+        """
+        self.ret, self.frame = self.cap.read()
+        if self.ret:
+            self.frame = cv2.cvtColor(
+                self.frame, cv2.COLOR_BGR2RGB
+            )  # cv2 capture software outputs BGR instead of RGB ... strange but correctable
+            self.frameCount += 1
+            curTimeStamp = self.cap.get(cv2.CAP_PROP_POS_MSEC) / 1000
+            if (curTimeStamp == 0) & (self.frameCount > 1):
+                pass  # do not update frameTime
+            else:
+                self.frameTime = curTimeStamp
+
+            self.timeStamps = np.append(self.timeStamps, self.frameTime)
+        # else:
+        #     logger.info("End of video")

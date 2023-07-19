@@ -197,12 +197,12 @@ class tkfunctions:
         prepObj = preprocessing()
         prepObj.videoFileName = self.filename_movie
         prepObj.preprocessingVideo()
-        self.video_nFrame = prepObj.videoObjPrep.vidInfo['frameN_end']
-        self.video_height = prepObj.videoObjPrep.vidInfo['height']
-        self.video_width = prepObj.videoObjPrep.vidInfo['width']
+        self.video_nFrame = prepObj.vidInfo['frameN_end']
+        self.video_height = prepObj.vidInfo['height']
+        self.video_width = prepObj.vidInfo['width']
         self.video_ratio = self.video_height / self.video_width 
-        self.video_duration = prepObj.videoObjPrep.vidInfo['duration_end']
-        self.video_fps = prepObj.videoObjPrep.vidInfo['fps_end']
+        self.video_duration = prepObj.vidInfo['duration_end']
+        self.video_fps = prepObj.vidInfo['fps_end']
         # remove all the things from the previous window
         widget_list = self.all_children()
         for item in widget_list:
@@ -510,7 +510,7 @@ class tkfunctions:
             # load movie
     
             #videoObj.loadVideo(self.filename_movie)  # load a video into a capture object videoObj.cap
-            eeObj.vidInfo = self.prepObj.videoObjPrep.vidInfo # extract vidInfo from preprocessing object
+            eeObj.vidInfo = self.prepObj.vidInfo # extract vidInfo from preprocessing object
             eeObj.window = self.window
             self.eeObj = eeObj
             eeObj.event_extraction()
