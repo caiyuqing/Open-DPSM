@@ -27,6 +27,6 @@ Run main_app.py will open an interactive GUI window
 ```python
 tkfunctions.__init__
 ```
-![Welcome figure](https://github.com/marnixnaber/Pupil-Simulation-Toolbox/edit/master/Open-DPSM/App fig/Fig_welcome_page_App.PNG)
+![Welcome figure]("https://github.com/caiyuqing/Open-DPSM/App_fig/Fig_welcome_page_App.PNG")
 
 ## Code
