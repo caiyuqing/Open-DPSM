@@ -418,14 +418,14 @@ class tkfunctions:
                 t2 = threading.Thread(target=self.buttonFunc_feature_extraction)
                 t2.daemon = True
                 #t2 = self.threadingFunc(function = self.buttonFunc_feature_extraction)
-                button_featureextraction= ttk.Button(self.window,text='Start feature extraction',command=t2.start)
+                button_featureextraction= ttk.Button(self.window,text='Start event extraction',command=t2.start)
                 button_featureextraction.grid(column = 1, row = 14)
                 self.exitButton.grid(column = 1, row = 20)
         else:
             t2 = threading.Thread(target=self.buttonFunc_feature_extraction)
             t2.daemon = True
             #t2 = self.threadingFunc(function = self.buttonFunc_feature_extraction)
-            button_featureextraction= ttk.Button(self.window,text='Start feature extraction',command=t2.start)
+            button_featureextraction= ttk.Button(self.window,text='Start event extraction',command=t2.start)
             button_featureextraction.grid(column = 1, row = 14)
             self.exitButton.grid(column = 1, row = 20)
         self.nextButton.grid_forget()
@@ -616,6 +616,8 @@ class tkfunctions:
             modelObj.pupil_prediction()
             self.sampledTimeStamps = modelObj.sampledTimeStamps
             self.sampledpupilData = modelObj.sampledpupilData
+            self.r = modelObj.r
+            self.rmse = modelObj.rmse
         else:
             modelObj.useEtData = False
             if self.RF == 'HL':
@@ -628,12 +630,15 @@ class tkfunctions:
             modelObj.modelDataDict = modelDataDict
             modelObj.modelResultDict = modelResultDict
             modelObj.pupil_predictionNoEyetracking(params)
+            modeling_progress.grid_forget()
+            tk.Label(self.window,text=f'Pupil prediction done',fg = "green").grid(column = 0, row = 15)
+            self.sampledTimeStamps = modelObj.sampledTimeStamps
+
         # move two result dictionaries to this level of class
         self.modelResultDict = modelObj.modelResultDict
         self.modelDataDict = modelObj.modelDataDict
         self.sampledFps = modelObj.sampledFps
-        self.r = modelObj.r
-        self.rmse = modelObj.rmse
+       
         
         # print results
         self.exitButton.grid_forget()
@@ -666,14 +671,14 @@ class tkfunctions:
                 params = np.insert(params,1,self.rmse)
                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                 df.columns = ["parameterName", "value"]
-                df.to_csv(f"{self.subjectName}_parameters.csv")
+                df.to_csv(f"{self.movieName}_{self.subjectName}_parameters.csv")
             else:
                 paramNames = ["r","rmse","n_luminance", "tmax_luminance", "n_contrast", "tmax_contrast", "weight_contrast"]
                 params = np.insert(params,0,self.r)
                 params = np.insert(params,1,self.rmse)
                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                 df.columns = ["parameterName", "value"]
-                df.to_csv(f"{self.subjectName}_parameters.csv")
+                df.to_csv(f"{self.movieName}_{self.subjectName}_parameters.csv")
         elif self.RF == "KB":
             if self.gazecentered:
                 paramNames = ["r","rmse","theta_luminance", "k_luminance", "theta_contrast", "k_contrast", "weight_contrast", "regional_weight1","regional_weight2","regional_weight3","regional_weight4","regional_weight5","regional_weight6"]
@@ -682,16 +687,16 @@ class tkfunctions:
                 params = np.insert(params,1,self.rmse)
                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                 df.columns = ["parameterName", "value"]
-                df.to_csv(f"{self.subjectName}_parameters.csv")
+                df.to_csv(f"{self.movieName}_{self.subjectName}_parameters.csv")
             else:
                 paramNames = ["r","rmse","theta_luminance", "k_luminance", "theta_contrast", "k_contrast", "weight_contrast"]
                 params = np.insert(params,0,self.r)
                 params = np.insert(params,1,self.rmse)
                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                 df.columns = ["parameterName", "value"]
-                df.to_csv(f"{self.subjectName}_parameters.csv")
+                df.to_csv(f"{self.movieName}_{self.subjectName}_parameters.csv")
                 df.columns = ["parameterName", "value"]
-                df.to_csv(f"{self.subjectName}_parameters.csv")
+                df.to_csv(f"{self.movieName}_{self.subjectName}_parameters.csv")
         showinfo(title = "", message = "Parameters saved!")
 
         #tk.Label(text = "Parameters saved!", fg = "green").grid(column = 0, row = 18)
@@ -715,7 +720,7 @@ class tkfunctions:
             df = pd.DataFrame(np.vstack([self.sampledTimeStamps,y_pred,lumConv,contrastConv]).T)
             df.columns = ["timeStamps", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
 
-        df.to_csv(f"{self.subjectName}_modelPrediction.csv")
+        df.to_csv(f"{self.movieName}_{self.subjectName}_modelPrediction.csv")
         showinfo(title = "", message = "Model prediction result saved!")
         #tk.Label(text = "Model prediction result saved!", fg = "green").grid(column = 1, row = 18,sticky=tk.E)
         self.exitButton.grid(column = 1, row = 20)
@@ -753,7 +758,7 @@ class tkfunctions:
         plotObj = interactive_plot()
         # subject and movie to plot
         plotObj.subjectName = self.subjectName
-        plotObj.movie = self.movieName
+        plotObj.movieName = self.movieName
         # other parameters
         plotObj.useApp = self.useApp
         plotObj.dataDir = self.dataDir
@@ -761,15 +766,12 @@ class tkfunctions:
         plotObj.A = self.A
         plotObj.skipNFirstFrame =self.skipNFirstFrame
         plotObj.sampledFps = self.sampledFps
-        plotObj.videoRealHeight = self.videoRealHeight
-        plotObj.videoRealWidth = self.videoRealWidth
-        plotObj.screenBgColorR = self.screenBgColorR
-        plotObj.screenBgColorG = self.screenBgColorG
-        plotObj.screenBgColorB = self.screenBgColorB
-        plotObj.videoScreenSameRatio = self.videoScreenSameRatio 
-        plotObj.videoStretched = self.videoStretched
+        plotObj.video_height = self.video_height
+        plotObj.video_width = self.video_width
+        # plotObj.videoScreenSameRatio = self.videoScreenSameRatio 
+        # plotObj.videoStretched = self.videoStretched
         plotObj.window = self.window
-        plotObj.plot()
+        plotObj.plot_NoEyetracking()
 
        
 

@@ -22,7 +22,7 @@ os.chdir(initialDir)
 # Create an object for tkinter
 tkObj = tkfunctions()
 tkObj.initialDir = initialDir
-tkObj.dataDir = dataDir()
+tkObj.dataDir = dataDir
 # run_tk()
 
 tkObj.run_tk()

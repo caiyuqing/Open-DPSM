@@ -318,21 +318,21 @@ class interactive_plot:
             # save figures
             if choice == "Save gaze":
                 extent = axes[2].get_window_extent().transformed(f.dpi_scale_trans.inverted())
-                f.savefig(f'{self.subjectName}_Fig_gaze.png', bbox_inches=extent.expanded(1.1, 1.3))
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_gaze.png', bbox_inches=extent.expanded(1.1, 1.3))
                 showinfo(title='',message=f'{self.subjectName}_Fig_gaze.png is saved')
             elif choice == 'Save visual events':
                 extent = axes[3].get_window_extent().transformed(f.dpi_scale_trans.inverted())
-                f.savefig(f'{self.subjectName}_Fig_feature.png', bbox_inches=extent.expanded(1.1, 1.3))
-                showinfo(title='',message=f'{self.subjectName}_Fig_feature.png is saved')
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_feature.png', bbox_inches=extent.expanded(1.1, 1.3))
+                showinfo(title='',message=f'{self.movieName}_{self.subjectName}_Fig_feature.png is saved')
     
             elif choice == "Save model prediction":
                 extent = axes[4].get_window_extent().transformed(f.dpi_scale_trans.inverted())
-                f.savefig(f'{self.subjectName}_Fig_model.png', bbox_inches=extent.expanded(1.1, 1.3))
-                showinfo(title='',message=f'{self.subjectName}_Fig_model.png is saved')
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_model.png', bbox_inches=extent.expanded(1.1, 1.3))
+                showinfo(title='',message=f'{self.movieName}_{self.subjectName}_Fig_model.png is saved')
     
             elif choice == "Save all":
-                f.savefig(f'{self.subjectName}_Fig_all.png')
-                showinfo(title='',message=f'{self.subjectName}_Fig_all.png is saved')
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_all.png')
+                showinfo(title='',message=f'{self.movieName}_{self.subjectName}_Fig_all.png is saved')
     
         # save figs
         choices= ("Save all",'Save gaze','Save visual events', "Save model prediction")
@@ -685,17 +685,17 @@ class interactive_plot:
             # save figures
             if choice == 'Save visual events':
                 extent = axes[3].get_window_extent().transformed(f.dpi_scale_trans.inverted())
-                f.savefig(f'{self.subjectName}_Fig_feature.png', bbox_inches=extent.expanded(1.1, 1.3))
-                showinfo(title='',message=f'{self.subjectName}_Fig_feature.png is saved')
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_feature.png', bbox_inches=extent.expanded(1.1, 1.3))
+                showinfo(title='',message=f'{self.movieName}_{self.subjectName}_Fig_feature.png is saved')
     
             elif choice == "Save model prediction":
                 extent = axes[4].get_window_extent().transformed(f.dpi_scale_trans.inverted())
-                f.savefig(f'{self.subjectName}_Fig_model.png', bbox_inches=extent.expanded(1.1, 1.3))
-                showinfo(title='',message=f'{self.subjectName}_Fig_model.png is saved')
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_model.png', bbox_inches=extent.expanded(1.1, 1.3))
+                showinfo(title='',message=f'{self.movieName}_{self.subjectName}_Fig_model.png is saved')
     
             elif choice == "Save all":
-                f.savefig(f'{self.subjectName}_Fig_all.png')
-                showinfo(title='',message=f'{self.subjectName}_Fig_all.png is saved')
+                f.savefig(f'{self.movieName}_{self.subjectName}_Fig_all.png')
+                showinfo(title='',message=f'{self.movieName}_{self.subjectName}_Fig_all.png is saved')
     
         # save figs
         choices= ("Save all",'Save visual events', "Save model prediction")

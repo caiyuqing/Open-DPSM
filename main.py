@@ -34,20 +34,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 ########################################################################################################################################################
 #####################################################Information entered by the user####################################################################
 ########################################################################################################################################################
-## If the movie and the eyetracking data are not the same, what to do?
-stretchToMatch = True # True: stretch the eyelinkdata to match the movie data; False: cut whichever is longer
-## What is the resolution of eyetracking data
-eyetracking_height = 1080
-eyetracking_width = 1920
-## What is the video (showed on the screen) resolution (respective to eyetracking resolution, can be different from video file).
-videoRealHeight = 1080
-videoRealWidth = 1920
-## maximum luminance of the screen (luminance when white is showed on screen)
-maxlum = 212
-## if video resolution is not the same as eyetracking resolution, what color is the screen covered with? (enter rgb value, E.g. r,b,g = 0 means black)
-screenBgColorR = 0
-screenBgColorG = 0
-screenBgColorB = 0
 # Directories
 initialDir = "D:\\Users\\7009291\\Desktop\\Movie pupil perimetry\\codes for both data\\Open-DPSM" # This should be the directory of the Open-DPSM
 
@@ -55,10 +41,27 @@ dataDir = initialDir + '\\Example' # This should be the folder saving the eyetra
 ## eyetracking data:
 ###- should have four columns in the order as: time stamps, gaze position x, gaze position y, pupil size
 ###- time stamps should be in seconds (not miliseconds). If not, please convert it to seconds
-subjectFileName = "csv_example_raw_sec(CB cb1).csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
+#subjectFileName = "csv_example_raw_sec(CB cb1).csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
 ## video data
 ### Format can be used: .mp4,.avi,.mkv,.mwv,.mov,.flv,.webm (other format can also be used as long as it can be read by cv2)
 movieName =  "VideoExample_sameRatio.mp4" # name of the movie (data file should be contained by "dataDir")
+
+## If the movie and the eyetracking data are not the same, what to do?
+stretchToMatch = True # True: stretch the eyelinkdata to match the movie data; False: cut whichever is longer
+### maximum luminance of the screen (luminance when white is showed on screen)
+maxlum = 212
+## The following information is only relevant if eyetracking data is available
+### What is the resolution of eyetracking data 
+eyetracking_height = 1080
+eyetracking_width = 1920
+### What is the video (showed on the screen) resolution (respective to eyetracking resolution, can be different from video file).
+videoRealHeight = 1080
+videoRealWidth = 1920
+
+## if video resolution is not the same as eyetracking resolution, what color is the screen covered with? (enter rgb value, E.g. r,b,g = 0 means black)
+screenBgColorR = 0
+screenBgColorG = 0
+screenBgColorB = 0
 ### Do you want to save:
 # - model evaluation & paramters
 saveParams = True
@@ -95,7 +98,7 @@ movieName = movieName.split(".")[0]
 if 'subjectFileName' in globals():
     filename_csv = dataDir + "\\" + subjectFileName
     # read eyetracking data and check information
-    df_eyetracking = pd.read_csv(filename_csv, index_col=0)
+    df_eyetracking = pd.read_csv(filename_csv, index_col=0, header = 0)
 
     eyetracking_duration = df_eyetracking.iloc[-1,0]
     eyetracking_nSample = df_eyetracking.shape[0]
@@ -141,12 +144,6 @@ eeObj = event_extraction()
 # load some data and parameters
 eeObj.video_duration = video_duration
 eeObj.video_fps = video_fps
-
-eeObj.videoRealHeight = videoRealHeight
-eeObj.videoRealWidth = videoRealWidth
-eeObj.screenBgColorR = screenBgColorR
-eeObj.screenBgColorG = screenBgColorG
-eeObj.screenBgColorB = screenBgColorB
 eeObj.stretchToMatch = stretchToMatch
 eeObj.subject = subjectName
 eeObj.movieNum = movieName
@@ -176,6 +173,11 @@ if gazecentered: # if there is eyetracking data, do gaze-contingent visual event
     eeObj.eyetracking_height = eyetracking_height
     eeObj.eyetracking_width = eyetracking_width
     eeObj.eyetracking_samplingrate = eyetracking_samplingrate
+    eeObj.videoRealHeight = videoRealHeight
+    eeObj.videoRealWidth = videoRealWidth
+    eeObj.screenBgColorR = screenBgColorR
+    eeObj.screenBgColorG = screenBgColorG
+    eeObj.screenBgColorB = screenBgColorB
     timeStampsSec = np.array(df_eyetracking.iloc[:,0])
     gazexdata = np.array(df_eyetracking.iloc[:,1])
     gazeydata = np.array(df_eyetracking.iloc[:,2])
@@ -425,10 +427,7 @@ plotObj.skipNFirstFrame =skipNFirstFrame
 plotObj.sampledFps = sampledFps
 plotObj.video_width = video_width
 plotObj.video_height = video_height
-plotObj.screenBgColorR = screenBgColorR
-plotObj.screenBgColorG = screenBgColorG
-plotObj.screenBgColorB = screenBgColorB
-plotObj.videoScreenSameRatio = videoScreenSameRatio 
-plotObj.videoStretched = videoStretched
+# plotObj.videoScreenSameRatio = videoScreenSameRatio 
+# plotObj.videoStretched = videoStretched
 logging.getLogger('matplotlib.font_manager').setLevel(logging.ERROR)
 plotObj.plot_NoEyetracking()
