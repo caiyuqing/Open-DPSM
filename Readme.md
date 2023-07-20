@@ -69,8 +69,14 @@ Information that cannot be extracted from the files need to be enter manually by
 - Spatial resolution of eye tracking data: Width and height of the eye tracking data. Note that it should be the absolute length, not the maximum number of the coordinate system.
 
 ### Select the position of the video relative to the screen 
-If the aspect ratio of the video and the eye-tracking data are not the same, then the user needs to choose which of the following four positions is used
-![Screen video relation figure](App_fig/Fig_screen_video_relationship_all.PNG)
+If the aspect ratio (Height/width) of the video and the eye-tracking data are not the same, then the user needs to choose which of the following four positions is used: **A&B** Aspect ratio of the video is smaller than that of eye-tracking data; **C&D** Aspect ratio of the video is bigger than that of eye-tracking data; **A&C** The video is full-screen, which means that either height or width of the video is the same as the screen and the actual height and width of the video (relative to the eye-tracking data resolution) will be calculated; **B&D** The video is not full-screen, which means that the actual height and the width of the video are unknown and needs to be entered on the next page
+![Screen video relation figure](App_fig/Fig_screen_video_relationship_all.png)
+
+### Entering more information page (optional)
+Based on the relative position of the video and screen, some extra information may be acquired
+![Enter the information figure](App_fig/Fig_enter_info_extra.PNG)
+- If the video is not full-screen, then the actual height and width of the video (relative to the eye-tracking data resolution) need to be entered. *Note that it is not the resolution in the video file.* For example, if the resolution of the eye-tracking data is 1000x500 and the physical height and width of the video displayed is half of the physical height and width of the screen, then 500 and 250 should be entered.
+
 
 `Note: We recommend the users not to change any predetermined parameters. However, if the users want to change any, those parameters can be found in classes.App: tkfunctions.__init__
 `
