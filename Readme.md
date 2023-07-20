@@ -168,7 +168,8 @@ Load the parameters found with our data. RF = response function; HL = "Erlang ga
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj*
 
-- When it is completed, pupil prediction will be saved (see [Pupil prediction](###Pupil prediction) for more information).
+- When it is completed, pupil prediction will be saved (see
+- [Pupil prediction](#Pupil prediction) for more information).
 ### Interactive plot
 - This part of code can be run together with *Pupil prediction (no eye-tracking data)* part
 
