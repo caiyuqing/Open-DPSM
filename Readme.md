@@ -1,8 +1,8 @@
 # Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
 **The toolbox provides functions for (1) Visual events extraction from the video; (2) Pupil prediction; (3) Interactive plotting. There are two formats of Open-DPSM:**
 
-- [GUI](#GUI): main_app.py
-- [Code](#Code): main.py
+- [GUI](#gui): main_app.py
+- [Code](#code): main.py
   
 **Both of them contain notes and instructions and should be mostly self-explained. Run the two main scripts to start. Refer to this page for details of each step.**
 
