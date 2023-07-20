@@ -12,8 +12,8 @@ No installation is required. Simply clone the current repository by following th
 
 ## Start Open-DPSM
 There are two format of Open-DPSM:
-- [GUI](##GUI): open main_app.py
-- [Code](##Code): open main.py
+- [GUI](#GUI): open main_app.py
+- [Code](#Code): open main.py
 
 Both of them use the three classes of functions in the "classes" folder
 
