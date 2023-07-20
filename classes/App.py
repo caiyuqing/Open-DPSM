@@ -113,7 +113,7 @@ class tkfunctions:
         top_canvas.grid(row=0, column=0, padx=100, pady=5)
 
         # print logo and welcome message
-        logo = Image.open("App fig\\DPSM logo.jpg")
+        logo = Image.open("App_fig\\DPSM logo.jpg")
         logo = logo.resize((200,100))
         logo_image = ImageTk.PhotoImage(logo, master=self.window)
         image_logo = top_canvas.create_image(300, 10, anchor="nw", image=logo_image)
@@ -213,7 +213,7 @@ class tkfunctions:
         if hasattr(self, "filename_csv"):
             self.gazecentered  = True
 
-            df_eyetracking = pd.read_csv(self.filename_csv, index_col=0)
+            df_eyetracking = pd.read_csv(self.filename_csv, index_col=0, header = 0)
             self.eyetracking_duration = df_eyetracking.iloc[-1,0]
             self.eyetracking_nSample = df_eyetracking.shape[0]
             self.eyetracking_samplingrate = int(1/(self.eyetracking_duration/self.eyetracking_nSample))
@@ -343,10 +343,10 @@ class tkfunctions:
             #self.top_ratioCheck.rowconfigure(0, weight=1)
             self.top_ratioCheck.wm_transient(self.window)
             if self.video_ratio < self.eyetracking_aspectRatio:
-                choiceA = Image.open("App fig\\Screen_lower.jpg")
+                choiceA = Image.open("App_fig\\Screen_lower.jpg")
                 choiceA = choiceA.resize((300,160))
                 choiceA_image = ImageTk.PhotoImage(choiceA, master=self.window)
-                choiceB = Image.open("App fig\\Screen_surrounding_lower.jpg")
+                choiceB = Image.open("App_fig\\Screen_surrounding_lower.jpg")
                 choiceB = choiceB.resize((300,160))
                 choiceB_image = ImageTk.PhotoImage(choiceB, master=self.window)
                 tk.Label(self.top_ratioCheck, image = choiceA_image).grid(column = 0, row = 1,sticky = "we")
@@ -354,10 +354,10 @@ class tkfunctions:
                 ttk.Button(self.top_ratioCheck,text='Choose A',command = self.stretch).grid(column = 0, row = 2)
                 ttk.Button(self.top_ratioCheck,text='Choose B', command = self.notStretch).grid(column = 1, row = 2)
             else:
-                choiceA = Image.open("App fig\\Screen_higher.jpg")
+                choiceA = Image.open("App_fig\\Screen_higher.jpg")
                 choiceA = choiceA.resize((300,160))
                 choiceA_image = ImageTk.PhotoImage(choiceA, master=self.window)
-                choiceB = Image.open("App fig\\Screen_surrounding_higher.jpg")
+                choiceB = Image.open("App_fig\\Screen_surrounding_higher.jpg")
                 choiceB = choiceB.resize((300,160))
                 choiceB_image = ImageTk.PhotoImage(choiceB, master=self.window)
                 tk.Label(self.top_ratioCheck, image = choiceA_image).grid(column = 0, row = 1)

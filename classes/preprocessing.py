@@ -93,22 +93,22 @@ class preprocessing:
         #self.eyelinkData = self.eyelinkData[SAMPLES]
             
     def removeEyelinkBlinks(self,
-        eyelinkData,
+        eyelinkData, 
         blinkDetectionThreshold=[4, 2],# std [below above] mean
         dilutionSize=[20, 40], # number of samples that need to be removed [before, after] a blink period.
         consecutiveRemovalPeriod=20,
         plotBlinkRemoveResult = False
     ):
         """
-
+        eyelinkData: A dictionary of four keys: TIMESTAMPS, PUPIL-SIZE, X-GAZE, y-GAZE
         dilutionSize is list with two integers indicating number of samples that need to be
         removed [before, after] a blink period.
         """
         #eyelinkData = self.eyelinkData["SAMPLES"]
         timeStamps = eyelinkData["TIMESTAMPS"]
-        pupildata = eyelinkData["PUPIL-SIZE-LEFT"]
-        gazex = eyelinkData["X-GAZE-LEFT"]
-        gazey = eyelinkData["y-GAZE-LEFT"]
+        pupildata = eyelinkData["PUPIL-SIZE"]
+        gazex = eyelinkData["X-GAZE"]
+        gazey = eyelinkData["y-GAZE"]
         timeStamps = np.array(timeStamps, dtype="float32")
         pupildata = np.array(pupildata, dtype="float32")
         gazex = np.array(gazex, dtype="float32")
