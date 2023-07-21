@@ -85,7 +85,7 @@ If the aspect ratio (Height/width) of the video and the eye-tracking data are no
 
 **D**: The aspect ratio of the video is larger than that of eye-tracking data & the video is not full-screen
 
-> Full-screen: Either height or width of the video is the same as the screen and the actual height and width of the video will be determined by toolbox. If not full-screen, the actual height and the width of the video will be required on the next page ([Entering more information page](#entering-more-information-page-(optional))).
+> Full-screen: Either height or width of the video is the same as the screen and the actual height and width of the video will be determined by toolbox. If not full-screen, the actual height and the width of the video will be required on the next page.
 
 ![Screen video relation figure](App_fig/Fig_screen_video_relationship_all.png)
 
