@@ -21,7 +21,7 @@ os.system(f'python {script_path}')
 
 ## GUI 
 
-- Before run *main_app.py*, *initialDir* and *dataDir* need to be changed. *initialDir* should be the directory of Open-DPSM and the dataDir should be the directory of where your data is saved (all the results will also be saved under *dataDir*)
+- Before run *main_app.py*, *initialDir* and *dataDir* need to be changed. *initialDir* should be the directory of Open-DPSM and the *dataDir* should be the directory of where your data is saved (all the results will also be saved under *dataDir*)
 
 - Run *main_app.py* to start GUI
 
