@@ -37,6 +37,8 @@ os.system(f'python {script_path}')
   3. Gaze position (y) 
   4. Pupil size
  
+   - It is important that the gaze coordinate of x = 0, y = 0 is at the left corner of the screen. Please convert the gaze positions if it is not the case.
+   
    - It is recommended that the gaze and pupil data have been preprocessed for blink removal, foreshortening error etc. before loading into Open-DPSM. A function for blink removal is provided in the classes.preprocessing, but not incorporated in the toolbox. The user can choose to use it if desired.
  
    - Gaze position and pupil size can be data of the left eye or the right eye or an average of both eyes, depending on the preference of the user.
@@ -72,7 +74,7 @@ Information that cannot be extracted from the files needs to be entered manually
 
 - Maximum luminance of the screen: This is the physical luminance level of the luminance when the color white is shown and can be measured with a photometer
 
-- Spatial resolution of eye tracking data: Width and height of the eye tracking data. Note that it should be the absolute length, not the maximum number of the coordinate system.
+- Resolution for the coordinate system of eye-tracking data (also the resolution of the screen): Height and width of the eye-tracking coordinate system. Note that it should be the absolute length, not the maximum coordinates of the eye-tracking coordinate system.
 
 ### Select the position of the video relative to the screen 
 If the aspect ratio (Height/width) of the video and the eye-tracking data are not the same, then the user needs to choose which of the following four positions is used: 
