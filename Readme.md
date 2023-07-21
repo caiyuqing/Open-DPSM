@@ -134,7 +134,7 @@ We recommend keeping all predetermined parameters as they are. However, if the u
 This part is to extract some basic information from the video and eye-tracking file. The results will be printed out.
 
 ### Visual events extraction section
-- Run this part to perform visual event extraction (see [Event extraction](#event-extraction) for more information
+- Run this part to perform visual event extraction (see [Event extraction](#visual-event-extraction) for more information
   
 - The main codes of this section are:
   
