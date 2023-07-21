@@ -250,9 +250,9 @@ class tkfunctions:
         self.top_checkinfo.title( "Check the information")
         self.top_checkinfo.configure(bg = "#d9d9d9")
         if not hasattr(self, "filename_csv"):
-            tk.Label(self.top_checkinfo, text =  f"Please double-check:\nLength of the video in seconds: {self.video_duration}\n frame rate of the movie in Hz: {self.video_fps}\n Aspect ratio of the video is (x dimension divided by y dimension) {1/self.video_ratio}", bg = "#d9d9d9",font = ("Arial", 12)).grid(column = 0, row = 0)
+            tk.Label(self.top_checkinfo, text =  f"Please double-check:\nDuration of the video in seconds: {self.video_duration}\n Frame rate of the movie in Hz: {self.video_fps}\n Aspect ratio of the video is (x dimension divided by y dimension) {1/self.video_ratio}", bg = "#d9d9d9",font = ("Arial", 12)).grid(column = 0, row = 0)
         else:
-            tk.Label(self.top_checkinfo, text =  f"Please double-check:\n Duration of eye tracking data in seconds: {self.eyetracking_duration}\nSampling rate of eyetracking data: {self.eyetracking_samplingrate}\nLength of the video in seconds: {self.video_duration}\n frame rate of the movie in Hz: {self.video_fps}\n Aspect ratio of the video is (x dimension divided by y dimension) {1/self.video_ratio}", bg = "#d9d9d9", font = ("Arial", 12)).grid(column = 0, row = 0)
+            tk.Label(self.top_checkinfo, text =  f"Please double-check:\n \n Duration of eye tracking data in seconds: {self.eyetracking_duration}\n \nSampling rate of eyetracking data: {self.eyetracking_samplingrate}\n \nDuration of the video in seconds: {self.video_duration}\n \n Frame rate of the movie in Hz: {self.video_fps}\n \nAspect ratio of the video is (x dimension divided by y dimension) {1/self.video_ratio}", bg = "#d9d9d9", font = ("Arial", 12), height = 500).grid(column = 0, row = 0)
         self.top_checkinfo.columnconfigure(0, weight=1)
         self.top_checkinfo.rowconfigure(0, weight=1)
         self.top_checkinfo.wm_transient(self.window)
