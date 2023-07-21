@@ -6,8 +6,6 @@
   
 **Both of them contain notes and instructions and should be mostly self-explained. See the two main scripts for details. Refer to this page for details of each step.**
 
-
-
 ## Loading the toolbox
 No installation is required. Simply clone or download the current repository.
 
@@ -103,36 +101,40 @@ If the video is not full-screen, some extra information is acquired:
 ### Visual event extraction 
 ![Enter the information figure](App_fig/Fig_event_extraction_and_prediction.PNG)
 
-`Start event extraction`: Start visual event extraction. When it is completed, video information, timestamps, and event trace per image region will be automatically saved as a pickle file named *"movieName_subjectName_VF_LAB_6X8.pickle"* in a *"Visual events"* folder (under the *dataDir*). If no eye-tracking data is loaded, the pickle file name will be *"movieName_NoEyetrackingData_VF_LAB_6X8.pickle"*.
+`Start event extraction`: Start visual event extraction. When it is completed, video information, timestamps, and event trace per image region will be automatically saved as a pickle file named *"[movieName]_[subjectName]_VF_LAB_6X8.pickle"* in a *"Visual events"* folder (under the *dataDir*). If no eye-tracking data is loaded, the pickle file name will be *"[movieName]_NoEyetrackingData_VF_LAB_6X8.pickle"*.
     
 ### Pupil prediction
 
 `Start modeling`: Predict the pupil size with the visual events. If no eye-tracking data is available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.
 
-`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as a .csv file named "movieName_subjectName_parameters.csv" (Only when eye-tracking data is available)
+`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as a .csv file named *"[movieName]_[subjectName]_parameters.csv"* (Only when eye-tracking data is available)
 
-`Save model prediction`: Save the actual pupil size and predicted pupil size as a .csv file named "movieName_subjectName_modelPrediction.csv". Predicted pupil size will have three columns, one for the combined prediction with luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
+`Save model prediction`: Save the actual pupil size and predicted pupil size as a .csv file named *"[movieName]_[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
 
 ### Interactive plot
 
 `Interactive plot`: Open a new window with an interactive plot
 
 ![Interactive plot figure](App_fig/Fig_interactive_plot.png)
-`Save fig`: Save the whole figure or specific subplot
+`Save fig`: Save the whole figure or a specific subplot
 
-### Note for GUI version
+### Final note for GUI version
 We recommend keeping all predetermined parameters as they are. However, if the users want to change any of them, those parameters can be found in `classes.App: tkfunctions.__init__`
 
 ## Code
-- The code version uses the same three classes of functions as the GUI version. Hence, most steps are the same.
-- To start, open *main.py* and change all the things under the section "Information entered by the user"
-- If no eye tracking data, it is important that the line ```subjectFileName = "csv_example_raw_sec(CB cb1).csv"``` is commented out
+- The code version uses the same three classes of functions as the GUI version. Hence, all the steps are nearly identical.
+  
+- To start, open *main.py* and change all the things under the section "Information entered by the user".
+  
+- If no eye tracking data, it is important that the line ```subjectFileName = "csv_example_raw_sec(CB cb1).csv"``` is commented out.
+  
+- Similar to the GUI pages, Code version is divided into different sections.
 
 ### Preprocessing section
 This part is to extract some basic information from the video and eye-tracking file. The results will be printed out.
 
 ### Visual events extraction section
-- Run this part will perform event extraction (see [Event extraction](#event-extraction) for more information
+- Run this part to perform visual event extraction (see [Event extraction](#event-extraction) for more information
   
 - The main codes of this section are:
   
@@ -140,11 +142,11 @@ This part is to extract some basic information from the video and eye-tracking f
  
 ```eeObj.event_extraction()```: call function *event_extraction* in the class event_extraction
  
-All the other codes are for the purpose to load data and predetermined parameters to the *eeObj*
+All the other codes are for the purpose to load data and predetermined parameters to the *eeObj* object
 
 
 ### Pupil modeling 
-- Run this part when eye-tracking data is available. The pupil size will be modeled with the visual events extracted in the previous step
+- Run this part only when eye-tracking data is available. The pupil size will be modeled with the visual events extracted in the previous step.
   
 - The main codes of this section are:
   
@@ -152,12 +154,12 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 ```modelObj.pupil_prediction()```: call function *pupil_prediction* in the class pupil_prediction
 
-All the other codes are for the purpose to load data and predetermined parameters to the *modelObj*
+All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
  
 - When it is completed, the model performance will be printed out. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
 
 ### Interactive plot
-- This part of code can be run together with *Pupil modeling* part
+- This part of the code can be run together with the *Pupil modeling* part
 
 - Run it will open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
 
@@ -167,7 +169,7 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 ```plotObj.plot()```: call function *plot* in the class interactive_plot
 
-All the other codes are for the purpose to load data and predetermined parameters to the *plotObj*
+All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
 
 
 ### Pupil prediction (no eye-tracking data)
@@ -183,17 +185,19 @@ if RF == 'HL':
 else:
     params = [0.12,4.59,0.14,6.78,0.28,1,1,1,1,1]
 ```
-Load the parameters found with our data. RF = response function; HL = "Erlang gamma function". The first four parameters are free parameters in response functions (2 for luminance change and 2 for contrast change). The fifth parameter is the weight of the contrast response relative to the luminance response. The last 5 parameters are set to 1 because we do not consider regional weights here as the visual angles in different datasets are very different
+Load the parameters found with our data. RF = response function; HL = "Erlang gamma function". The first four parameters are free parameters in response functions (2 for luminance change and 2 for contrast change). The fifth parameter is the weight of the contrast response relative to the luminance response. The last 5 parameters are regional weights, which are set to 1 because we do not consider regional weights here as the visual angles in different datasets can be very different
 
 ```modelObj.pupil_predictionNoEyetracking(params)```: Calculate predicted pupil size with the parameters 
 
-All the other codes are for the purpose to load data and predetermined parameters to the *modelObj*
+All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
 
 - When it is completed, pupil prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
+  
 ### Interactive plot
-- This part of code can be run together with *Pupil prediction (no eye-tracking data)* part
 
-- Run it will open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
+- This part of the code can be run after the *Pupil prediction (no eye-tracking data)* part
+
+- Run it to open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
 
 - The main codes of this section are:
   
@@ -201,7 +205,7 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 ```plotObj.plot_NoEyetracking()```: call function *plot_NoEyetracking* in the class interactive_plot
 
-All the other codes are for the purpose to load data and predetermined parameters to the *plotObj*
+All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
 
-### Note for code version
-Similar to the Gui version, we recommend keeping all predetermined parameters as they are. However, if the users want to change any of them, those parameters can be found in *settings.py*
+### Final note for code version
+Similar to the Gui version, we recommend keeping all the predetermined parameters as they are. However, if the users want to change any of them, those parameters can be found in *settings.py*
