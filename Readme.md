@@ -107,7 +107,7 @@ If the video is not full-screen, some extra information is acquired:
 
 `Start modeling`: Predict the pupil size with the visual events. If no eye-tracking data is available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.
 
-`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as a .csv file named *"[movieName]_[subjectName]_parameters.csv"* (Only when eye-tracking data is available)
+`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as a .csv file named *"[movieName]_[subjectName]_parameters.csv"* in a ""(Only when eye-tracking data is available)
 
 `Save model prediction`: Save the actual pupil size and predicted pupil size as a .csv file named *"[movieName]_[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
 
