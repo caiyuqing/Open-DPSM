@@ -214,6 +214,9 @@ class tkfunctions:
             self.gazecentered  = True
 
             df_eyetracking = pd.read_csv(self.filename_csv, index_col=0, header = 0)
+            # change the first timestamp to 0
+            df_eyetracking.iloc[:,0] = df_eyetracking.iloc[:,0]-df_eyetracking.iloc[0,0]
+            # extract eye-tracking information
             self.eyetracking_duration = df_eyetracking.iloc[-1,0]
             self.eyetracking_nSample = df_eyetracking.shape[0]
             self.eyetracking_samplingrate = int(1/(self.eyetracking_duration/self.eyetracking_nSample))

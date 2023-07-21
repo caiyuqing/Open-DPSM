@@ -41,7 +41,7 @@ dataDir = initialDir + '\\Example' # This should be the folder saving the eyetra
 ## eyetracking data:
 ###- should have four columns in the order as: time stamps, gaze position x, gaze position y, pupil size
 ###- time stamps should be in seconds (not miliseconds). If not, please convert it to seconds
-#subjectFileName = "csv_example_raw_sec(CB cb1).csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
+subjectFileName = "csv_example_raw_sec(CB cb1).csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
 ## video data
 ### Format can be used: .mp4,.avi,.mkv,.mwv,.mov,.flv,.webm (other format can also be used as long as it can be read by cv2)
 movieName =  "VideoExample_sameRatio.mp4" # name of the movie (data file should be contained by "dataDir")
@@ -50,11 +50,14 @@ movieName =  "VideoExample_sameRatio.mp4" # name of the movie (data file should 
 stretchToMatch = True # True: stretch the eyelinkdata to match the movie data; False: cut whichever is longer
 ### maximum luminance of the screen (luminance when white is showed on screen)
 maxlum = 212
+
 ## The following information is only relevant if eyetracking data is available
 ### What is the resolution of eyetracking data 
 eyetracking_height = 1080
 eyetracking_width = 1920
-### What is the video (showed on the screen) resolution (respective to eyetracking resolution, can be different from video file).
+### What is the video (showed on the screen) resolution (respective to eyetracking resolution).
+# *Note that it is not the resolution in the video file.* For example, if the resolution of the eye-tracking data is 1000x500 and the physical height and width of the video displayed is half of the physical height and width of the screen, then videoRealHeight & videoRealHeight should be 500 and 250
+  
 videoRealHeight = 1080
 videoRealWidth = 1920
 
@@ -125,7 +128,7 @@ else:
     videoStretched = False
 
 
-#%%############################################Feature extraction##############################################
+#%%############################################Visual events extraction##############################################
 # NOTE: skip this part if feature extraction has already done previously
 # create folder to save data
 os.chdir(dataDir) 
@@ -253,6 +256,7 @@ gazexdata = np.array(df_eyetracking.iloc[:,1])
 gazeydata = np.array(df_eyetracking.iloc[:,2])
 pupildata = np.array(df_eyetracking.iloc[:,3])
 
+# downsampling the eyetracking data
 modelObj.sampledTimeStamps  =modelObj.prepare_sampleData(timeStampsSec,video_nFrame)
 modelObj.sampledgazexData =modelObj.prepare_sampleData(gazexdata,video_nFrame)
 modelObj.sampledgazeyData=modelObj.prepare_sampleData(gazeydata,video_nFrame)
@@ -313,7 +317,7 @@ if saveData:
     df.columns = ["timeStamps", "Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
     
     df.to_csv(f"{subjectName}_modelPrediction.csv")
-####################################################################################
+######################################interactive plot##############################################
 
 # making plot
 # This step have to be done after pupil prediction
@@ -339,8 +343,8 @@ plotObj.videoScreenSameRatio = videoScreenSameRatio
 plotObj.videoStretched = videoStretched
 logging.getLogger('matplotlib.font_manager').setLevel(logging.ERROR)
 plotObj.plot()
-#%%######################################Pupil prediction (no Eyetracking data)#######################################
-# NOTE: run this part if no eyetracking data available
+#%%######################################Pupil prediction (no eye-tracking data)#######################################
+# NOTE: run this part if eyetracking data is not available
 picklename = movieName + "_"+ subjectName + "_VF_" +colorSpace + "_" + imageSector + ".pickle"
 #load feature data
 os.chdir(dataDir)
@@ -411,7 +415,7 @@ if saveData:
     df.columns = ["timeStamps", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
     
     df.to_csv(f"{subjectName}_modelPrediction.csv")
-####################################################################################
+#########################interactive plot###########################################################
 # making plot
 # This step have to be done after pupil prediction
 plotObj = interactive_plot()
