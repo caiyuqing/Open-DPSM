@@ -102,7 +102,8 @@ if 'subjectFileName' in globals():
     filename_csv = dataDir + "\\" + subjectFileName
     # read eyetracking data and check information
     df_eyetracking = pd.read_csv(filename_csv, index_col=0, header = 0)
-
+    # change the beginning as 0s
+    df_eyetracking.iloc[:,0] = df_eyetracking.iloc[:,0]-df_eyetracking.iloc[0,0]
     eyetracking_duration = df_eyetracking.iloc[-1,0]
     eyetracking_nSample = df_eyetracking.shape[0]
     eyetracking_samplingrate = int(1/(eyetracking_duration/eyetracking_nSample))

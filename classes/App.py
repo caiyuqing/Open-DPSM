@@ -307,7 +307,7 @@ class tkfunctions:
             self.entry_maxLum = ttk.Entry(self.window)
             self.entry_maxLum.grid(column = 1, row = 3)
             # spatial resolution of eyetracking
-            tk.Label(self.window, text = f"What is the spatial resolution of the eyetracking data",font = ("Arial", 10), justify = tk.RIGHT,anchor = "e", width = 100,  bg = "#d9d9d9").grid(column = 0, row = 4, pady = 10)
+            tk.Label(self.window, text = f"What is the resolution for the coordinate system of eye-tracking data (also the resolution of the screen)",font = ("Arial", 10), justify = tk.RIGHT,anchor = "e", width = 100,  bg = "#d9d9d9").grid(column = 0, row = 4, pady = 10)
             
             eyetracking_width = tk.Label(self.window, text = "Width:",font = ("Arial", 10), justify = tk.RIGHT,anchor = "e", width = 100,  bg = "#d9d9d9")
             eyetracking_width.grid(column = 0, row = 5, pady = 0)
