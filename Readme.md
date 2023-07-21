@@ -111,7 +111,7 @@ We recommend keeping all predetermined parameters as they are. However, if the u
 This part is to extract some basic information from the video and eye-tracking file. The results will be printed out.
 
 ### Visual events extraction section
-- Run this part will perform event extraction (see [Event extraction](#Event-extraction) for more information
+- Run this part will perform event extraction (see [Event extraction](#event-extraction) for more information
   
 - The main codes of this section are:
   
@@ -133,12 +133,12 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj*
  
-- When it is completed, the model performance will be printed out. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#Pupil-prediction) for more information).
+- When it is completed, the model performance will be printed out. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
 
 ### Interactive plot
 - This part of code can be run together with *Pupil modeling* part
 
-- Run it will open a window with the interactive plot (see [Interactive plot](#Interactive-plot) for more information)
+- Run it will open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
 
 - The main codes of this section are:
   
@@ -168,11 +168,11 @@ Load the parameters found with our data. RF = response function; HL = "Erlang ga
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj*
 
-- When it is completed, pupil prediction will be saved (see [Pupil prediction](#Pupil-prediction) for more information).
+- When it is completed, pupil prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
 ### Interactive plot
 - This part of code can be run together with *Pupil prediction (no eye-tracking data)* part
 
-- Run it will open a window with the interactive plot (see [Interactive plot](#Interactive-plot) for more information)
+- Run it will open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
 
 - The main codes of this section are:
   
