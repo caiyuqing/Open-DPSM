@@ -33,17 +33,17 @@ os.system(f'python {script_path}')
    - Load a .csv file with four columns, in the **_exact order_** of:
 
   1. Timestamps 
-  2. Gaze position (x)
-  3. Gaze position (y)
+  2. Gaze position (x) 
+  3. Gaze position (y) 
   4. Pupil size
  
-   - It is recommended that the gaze and pupil data has been preprocessed for blink removal, foreshortening error etc. A function for blink removal is also provided in the classes.preprocessing but not incorporated in the toolbox. The user can choose to use it if necessary.
+   - It is recommended that the gaze and pupil data have been preprocessed for blink removal, foreshortening error etc. before loading into Open-DPSM. A function for blink removal is provided in the classes.preprocessing, but not incorporated in the toolbox. The user can choose to use it if desired.
  
    - Gaze position and pupil size can be data of the left eye or the right eye or an average of both eyes, depending on the preference of the user.
 
-   - The unit of Timestamps should be in seconds or milliseconds. The default set-up is in seconds. Therefore, if in milliseconds, it will be converted to seconds in later steps. The unit of gaze and pupil data can be anything. They will be z-standardized in the later steps.
+   - The unit of Timestamps should be in seconds or milliseconds. The default set-up is in seconds. If in milliseconds, it will be converted to seconds in later steps. The unit of gaze and pupil data can be anything. They will be z-standardized in the later steps.
      
-   - The first row should be the header
+   - The first row should be the header as given above
 
      > Note: Eye-tracking data is not a must for the toolbox. If no eye-tracking data is loaded, the toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
 
@@ -92,7 +92,7 @@ If the aspect ratio (Height/width) of the video and the eye-tracking data are no
 ### Entering more information page (optional)
 ![Enter the information figure](App_fig/Fig_enter_info_extra.PNG)
 
-If the video is not full-screen, some extra information is acquired:
+If the video is not full-screen, some extra information are needed:
 
 - Actual height and width of the video: Height and width of the video relative to the eye-tracking data resolution. *Note that it is __not__ the resolution in the video file.* For example, if the resolution of the eye-tracking data is 1000x500 and the physical height and width of the video displayed is half of the physical height and width of the screen, then 500 and 250 should be entered.
 
@@ -105,7 +105,7 @@ If the video is not full-screen, some extra information is acquired:
     
 ### Pupil prediction
 
-`Start modeling`: Predict the pupil size with the visual events. If no eye-tracking data is available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.
+`Start modeling`: Model pupil size changes to the visual events. If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.
 
 `Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as a .csv file named *"[movieName]_[subjectName]_parameters.csv"* in a ""(Only when eye-tracking data is available)
 
@@ -126,12 +126,12 @@ We recommend keeping all predetermined parameters as they are. However, if the u
   
 - To start, open *main.py* and change all the things under the section "Information entered by the user".
   
-- If no eye tracking data, it is important that the line ```subjectFileName = "csv_example_raw_sec(CB cb1).csv"``` is commented out.
+- If no eye tracking data are provided, it is important that the line ```subjectFileName = "csv_example_raw_sec(CB cb1).csv"``` is commented out.
   
 - Similar to the GUI pages, Code version is divided into different sections.
 
 ### Preprocessing section
-This part is to extract some basic information from the video and eye-tracking file. The results will be printed out.
+This part is to extract some basic information from the video and eye-tracking file. The results will be printed.
 
 ### Visual events extraction section
 - Run this part to perform visual event extraction (see [Event extraction](#visual-event-extraction) for more information
@@ -142,11 +142,11 @@ This part is to extract some basic information from the video and eye-tracking f
  
 ```eeObj.event_extraction()```: call function *event_extraction* in the class event_extraction
  
-All the other codes are for the purpose to load data and predetermined parameters to the *eeObj* object
+All the other codes are to load data and predetermined parameters to the *eeObj* object
 
 
 ### Pupil modeling 
-- Run this part only when eye-tracking data is available. The pupil size will be modeled with the visual events extracted in the previous step.
+- Run this part only when eye-tracking data is available. The pupil size changes will be modeled with the visual events extracted in the previous step.
   
 - The main codes of this section are:
   
@@ -156,7 +156,7 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
  
-- When it is completed, the model performance will be printed out. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
+- When it is completed, the model performance will be printed. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
 
 ### Interactive plot
 - This part of the code can be run together with the *Pupil modeling* part
@@ -169,7 +169,7 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 ```plotObj.plot()```: call function *plot* in the class interactive_plot
 
-All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
+All the other codes are to load data and predetermined parameters to the *plotObj* object
 
 
 ### Pupil prediction (no eye-tracking data)
@@ -208,4 +208,4 @@ All the other codes are for the purpose to load data and predetermined parameter
 All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
 
 ### Final note for code version
-Similar to the Gui version, we recommend keeping all the predetermined parameters as they are. However, if the users want to change any of them, those parameters can be found in *settings.py*
+Similar to the GUI, we recommend keeping all predetermined parameters at default. However, if the users want to change any of them, those parameters can be found and adjusted in *settings.py*
