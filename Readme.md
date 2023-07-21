@@ -1,18 +1,18 @@
 # Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
-**The toolbox provides functions for (1) Visual event extraction from the video; (2) Pupil prediction; (3) Interactive plotting. There are two formats of Open-DPSM:**
+**The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two ways:**
 
 - [GUI](#gui): [main_app.py](main_app.py)
 - [Code](#code): [main.py](main.py)
   
-**Both of them contain notes and instructions and should be mostly self-explained. See the two main scripts for details. Refer to this page for details of each step.**
+**Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details for each step.**
 
 ## Loading the toolbox
 No installation is required. Simply clone or download the current repository.
 
 ## Python environment
-The toolbox has been built with the Spyder IDE (version 5) with Python 3.9.7. 
+The toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
 
-Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab(3.2.1) has also been also tested. To start GUI, create a new .ipynb file under the same directory and run:
+Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab(3.2.1) has also been also tested. To start the GUI, create a new .ipynb file under the same directory and run:
 ```python
 import os
 script_path = "main_app.py"
