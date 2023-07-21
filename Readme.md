@@ -49,7 +49,7 @@ os.system(f'python {script_path}')
 
 **Movie**
 
-  - The possible formats are listed on the welcome page. Those are the formats that have been tested. As we use OpenCV to read the video, in principle, any format that can be used in OpenCV can be used.
+  - The tested formats are listed on the welcome page. As we use OpenCV to process the video, in principle, any format that can be used in OpenCV can be used.
 
   - The movie can be a screen recording of the experiment or a video recording of the screen. It is recommended that the video loaded is full-screen in the experiment, which means that it has the same resolution as the eye-tracking data.
 
