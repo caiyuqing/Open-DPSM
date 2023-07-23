@@ -12,7 +12,7 @@ No installation is required. Simply clone or download the current repository.
 ## Python environment
 The toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
 
-Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab(3.2.1) has also been also tested. To start the GUI, create a new .ipynb file under the same directory and run:
+Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) has also been also tested. To start the GUI, create a new .ipynb file under the same directory and run:
 ```python
 import os
 script_path = "main_app.py"
