@@ -660,7 +660,7 @@ class tkfunctions:
         
 
     def buttonFunc_save_params(self):
-        foldername = "csv_results"
+        foldername = "csv results"
         os.chdir(self.dataDir) 
         if not os.path.exists(foldername):
            os.makedirs(foldername)
@@ -707,7 +707,7 @@ class tkfunctions:
     def buttonFunc_save_model_prediction(self):
         self.nextButton.grid_forget()
         self.exitButton.grid_forget()
-        foldername = "csv_results"
+        foldername = "csv results"
         os.chdir(self.dataDir) 
         if not os.path.exists(foldername):
            os.makedirs(foldername)
