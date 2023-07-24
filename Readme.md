@@ -37,7 +37,9 @@ os.system(f'python {script_path}')
   3. Gaze position (y) 
   4. Pupil size
  
-   - It is important that the gaze coordinate of x = 0, y = 0 is at the left corner of the screen. Please convert the gaze positions if it is not the case.
+   - It is important that the left corner of the screen should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
+
+   - Pupil size should be in diameter.
    
    - It is recommended that the gaze and pupil data have been preprocessed for blink removal, foreshortening error etc. before loading into Open-DPSM. A function for blink removal is provided in the classes.preprocessing, but not incorporated in the toolbox. The user can choose to use it if desired.
  
@@ -98,7 +100,7 @@ If the video is not full-screen, some extra information are needed:
 
 - Actual height and width of the video: Height and width of the video relative to the eye-tracking data resolution. *Note that it is __not__ the resolution in the video file.* For example, if the resolution of the eye-tracking data is 1000x500 and the physical height and width of the video displayed is half of the physical height and width of the screen, then 500 and 250 should be entered.
 
-- Background color of the screen: Color for the part of the screen surrounding the video. For example, enter R=0, G=0 and B=0 if it is black.
+- Background color of the screen: Color for the part of the screen surrounding the video. Entering the RGB values (0-255). For example, enter R=0, G=0 and B=0 if it is black.
 
 ### Visual event extraction 
 ![Enter the information figure](App_fig/Fig_event_extraction_and_prediction.PNG)
@@ -109,7 +111,7 @@ If the video is not full-screen, some extra information are needed:
 
 `Start modeling`: Model pupil size changes to the visual events. If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.
 
-`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as a .csv file named *"[movieName]_[subjectName]_parameters.csv"* in a ""(Only when eye-tracking data is available)
+`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as two columns (first column: names; second column: values) in a .csv file named *"[movieName]_[subjectName]_parameters.csv"* in a "csv results" folder (Only when eye-tracking data is available)
 
 `Save model prediction`: Save the actual pupil size and predicted pupil size as a .csv file named *"[movieName]_[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
 
