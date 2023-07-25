@@ -236,7 +236,7 @@ from moviepy.editor import *
 import os
 # change path
 MoviePath = [change the path to the folder you save the movie]
-MovieName = [change the name to the movie name]
+MovieName = [change the name to the name of the movie file]
 # read movie
 os.chdir(MoviePath)
 clip = VideoFileClip(MovieName)
