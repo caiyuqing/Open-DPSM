@@ -230,11 +230,13 @@ After downloading, please run:
 ```python
 # import moviepy
 from moviepy.editor import *
+import os
 # change path
 MoviePath = [change the path to the folder you save the movie]
 MovieName = [change the name to the movie name]
 # read movie
-clip = VideoFileClip(moviename)
+os.chdir(MoviePath)
+clip = VideoFileClip(MovieName)
 # cut the movie: from 00:17:00 to 00:22:00
 clip_cut = clip1.subclip(1020,1320)
 # check the movie resolution
