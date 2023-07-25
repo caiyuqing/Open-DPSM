@@ -7,9 +7,9 @@ Created on Mon Jun 26 15:36:42 2023
 
 #%% For starting the GUI, change the initialDir and run the code
 # initial director and data director
-initialDir = "D:\\Users\\7009291\\Desktop\\Movie pupil perimetry\\codes for both data\\Open-DPSM"# This should be the folder of the Open-DPSM
-dataDir = initialDir + '/Example' # This should be the folder for the eyetracking data and the video data (does not have to be under the Open-DPSM directory)
 import os
+
+initialDir =os.getcwd()# "D:\\Users\\7009291\\Desktop\\Movie pupil perimetry\\codes for both data\\Open-DPSM"# This should be the folder of the Open-DPSM
 
 os.chdir(initialDir)
 
@@ -24,8 +24,5 @@ from classes.App import tkfunctions
 # Create an object for tkinter
 tkObj = tkfunctions()
 tkObj.initialDir = initialDir
-tkObj.dataDir = dataDir
-# run_tk()
-
 tkObj.run_tk()
 

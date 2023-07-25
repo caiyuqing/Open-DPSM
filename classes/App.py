@@ -21,7 +21,7 @@ from classes.preprocessing import preprocessing
 from classes.pupil_prediction import pupil_prediction
 from classes.event_extraction import event_extraction
 from classes.interactive_plot import interactive_plot
-
+import pathlib
 import pickle
 import cv2
 import threading
@@ -113,7 +113,8 @@ class tkfunctions:
         top_canvas.grid(row=0, column=0, padx=100, pady=5)
 
         # print logo and welcome message
-        logo = Image.open("App_fig\\DPSM logo.jpg")
+        logo_dir = os.path.join(self.initialDir, "App_fig", "DPSM logo.jpg")
+        logo = Image.open(logo_dir)
         logo = logo.resize((200,100))
         logo_image = ImageTk.PhotoImage(logo, master=self.window)
         image_logo = top_canvas.create_image(300, 10, anchor="nw", image=logo_image)
@@ -160,10 +161,12 @@ class tkfunctions:
     
         filename_csv = fd.askopenfilename(
             title='Open a file',
-            initialdir=self.dataDir,
+            initialdir=self.initialDir,
             filetypes=filetypes)
-        
-        file = filename_csv.split("/")[-1]
+        pathlib_path = pathlib.Path(filename_csv)
+        file = pathlib_path.name
+        self.dataDir = str(pathlib_path.parent)
+        #file = filename_csv.split("/")[-1]
         self.var_label_csv.set(file)
         self.filename_csv = filename_csv
         self.subjectName = file.split(".")[0]
@@ -176,13 +179,16 @@ class tkfunctions:
     
         filename_movie = fd.askopenfilename(
             title='Open a file',
-            initialdir=self.dataDir,
+            initialdir=self.initialDir,
             filetypes=filetypes)
         # showinfo(
         #     title='Selected File',
         #     message=f"{filename_movie} is opened"
         # )
-        file = filename_movie.split("/")[-1]
+        pathlib_path = pathlib.Path(filename_movie)
+        file = pathlib_path.name
+        self.dataDir = str(pathlib_path.parent)
+        #file = filename_movie.split("/")[-1]
         self.var_label_movie.set(file)
         self.filename_movie = filename_movie
         self.movieName = file.split(".")[0]
@@ -346,10 +352,13 @@ class tkfunctions:
             #self.top_ratioCheck.rowconfigure(0, weight=1)
             self.top_ratioCheck.wm_transient(self.window)
             if self.video_ratio < self.eyetracking_aspectRatio:
-                choiceA = Image.open("App_fig\\Screen_lower.jpg")
+                pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_lower.jpg")
+                choiceA = Image.open(pic_dir)
                 choiceA = choiceA.resize((300,160))
                 choiceA_image = ImageTk.PhotoImage(choiceA, master=self.window)
-                choiceB = Image.open("App_fig\\Screen_surrounding_lower.jpg")
+                pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_surrounding_lower.jpg")
+
+                choiceB = Image.open(pic_dir)
                 choiceB = choiceB.resize((300,160))
                 choiceB_image = ImageTk.PhotoImage(choiceB, master=self.window)
                 tk.Label(self.top_ratioCheck, image = choiceA_image).grid(column = 0, row = 1,sticky = "we")
@@ -357,10 +366,12 @@ class tkfunctions:
                 ttk.Button(self.top_ratioCheck,text='Choose A',command = self.stretch).grid(column = 0, row = 2)
                 ttk.Button(self.top_ratioCheck,text='Choose B', command = self.notStretch).grid(column = 1, row = 2)
             else:
-                choiceA = Image.open("App_fig\\Screen_higher.jpg")
+                pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_higher.jpg")
+                choiceA = Image.open(pic_dir)
                 choiceA = choiceA.resize((300,160))
                 choiceA_image = ImageTk.PhotoImage(choiceA, master=self.window)
-                choiceB = Image.open("App_fig\\Screen_surrounding_higher.jpg")
+                pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_surrounding_higher.jpg")
+                choiceB = Image.open(pic_dir)
                 choiceB = choiceB.resize((300,160))
                 choiceB_image = ImageTk.PhotoImage(choiceB, master=self.window)
                 tk.Label(self.top_ratioCheck, image = choiceA_image).grid(column = 0, row = 1)
