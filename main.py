@@ -318,14 +318,14 @@ if saveData:
     df.columns = ["timeStamps", "Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
     
     df.to_csv(f"{subjectName}_modelPrediction.csv")
-######################################interactive plot##############################################
+#%%##################################### interactive plot##############################################
 
 # making plot
 # This step have to be done after pupil prediction
 plotObj = interactive_plot()
 # subject and movie to plot
 plotObj.subjectName = subjectName
-plotObj.movie = movieName
+plotObj.movieName = movieName
 # other parameters
 plotObj.useApp = useApp
 plotObj.dataDir = dataDir

@@ -149,7 +149,7 @@ class tkfunctions:
         button_check_data.grid(column = 0,row = 0)
         button_exit.grid(column = 0,row = 1)
         tk.Label(text = "*If no eye tracking data is loaded, model optimazation will not be preformed. Parameters used to generate predicted pupil trace will be the ones found by our study.",bg='#d9d9d9').grid(column = 0, row = 3, pady = 20)
-        tk.Label(text = "Please cite: <citation here>").grid(column = 0, row = 5, pady = 170, sticky = tk.S)
+        tk.Label(text = "Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs.").grid(column = 0, row = 5, pady = 170, sticky = tk.S)
         # run the application
         self.window.mainloop()
     def select_file_csv(self):
@@ -734,7 +734,7 @@ class tkfunctions:
         plotObj = interactive_plot()
         # subject and movie to plot
         plotObj.subjectName = self.subjectName
-        plotObj.movie = self.movieName
+        plotObj.movieName = self.movieName
         # other parameters
         plotObj.useApp = self.useApp
         plotObj.dataDir = self.dataDir

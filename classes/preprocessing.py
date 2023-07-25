@@ -72,6 +72,7 @@ class preprocessing:
             self.readFrame()  # reads a frame from video
             if self.ret:
                 frameCount = frameCount+1
+                print(frameCount)
             else:
                 break        
         # get the information of the video from moviepy (seems to be more accurate)
@@ -106,9 +107,9 @@ class preprocessing:
         """
         #eyelinkData = self.eyelinkData["SAMPLES"]
         timeStamps = eyelinkData["TIMESTAMPS"]
-        pupildata = eyelinkData["PUPIL-SIZE"]
-        gazex = eyelinkData["X-GAZE"]
-        gazey = eyelinkData["y-GAZE"]
+        pupildata = eyelinkData["PUPIL-SIZE-LEFT"]
+        gazex = eyelinkData["X-GAZE-LEFT"]
+        gazey = eyelinkData["y-GAZE-LEFT"]
         timeStamps = np.array(timeStamps, dtype="float32")
         pupildata = np.array(pupildata, dtype="float32")
         gazex = np.array(gazex, dtype="float32")

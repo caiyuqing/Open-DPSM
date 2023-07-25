@@ -61,7 +61,7 @@ class interactive_plot:
             # if not using app, need to create a window first
             self.window = tk.Tk()
         self.top_interactive_figure = tk.Toplevel(self.window)
-        self.top_interactive_figure.geometry("2000x1000")
+        self.top_interactive_figure.geometry("1800x800")
         self.top_interactive_figure.resizable(True, True)
         
     
@@ -99,7 +99,7 @@ class interactive_plot:
         gazex = sampledgazexData[init_frame]
         gazey = sampledgazeyData[init_frame]
         
-        f = plt.figure(figsize = (17,8),constrained_layout = True)
+        f = plt.figure(figsize = (16,40),constrained_layout = True)
         gs = f.add_gridspec(ncols = 16,nrows = 20)
         axes = list()
         axes.append(f.add_subplot(gs[2:7, 0:4]))
@@ -230,7 +230,11 @@ class interactive_plot:
         #f.tight_layout(pad = 0.5)
         plt.margins(x=0)
         chart = FigureCanvasTkAgg(f, self.top_interactive_figure)
-        chart.get_tk_widget().grid(row = 0, column = 0,sticky=tk.N+tk.S+tk.E+tk.W, rowspan =9, padx = (0,5))
+        chart.get_tk_widget().grid(row = 0, column = 0,sticky=tk.N+tk.S+tk.E+tk.W, padx = (0,5))
+        self.top_buttom = tk.Toplevel(self.window)
+        #pack(side=tk.TOP, fill=tk.BOTH, expand=0)
+
+        #grid(row = 0, column = 0,sticky=tk.N+tk.S+tk.E+tk.W, padx = (0,5))
         #buttunFrame = tk.Frame(self.top_interactive_figure, bg = "red").grid(row = 0, column =5, rowspan = 2)
         # add buttoms
         def buttomFunc_updateFig1():
@@ -274,35 +278,37 @@ class interactive_plot:
         print(self.filename_movie)
         print(self.subjectName)
         
-    
+        tk.Label(self.top_buttom, text = "Visual event:").grid(row = 0, column = 1)
         var_lum = tk.IntVar()
         var_lum.set(1)
-        tk.Checkbutton(self.top_interactive_figure, text="luminance", variable=var_lum, fg = "#4c004c").grid(row=0, column = 1, sticky=tk.W+tk.S)
+        tk.Checkbutton(self.top_buttom, text="luminance", variable=var_lum, fg = "#4c004c").grid(row=1, column = 1, sticky=tk.W+tk.S)
         var_contrast = tk.IntVar()
         var_contrast.set(1)
     
-        tk.Checkbutton(self.top_interactive_figure, text="contrast", variable=var_contrast, fg = "green").grid(row=1, column = 1, sticky=tk.W)
+        tk.Checkbutton(self.top_buttom, text="contrast", variable=var_contrast, fg = "green").grid(row=2, column = 1, sticky=tk.W)
         # model
+        tk.Label(self.top_buttom, text = "Model prediction:").grid(row = 4, column = 1,pady = (30,0))
+
         var_actual = tk.IntVar()
         var_actual.set(1)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Actual pupil", variable=var_actual, fg = "grey").grid(row=3, column = 1, sticky=tk.W, pady = (30,0), columnspan = 2)
+        tk.Checkbutton(self.top_buttom, text="Actual pupil", variable=var_actual, fg = "grey").grid(row=5, column = 1, sticky=tk.W,  columnspan = 2)
         var_predict = tk.IntVar()
         var_predict.set(1)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=4, column = 1, columnspan = 2, sticky=tk.W)
+        tk.Checkbutton(self.top_buttom, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=6, column = 1, columnspan = 2, sticky=tk.W)
         var_lumConv = tk.IntVar()
         var_lumConv.set(0)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Predicted(luminance)", fg = "#4c004c", variable=var_lumConv).grid(row=5, column = 1, sticky=tk.W, columnspan = 2)
+        tk.Checkbutton(self.top_buttom, text="Predicted(luminance)", fg = "#4c004c", variable=var_lumConv).grid(row=7, column = 1, sticky=tk.W, columnspan = 2)
         var_contrastConv = tk.IntVar()
         var_contrastConv.set(0)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Predicted(contrast)", fg = "green", variable=var_contrastConv).grid(row=6, column = 1, sticky=tk.W, columnspan = 2)
+        tk.Checkbutton(self.top_buttom, text="Predicted(contrast)", fg = "green", variable=var_contrastConv).grid(row=8, column = 1, sticky=tk.W, columnspan = 2)
         
-        tk.Button(self.top_interactive_figure, text='Update figure', command=buttomFunc_updateFig1).grid(row=2, column =1, sticky=tk.W+tk.E,columnspan = 2)
+        tk.Button(self.top_buttom, text='Update figure', command=buttomFunc_updateFig1).grid(row=3, column =1, sticky=tk.W+tk.E,columnspan = 2)
     
-        tk.Button(self.top_interactive_figure, text='Update figure', command=buttomFunc_updateFig2).grid(row=7, column =1, sticky=tk.W+tk.E,columnspan = 2)
+        tk.Button(self.top_buttom, text='Update figure', command=buttomFunc_updateFig2).grid(row=9, column =1, sticky=tk.W+tk.E,columnspan = 2)
         
         def callback_figure():
             choice = choice_figure.get()
@@ -339,28 +345,28 @@ class interactive_plot:
         
         choice_figure= tk.StringVar()
         choice_figure.set('Save all')
-        choicebox_figure= ttk.Combobox(self.top_interactive_figure, textvariable= choice_figure, width = 6,font = ("Arial", 10))
+        choicebox_figure= ttk.Combobox(self.top_buttom, textvariable= choice_figure, width = 6,font = ("Arial", 10))
         choicebox_figure['values']= choices
         choicebox_figure['state']= 'readonly'
-        choicebox_figure.grid(column = 1, row = 9,sticky=tk.E+tk.W)
+        choicebox_figure.grid(column = 1, row = 10,sticky=tk.E+tk.W,pady = (30,0))
         #choice_figure.trace('w', callback_figure)        
-        tk.Button(self.top_interactive_figure, text='Save fig', command = buttomFunc_saveFig).grid(row=9, column =2, sticky=tk.W+tk.E)
+        tk.Button(self.top_buttom, text='Save fig', command = buttomFunc_saveFig).grid(row=10, column =2, sticky=tk.W+tk.E,pady = (30,0))
         
-        tk.Button(self.top_interactive_figure, text='Back', command = self.close_top_figure).grid(row=10, column =1, sticky=tk.W+tk.S+tk.E)
-        tk.Button(self.top_interactive_figure, text='Exit', command = self.close).grid(row=10, column =2, sticky=tk.W+tk.N+tk.S+tk.E)
+        tk.Button(self.top_buttom, text='Back', command = self.close_top_figure).grid(row=11, column =1, sticky=tk.W+tk.S+tk.E)
+        tk.Button(self.top_buttom, text='Exit', command = self.close).grid(row=11, column =2, sticky=tk.W+tk.N+tk.S+tk.E)
     
         #tk.Button(self.top_interactive_figure, text='Save all fig', command=buttomFunc_saveFigAll).grid(row=9, sticky=tk.W)
-        self.top_interactive_figure.rowconfigure(0, weight = 175)
-        self.top_interactive_figure.rowconfigure(1, weight = 1)
-        self.top_interactive_figure.rowconfigure(2, weight = 1)
-        self.top_interactive_figure.rowconfigure(3, weight = 1)
-        self.top_interactive_figure.rowconfigure(4, weight = 1)
-        self.top_interactive_figure.rowconfigure(5, weight = 1)
-        self.top_interactive_figure.rowconfigure(6, weight = 1)
-        self.top_interactive_figure.rowconfigure(7, weight = 1)
-        self.top_interactive_figure.rowconfigure(8, weight = 1)
-        self.top_interactive_figure.rowconfigure(9, weight = 1)
-        self.top_interactive_figure.rowconfigure(10, weight = 1)
+        # self.window.rowconfigure(0, weight = 175)
+        # self.window.rowconfigure(1, weight = 1)
+        # self.window.rowconfigure(2, weight = 1)
+        # self.window.rowconfigure(3, weight = 1)
+        # self.window.rowconfigure(4, weight = 1)
+        # self.window.rowconfigure(5, weight = 1)
+        # self.window.rowconfigure(6, weight = 1)
+        # self.window.rowconfigure(7, weight = 1)
+        # self.top_interactive_figure.rowconfigure(8, weight = 1)
+        # self.top_interactive_figure.rowconfigure(9, weight = 1)
+        # self.top_interactive_figure.rowconfigure(10, weight = 1)
     
                 
         #scale.bind("<ButtonRelease-1>", updateValue)
@@ -449,13 +455,22 @@ class interactive_plot:
          # add slider
         scalevar = tk.IntVar()
         scale = tk.Scale(self.top_interactive_figure, from_=0, to=sampledTimeStamps[-1],length = len(sampledTimeStamps)+1, tickinterval=100, variable=scalevar, orient=tk.HORIZONTAL,resolution = 0.01)#, command=self.updateValue)
+        #scale.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=0)
+
         scale.grid(row = 9, column = 0, sticky = tk.W + tk.E + tk.N+tk.S, padx=(5,0))
         scale.bind("<ButtonRelease-1>", updateValue)
-        tk.Label(self.top_interactive_figure, text = "Time (s)", font = ("Arial", 10), bg = "#d9d9d9").grid(row = 10, column = 0)
-    
+        self.top_interactive_figure.rowconfigure(0, weight = 1)
+        self.top_interactive_figure.rowconfigure(1, weight = 10)
+        self.top_interactive_figure.rowconfigure(2, weight = 1)
+
         self.top_interactive_figure.columnconfigure(0, weight = 60)
         self.top_interactive_figure.columnconfigure(1, weight = 1)
-        self.top_interactive_figure.columnconfigure(2, weight = 1)
+        self.top_interactive_figure.columnconfigure(2, weight = 1)        
+        tk.Label(self.top_interactive_figure, text = "Time (s)", font = ("Arial", 10), bg = "#d9d9d9").grid(row = 10, column = 0)
+    
+        # self.top_interactive_figure.columnconfigure(0, weight = 60)
+        # self.top_interactive_figure.columnconfigure(1, weight = 1)
+        # self.top_interactive_figure.columnconfigure(2, weight = 1)
         self.window.mainloop()
 
     def plot_NoEyetracking(self):
@@ -500,9 +515,10 @@ class interactive_plot:
             # if not using app, need to create a window first
             self.window = tk.Tk()        
         self.top_interactive_figure = tk.Toplevel(self.window)
-        self.top_interactive_figure.geometry("2000x1000")
+        self.top_interactive_figure.geometry("1800x800")
         self.top_interactive_figure.resizable(True, True)
-        
+        #self.top_interactive_figure.attributes('-topmost', 'true')
+
     
         init_frame = 3
         # Create the figure and the line that we will manipulate
@@ -517,7 +533,7 @@ class interactive_plot:
         video_y = self.video_height
         
         
-        f = plt.figure(figsize = (17,8),constrained_layout = True)
+        f = plt.figure(figsize = (17,10),constrained_layout = True)
         gs = f.add_gridspec(ncols = 16,nrows = 20)
         axes = list()
         axes.append(f.add_subplot(gs[0:8, 0:16]))
@@ -604,7 +620,9 @@ class interactive_plot:
         #f.tight_layout(pad = 0.5)
         plt.margins(x=0)
         chart = FigureCanvasTkAgg(f, self.top_interactive_figure)
-        chart.get_tk_widget().grid(row = 0, column = 0,sticky=tk.N+tk.S+tk.E+tk.W, rowspan =9, padx = (0,5))
+        chart.get_tk_widget().grid(row = 0, column = 0,sticky=tk.N+tk.S+tk.E+tk.W, padx = (0,5))
+        self.top_buttom = tk.Toplevel(self.window)
+
         #buttunFrame = tk.Frame(self.top_interactive_figure, bg = "red").grid(row = 0, column =5, rowspan = 2)
         # add buttoms
         def buttomFunc_updateFig1():
@@ -645,31 +663,32 @@ class interactive_plot:
         print(self.filename_movie)
         print(self.subjectName)
         
-    
+        tk.Label(self.top_buttom, text = "Visual event:").grid(row = 0, column =1)
         var_lum = tk.IntVar()
         var_lum.set(1)
-        tk.Checkbutton(self.top_interactive_figure, text="luminance", variable=var_lum, fg = "#4c004c").grid(row=0, column = 1, sticky=tk.W+tk.S)
+        tk.Checkbutton(self.top_buttom, text="luminance", variable=var_lum, fg = "#4c004c").grid(row=1, column = 1, sticky=tk.W+tk.S)
         var_contrast = tk.IntVar()
         var_contrast.set(1)
     
-        tk.Checkbutton(self.top_interactive_figure, text="contrast", variable=var_contrast, fg = "green").grid(row=1, column = 1, sticky=tk.W)
+        tk.Checkbutton(self.top_buttom, text="contrast", variable=var_contrast, fg = "green").grid(row=2, column = 1, sticky=tk.W)
         # model
+        tk.Label(self.top_buttom, text = "Model prediction").grid(row = 4, column = 1,pady = (30,0))
         var_predict = tk.IntVar()
         var_predict.set(1)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=4, column = 1, columnspan = 2, sticky=tk.W)
+        tk.Checkbutton(self.top_buttom, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=5, column = 1, columnspan = 2, sticky=tk.W)
         var_lumConv = tk.IntVar()
         var_lumConv.set(0)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Predicted(luminance)", fg = "#4c004c", variable=var_lumConv).grid(row=5, column = 1, sticky=tk.W, columnspan = 2)
+        tk.Checkbutton(self.top_buttom, text="Predicted(luminance)", fg = "#4c004c", variable=var_lumConv).grid(row=6, column = 1, sticky=tk.W, columnspan = 2)
         var_contrastConv = tk.IntVar()
         var_contrastConv.set(0)
     
-        tk.Checkbutton(self.top_interactive_figure, text="Predicted(contrast)", fg = "green", variable=var_contrastConv).grid(row=6, column = 1, sticky=tk.W, columnspan = 2)
+        tk.Checkbutton(self.top_buttom, text="Predicted(contrast)", fg = "green", variable=var_contrastConv).grid(row=7, column = 1, sticky=tk.W, columnspan = 2)
         
-        tk.Button(self.top_interactive_figure, text='Update figure', command=buttomFunc_updateFig1).grid(row=2, column =1, sticky=tk.W+tk.E,columnspan = 2)
+        tk.Button(self.top_buttom, text='Update figure', command=buttomFunc_updateFig1).grid(row=3, column =1, sticky=tk.W+tk.E,columnspan = 2)
     
-        tk.Button(self.top_interactive_figure, text='Update figure', command=buttomFunc_updateFig2).grid(row=7, column =1, sticky=tk.W+tk.E,columnspan = 2)
+        tk.Button(self.top_buttom, text='Update figure', command=buttomFunc_updateFig2).grid(row=8, column =1, sticky=tk.W+tk.E,columnspan = 2)
         
         def callback_figure():
             choice = choice_figure.get()
@@ -702,28 +721,28 @@ class interactive_plot:
         
         choice_figure= tk.StringVar()
         choice_figure.set('Save all')
-        choicebox_figure= ttk.Combobox(self.top_interactive_figure, textvariable= choice_figure, width = 6,font = ("Arial", 10))
+        choicebox_figure= ttk.Combobox(self.top_buttom, textvariable= choice_figure, width = 6,font = ("Arial", 10))
         choicebox_figure['values']= choices
         choicebox_figure['state']= 'readonly'
-        choicebox_figure.grid(column = 1, row = 9,sticky=tk.E+tk.W)
+        choicebox_figure.grid(column = 1, row = 9,sticky=tk.E+tk.W,pady = (30,0))
         #choice_figure.trace('w', callback_figure)        
-        tk.Button(self.top_interactive_figure, text='Save fig', command = buttomFunc_saveFig).grid(row=9, column =2, sticky=tk.W+tk.E)
+        tk.Button(self.top_buttom, text='Save fig', command = buttomFunc_saveFig).grid(row=9, column =2, sticky=tk.W+tk.E, pady = (30,0))
         
-        tk.Button(self.top_interactive_figure, text='Back', command = self.close_top_figure).grid(row=10, column =1, sticky=tk.W+tk.S+tk.E)
-        tk.Button(self.top_interactive_figure, text='Exit', command = self.close).grid(row=10, column =2, sticky=tk.W+tk.N+tk.S+tk.E)
+        tk.Button(self.top_buttom, text='Back', command = self.close_top_figure).grid(row=10, column =1, sticky=tk.W+tk.S+tk.E)
+        tk.Button(self.top_buttom, text='Exit', command = self.close).grid(row=10, column =2, sticky=tk.W+tk.N+tk.S+tk.E)
     
         #tk.Button(self.top_interactive_figure, text='Save all fig', command=buttomFunc_saveFigAll).grid(row=9, sticky=tk.W)
-        self.top_interactive_figure.rowconfigure(0, weight = 175)
-        self.top_interactive_figure.rowconfigure(1, weight = 1)
-        self.top_interactive_figure.rowconfigure(2, weight = 1)
-        self.top_interactive_figure.rowconfigure(3, weight = 1)
-        self.top_interactive_figure.rowconfigure(4, weight = 1)
-        self.top_interactive_figure.rowconfigure(5, weight = 1)
-        self.top_interactive_figure.rowconfigure(6, weight = 1)
-        self.top_interactive_figure.rowconfigure(7, weight = 1)
-        self.top_interactive_figure.rowconfigure(8, weight = 1)
-        self.top_interactive_figure.rowconfigure(9, weight = 1)
-        self.top_interactive_figure.rowconfigure(10, weight = 2)
+        # self.window.rowconfigure(0, weight = 175)
+        # self.top_interactive_figure.rowconfigure(1, weight = 1)
+        # self.top_interactive_figure.rowconfigure(2, weight = 1)
+        # self.top_interactive_figure.rowconfigure(3, weight = 1)
+        # self.top_interactive_figure.rowconfigure(4, weight = 1)
+        # self.top_interactive_figure.rowconfigure(5, weight = 1)
+        # self.top_interactive_figure.rowconfigure(6, weight = 1)
+        # self.top_interactive_figure.rowconfigure(7, weight = 1)
+        # self.top_interactive_figure.rowconfigure(8, weight = 1)
+        # self.top_interactive_figure.rowconfigure(9, weight = 1)
+        # self.top_interactive_figure.rowconfigure(10, weight = 2)
     
                 
         #scale.bind("<ButtonRelease-1>", updateValue)
@@ -752,6 +771,9 @@ class interactive_plot:
         self.top_interactive_figure.columnconfigure(0, weight = 60)
         self.top_interactive_figure.columnconfigure(1, weight = 1)
         self.top_interactive_figure.columnconfigure(2, weight = 1)
+        self.top_buttom.attributes('-topmost', 'true')
+
+
         self.window.mainloop()
 
     def close(self):
