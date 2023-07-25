@@ -30,7 +30,6 @@ from PIL import Image, ImageTk
 import sys
 import logging
 
-import psutil
 from scipy.optimize import minimize
 from scipy.optimize import basinhopping
 import time
