@@ -8,7 +8,7 @@ Created on Tue Jun 27 12:00:43 2023
 #from mttkinter import mtTkinter
 #from mttkinter import mtTkinter
 import os
-
+import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
@@ -114,7 +114,7 @@ class tkfunctions:
 
         # print logo and welcome message
         logo_dir = os.path.join(self.initialDir, "App_fig", "DPSM logo.jpg")
-        logo = Image.open(logo_dir)
+        logo = Image.open(self.resource_path(logo_dir))
         logo = logo.resize((200,100))
         logo_image = ImageTk.PhotoImage(logo, master=self.window)
         image_logo = top_canvas.create_image(300, 10, anchor="nw", image=logo_image)
@@ -153,6 +153,10 @@ class tkfunctions:
         tk.Label(text = "Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs.").grid(column = 0, row = 5, pady = 170, sticky = tk.S)
         # run the application
         self.window.mainloop()
+    def resource_path(self, relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
     def select_file_csv(self):
         filetypes = (
             ('csv files', '*.csv'),
@@ -353,12 +357,12 @@ class tkfunctions:
             self.top_ratioCheck.wm_transient(self.window)
             if self.video_ratio < self.eyetracking_aspectRatio:
                 pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_lower.jpg")
-                choiceA = Image.open(pic_dir)
+                choiceA = Image.open(self.resource_path(pic_dir))
                 choiceA = choiceA.resize((300,160))
                 choiceA_image = ImageTk.PhotoImage(choiceA, master=self.window)
                 pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_surrounding_lower.jpg")
 
-                choiceB = Image.open(pic_dir)
+                choiceB = Image.open(self.resource_path(pic_dir))
                 choiceB = choiceB.resize((300,160))
                 choiceB_image = ImageTk.PhotoImage(choiceB, master=self.window)
                 tk.Label(self.top_ratioCheck, image = choiceA_image).grid(column = 0, row = 1,sticky = "we")
@@ -367,11 +371,11 @@ class tkfunctions:
                 ttk.Button(self.top_ratioCheck,text='Choose B', command = self.notStretch).grid(column = 1, row = 2)
             else:
                 pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_higher.jpg")
-                choiceA = Image.open(pic_dir)
+                choiceA = Image.open(self.resource_path(pic_dir))
                 choiceA = choiceA.resize((300,160))
                 choiceA_image = ImageTk.PhotoImage(choiceA, master=self.window)
                 pic_dir = os.path.join(self.initialDir, "App_fig", "Screen_surrounding_higher.jpg")
-                choiceB = Image.open(pic_dir)
+                choiceB = Image.open(self.resource_path(pic_dir))
                 choiceB = choiceB.resize((300,160))
                 choiceB_image = ImageTk.PhotoImage(choiceB, master=self.window)
                 tk.Label(self.top_ratioCheck, image = choiceA_image).grid(column = 0, row = 1)
