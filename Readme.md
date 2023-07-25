@@ -1,10 +1,15 @@
 # Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
+
+Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs.
+
 **The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two ways:**
 
 - [GUI](#gui): [main_app.py](main_app.py)
 - [Code](#code): [main.py](main.py)
-  
+
 **Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details for each step.**
+
+Also see: [Example data](#example-data) for details of the data used as an example user-case
 
 ## Loading the toolbox
 No installation is required. Simply clone or download the current repository.
@@ -12,7 +17,9 @@ No installation is required. Simply clone or download the current repository.
 ## Python environment
 The toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
 
-Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) has also been also tested. To start the GUI, create a new .ipynb file under the same directory and run:
+Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
+
+Note: With Jupiter notebook/JupiterLab, create a new .ipynb file under the same directory and run the following codes to start the GUI:
 ```python
 import os
 script_path = "main_app.py"
@@ -213,3 +220,31 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 ### Final note for code version
 Similar to the GUI, we recommend keeping all predetermined parameters at default. However, if the users want to change any of them, those parameters can be found and adjusted in *settings.py*
+
+## Example data
+The folder "example" contains a sample eye-tracking data of a participant watching a 5-minute video of driving on the road. This clip is not one of the clips from our dataset and only serves as an example for a possible user case. 
+
+To run the example, the user needs to first download the video from: https://www.youtube.com/watch?v=sIsegSg5tps (with a youtube downloader such as: https://en.savefrom.net/1-youtube-video-downloader-528en/). 
+
+After downloading, please run:
+```python
+# import moviepy
+from moviepy.editor import *
+# change path
+MoviePath = [change the path to the folder you save the movie]
+MovieName = [change the name to the movie name]
+# read movie
+clip = VideoFileClip(moviename)
+# cut the movie: from 00:17:00 to 00:22:00
+clip_cut = clip1.subclip(1020,1320)
+# check the movie resolution
+w1 = clip1.w
+h1 = clip1.h
+ratio = w1/h1
+print(ratio) # The ratio should be 1920/1080
+clip_cut.write_videofile("driving.mp4") 
+```
+
+Then move *driving.mp4* to the example folder and the example can be used. 
+
+As the visual event extraction has been done (saved in the "Visual event" folder), the user can skip the "Visual events extraction" section in the code version. In other folders, there are also exemplary results and figures generated with the toolbox. 
