@@ -113,6 +113,8 @@ If the video is not full-screen, some extra information are needed:
 ![Enter the information figure](App_fig/Fig_event_extraction_and_prediction.PNG)
 
 `Start event extraction`: Start visual event extraction. When it is completed, video information, timestamps, and event trace per image region will be automatically saved as a pickle file named *"[movieName]_[subjectName]_VF_LAB_6X8.pickle"* in a *"Visual events"* folder (under the *dataDir*). If no eye-tracking data is loaded, the pickle file name will be *"[movieName]_NoEyetrackingData_VF_LAB_6X8.pickle"*.
+
+If there is already a pickle file with the name in the "Visual events" folder, then this step will be skipped and the pickle file will be loaded.
     
 ### Pupil prediction
 
@@ -155,6 +157,7 @@ This part is to extract some basic information from the video and eye-tracking f
  
 All the other codes are to load data and predetermined parameters to the *eeObj* object
 
+Similar to the GUI version, if the visual events pickle file is already in the "Visual events" folder, then this step can be skipped and the pickle file will be loaded (please do not run this section and run next section directly
 
 ### Pupil modeling 
 - Run this part only when eye-tracking data is available. The pupil size changes will be modeled with the visual events extracted in the previous step.
