@@ -44,7 +44,7 @@ os.system(f'python {script_path}')
   3. Gaze position (y) 
   4. Pupil size
  
-   - It is important that the left corner of the screen should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
+   - It is important that the **left corner of the screen** should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
 
    - Pupil size should be in diameter.
    
