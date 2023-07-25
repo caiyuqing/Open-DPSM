@@ -9,7 +9,7 @@ Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: 
 
 **Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details for each step.**
 
-Also see: [Example data](#example-data) for details of the data used as an example user-case
+Also see: [Example data](#example-data) for details of the data provided as an exemplary user-case
 
 ## Loading the toolbox
 No installation is required. Simply clone or download the current repository.
