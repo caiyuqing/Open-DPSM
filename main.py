@@ -281,7 +281,7 @@ sampledFps = modelObj.sampledFps
 ##################################
 # save model results
 if saveParams:
-    foldername = "csv_results"
+    foldername = "csv results"
     os.chdir(dataDir) 
     if not os.path.exists(foldername):
        os.makedirs(foldername)
@@ -305,7 +305,7 @@ if saveParams:
             df.to_csv(f"{subjectName}_parameters.csv")
 # save modeling data
 if saveData:
-    foldername = "csv_results"
+    foldername = "csv results"
     os.chdir(dataDir) 
     if not os.path.exists(foldername):
        os.makedirs(foldername)
