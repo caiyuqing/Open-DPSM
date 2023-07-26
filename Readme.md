@@ -4,7 +4,7 @@ Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: 
 
 **The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two ways:**
 
-- [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe*. Please note that the *App_fig* folder should at the same directory as the .exe. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
+- [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe*. Please note that the *App_fig* folder should at the same directory as the .exe. The executable file will take about 10-second to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
 - [Code](#code): [main.py](main.py)
 
 **Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details for each step.**
@@ -25,6 +25,11 @@ import os
 script_path = "main_app.py"
 os.system(f'python {script_path}')
 ```
+
+## Packages
+The toolbox depends on those packages: [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [scipy](https://scipy.org/install/), [OpenCV](https://pypi.org/project/opencv-python/), [moviepy](https://zulko.github.io/moviepy/install.html), [matplotlib](https://matplotlib.org/stable/users/installing/index.html), [pillow](https://pillow.readthedocs.io/en/stable/installation.html)
+
+Please refer to their installation instructions and make sure that they have been correctly installed before using it.
 
 ## GUI 
 
