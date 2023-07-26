@@ -59,7 +59,7 @@ Please refer to their installation instructions and make sure that they have bee
  
    - Gaze position and pupil size can be data of the left eye or the right eye or an average of both eyes, depending on the preference of the user.
 
-   - The unit of Timestamps should be in seconds or milliseconds. The default set-up is in seconds. If in milliseconds, it will be converted to seconds in later steps. The unit of gaze and pupil data can be anything. They will be z-standardized in the later steps.
+   - The unit of Timestamps should be in seconds or milliseconds. The default set-up is in seconds. If in milliseconds, it will be converted to seconds in later steps. 
      
    - The first row should be the header as given above
 
