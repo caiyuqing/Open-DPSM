@@ -114,7 +114,7 @@ If the video is not full-screen, some extra information are needed:
 
 - Background color of the screen: Color for the part of the screen surrounding the video. Entering the RGB values (0-255). For example, enter R=0, G=0 and B=0 if it is black.
 
-### Visual event extraction 
+### Visual events extraction 
 ![Enter the information figure](App_fig/Fig_event_extraction_and_prediction.PNG)
 
 `Start event extraction`: Start visual event extraction. When it is completed, video information, timestamps, and event trace per image region will be automatically saved as a pickle file named *"[movieName]_[subjectName]_VF_LAB_6X8.pickle"* in a *"Visual events"* folder (under the *dataDir*). If no eye-tracking data is loaded, the pickle file name will be *"[movieName]_NoEyetrackingData_VF_LAB_6X8.pickle"*.
@@ -152,7 +152,7 @@ We recommend keeping all predetermined parameters as they are. However, if the u
 This part is to extract some basic information from the video and eye-tracking file. The results will be printed.
 
 ### Visual events extraction section
-- Run this part to perform visual event extraction (see [Event extraction](#visual-event-extraction) for more information
+- Run this part to perform visual event extraction (see [Visual events extraction](#visual-events-extraction) for more information
   
 - The main codes of this section are:
   
