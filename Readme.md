@@ -2,7 +2,7 @@
 
 Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs.
 
-**The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two ways:**
+**The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two formats:**
 
 - [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe*. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
 - [Code](#code): [main.py](main.py)
@@ -17,7 +17,7 @@ No installation is required. Simply clone or download the current repository.
 ## Python environment
 The toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
 
-Besides Spyder, Jupiter notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
+Besides Spyder, Jupiter Notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
 
 Note: With Jupiter notebook/JupiterLab, create a new .ipynb file under the same directory and run the following codes to start the GUI:
 ```python
@@ -108,7 +108,7 @@ If the aspect ratio (Height/width) of the video and the eye-tracking data are no
 ### Entering more information page (optional)
 ![Enter the information figure](App_fig/Fig_enter_info_extra.PNG)
 
-If the video is not full-screen, some extra information are needed:
+If the video is not full-screen, extra information is needed:
 
 - Actual height and width of the video: Height and width of the video relative to the eye-tracking data resolution. *Note that it is __not__ the resolution in the video file.* For example, if the resolution of the eye-tracking data is 1000x500 and the physical height and width of the video displayed is half of the physical height and width of the screen, then 500 and 250 should be entered.
 
