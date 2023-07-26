@@ -256,6 +256,6 @@ clip_cut.write_videofile("driving.mp4")
 ```
 > Note: For those who are using the executable version of the toolbox, cut the movie into 5 minutes from 00:17:00 to 00:22:00 using any video editor application and rename it as "driving.mp4". If possible, also check the resolution of the video in the property of the file. It should be 1920x1080.
 
-Then move *driving.mp4* to the example folder and the example can be used. 
+Then move *driving.mp4* to the example folder and the example is ready to go. 
 
 As the visual event extraction has been done (saved in the "Visual event" folder), the user can skip the "Visual events extraction" section in the code version. In other folders, there are also exemplary results and figures generated with the toolbox. 
