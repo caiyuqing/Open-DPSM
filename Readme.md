@@ -48,7 +48,9 @@ Please refer to their installation instructions and make sure that they have bee
   2. Gaze position (x) 
   3. Gaze position (y) 
   4. Pupil size
- 
+   
+   - See [eyetracking_driving](Example/eyetracking_driving.csv) for a exemplary eye-tracking csv file.
+      
    - It is important that the **left corner of the screen** should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
 
    - Pupil size should be in diameter.
