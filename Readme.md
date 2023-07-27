@@ -143,12 +143,13 @@ We recommend keeping all predetermined parameters as they are. However, if the u
 
 ## Code
 - The code version uses the same three classes of functions as the GUI version. Hence, all the steps are nearly identical.
+
+- Similar to the GUI pages, Code version is divided into different sections.
   
 - To start, open *main.py* and change all the things under the section "Information entered by the user".
   
-- If no eye tracking data are provided, it is important that the line ```subjectFileName = "csv_example_raw_sec(CB cb1).csv"``` is commented out.
+- If no eye tracking data are provided, it is important that the line ```subjectFileName"``` line is commented out.
   
-- Similar to the GUI pages, Code version is divided into different sections.
 
 ### Preprocessing section
 This part is to extract some basic information from the video and eye-tracking file. The results will be printed.
