@@ -53,7 +53,7 @@ Please refer to their installation instructions and make sure that they have bee
       
    - It is important that the **left corner of the screen** should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
 
-   - Pupil size should be in diameter.
+   - Pupil size should be in diameter. We therefore recommend conversion if data are not given in millimeters before entering data into the toolbox (see PsPM (Korn et al., 2017) for a number of conversion techniques).
    
    - It is recommended that the gaze and pupil data have been preprocessed for blink removal, foreshortening error etc. before loading into Open-DPSM. A function for blink removal is provided in the classes.preprocessing, but not incorporated in the toolbox. The user can choose to use it if desired.
  
