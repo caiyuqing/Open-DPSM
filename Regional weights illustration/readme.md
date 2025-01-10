@@ -2,13 +2,13 @@
 
 This illustration is made for readers for are interested in the mechanism of how the model extracts regional weights. 
 
-You are acting as the model. Your task is to find the best combination of regional weights in a artifical pupil and luminance change data. The procedure is exactly the same what the model does! 
+You will act as the model and your task is to find the best combination of regional weights in a artifical pupil and luminance change data. The procedure is exactly the same what the model does! 
 
 It has two formats. Both will open the same plot. 
 
 - For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *interactive_illustration.zip* and unzip it. Then run *Open-DPSM.exe*. The executable file will take about 10 seconds to open.
   
-- A code form: interactive_illustration_simple.py
+- A code form: interactive_illustration_simple.py in this folder.
 
 ## Packages
 The illustration depends on those packages: [numpy](https://numpy.org/install/), [scipy](https://scipy.org/install/), [matplotlib](https://matplotlib.org/stable/users/installing/index.html). Install them first.
