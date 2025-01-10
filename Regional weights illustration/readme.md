@@ -17,11 +17,11 @@ The illustration depends on those packages: [numpy](https://numpy.org/install/),
 
 The initial plot looks like this. This shows the inputs of the model:
 
-(1) Luminance change extracted from the movie, respectively for the left and right visual field (1st row, right side)
+**(1st row, right side)** Luminance change extracted from the movie, respectively for the left and right visual field
 
-(2) Observed pupil response (4th row, left side)
+**(4th row, left side)** Observed pupil response (4th row, left side)
 
-(3) A predetermined shape of response function for pupil responses to luminance changes (1st row, left side)
+**(1st row, left side)** A predetermined shape of response function for pupil responses to luminance changes 
 
 ![image](https://github.com/user-attachments/assets/e59db993-b608-4350-87d4-545d813d6a43)
 
