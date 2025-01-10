@@ -33,7 +33,9 @@ Then the model (or you in the current illustration) starts to select values for 
 
 **(4th row, right side)** The single convolved result is then accumulated because pupil responses to luminance changes are sustained. And this is the predicted pupil size changes with this combination of weights (brown line). The model performance evaluation (r and RMSE) is also presented on the left. Note that as this is a fake data, the best weights will give us a r of 0.98.
 
-Now it's your turn! Can you change the combination of weights to find answer? (Also observe that the regional weights are not determined by the strength of luminance changes)
+Now it's your turn! Can you change the combination of weights to find answer? (Also observe that the regional weights are not determined by the relative strengths of luminance changes in the two sides).
+
+After you find the answer, can you multiple weight1 and weight2 with a random number (above 0) and test the answer again? You will find that any number would work. This means that the absolute values of regional weights do not mean anything. Only the relative values of them matters!
 
 ![image](https://github.com/user-attachments/assets/226df435-ec98-4dec-9ab3-f80b8bd2a0cc)
 
