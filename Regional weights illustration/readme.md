@@ -13,7 +13,7 @@ It has two formats. Both will open the same plot.
 ## Packages
 The illustration depends on those packages: [numpy](https://numpy.org/install/), [scipy](https://scipy.org/install/), [matplotlib](https://matplotlib.org/stable/users/installing/index.html). Install them first.
 
-# Constitute of the plot
+# Constitutes of the plot
 
 The initial plot looks like this. This shows the inputs of the model:
 
