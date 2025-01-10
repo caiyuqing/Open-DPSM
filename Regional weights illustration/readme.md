@@ -25,7 +25,7 @@ The initial plot looks like this. This shows the inputs of the model:
 
 ![image](https://github.com/user-attachments/assets/e59db993-b608-4350-87d4-545d813d6a43)
 
-Then the model (or you) starts to select values for regional weights. Here is a random example for the case of weight1 = 2, weight2 = 1. 
+Then the model (or you) starts to select values for regional weights. Here is a random example for the combination of weight1 = 2, weight2 = 1. 
 
 **(2nd row, right side)** The luminance changes are first convolved with the response function, resulting in two convolved traces for the left and right separately. In addition, the two traces were multiplied with regional weights. 
 
