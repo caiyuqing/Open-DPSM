@@ -19,7 +19,7 @@ The initial plot looks like this. This shows the inputs of the model:
 
 **(1st row, right side)** Luminance change extracted from the movie, respectively for the left and right visual field
 
-**(4th row, left side)** Observed pupil response (4th row, left side)
+**(4th row, right side)** Observed pupil response (4th row, left side)
 
 **(1st row, left side)** A predetermined shape of response function for pupil responses to luminance changes 
 
