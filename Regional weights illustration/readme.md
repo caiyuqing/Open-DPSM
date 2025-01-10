@@ -1,4 +1,4 @@
-# What do regional weights mean and how do they calculated?
+# What do regional weights mean and how are they calculated?
 
 This illustration is made for readers for are interested in the mechanism of how the model extracts regional weights. 
 
