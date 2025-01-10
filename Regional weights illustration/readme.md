@@ -6,7 +6,7 @@ You will act as the model and your task is to find the best combination of regio
 
 It has two formats. Both will open the same plot. 
 
-- For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *interactive_illustration.zip* and unzip it. Then run *Open-DPSM.exe*. The executable file will take about 10 seconds to open.
+- For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *interactive_illustration.zip* and unzip it. Then run *interactive_illustration.exe*. The executable file will take about 10 seconds to open.
   
 - A code form: interactive_illustration_simple.py in this folder.
 
