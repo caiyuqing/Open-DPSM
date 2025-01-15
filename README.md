@@ -4,6 +4,6 @@
 
 - [v2](https://github.com/caiyuqing/Open-DPSM/tree/master/v2): updated version. Incorporated the features of circular map, regional weights and regularization.
 
-- [Regional weights illustration](https://github.com/caiyuqing/Open-DPSM/tree/master/Regional weights illustration): An interactive illustration for the regional weights. 
+- [Regional weights illustration]('https://github.com/caiyuqing/Open-DPSM/tree/master/Regional_weights_illustration'): An interactive illustration for the regional weights. 
 
 See specific folder for more instructions!
