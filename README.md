@@ -6,4 +6,4 @@
 
 - [Regional weights illustration]('https://github.com/caiyuqing/Open-DPSM/tree/master/Regional_weights_illustration'): An interactive illustration for the regional weights. 
 
-See specific folder for more instructions!
+See specific folders for more instructions!
