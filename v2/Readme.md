@@ -40,7 +40,7 @@ Please refer to their installation instructions and make sure that they have bee
 - Run *main_app.py* to start GUI
 
 ### Welcome page: Loading eye-tracking data and movie
-![Welcome figure](App_fig/Fig_welcome_page_App.PNG)
+![Welcome figure](App_fig/Fig_welcome_page_App.png)
 
 **Eye-tracking data**
 
