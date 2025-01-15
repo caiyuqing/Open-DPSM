@@ -22,6 +22,7 @@ var/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
+
 *.egg-info/
 .installed.cfg
 *.egg
@@ -140,3 +141,5 @@ io/
 # For Open-DPSM:
 ## Ignores folders that contains data and codes that is not used anymore
 **/not used/
+**/v2/Example_test2/
+**/v2/Example/driving_chopped2.mp4
