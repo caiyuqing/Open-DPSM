@@ -5,8 +5,8 @@ Created on Fri Jan 10 14:44:34 2025
 @author: 7009291
 """
 # Instruction: change the value for weight1 and weight 2 and run the script to until you the best combination of the two weights
-weight1 = 0
-weight2 = 0
+weight1 = 1
+weight2 = 2.9
 # Hint2: drag to the end of the see the correct answer :)
 
 ##############################################Keep the folowing unchanged#####################################
@@ -225,7 +225,7 @@ rmse= np.sqrt(np.nanmean((convRaw_smooth_event_all_cum - convRaw_smooth_event_al
 r,p=scipy.stats.pearsonr(convRaw_smooth_event_all_cum,convRaw_smooth_event_all_cum_real)    
  
 # print congradulations
-if r.round(2) == 0.98:
+if r.round(10) == 0.9770323538:
     axes[3,0].text(0.3,0.5, s = f'r = {r.round(2)}\nRMSE = {rmse.round(2)}', ha="left", va="center", fontsize=fontsize, color="brown",zorder = 40)
     axes[3,0].text(0.3,0, s = f'Correct answer!', ha="left", va="center", fontsize=fontsize, color="green",zorder = 40)
 
