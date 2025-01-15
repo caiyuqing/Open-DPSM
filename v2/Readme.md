@@ -1,8 +1,16 @@
 # Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
 
-Please cite: Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
+Please cite: 
 
-**The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two formats:**
+- Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
+
+- Yuqing Cai, Stefan Van der Stigchel, Julia Ganama, et al. Uncovering covert attention in complex environments with pupillometry. Authorea. November 08, 2024.
+
+Same as v1: The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. 
+
+Different to v1: This updated version incorporated more features to estimate regional weights, including the shape and number of weights (see below).
+
+**Open-DPSM can be used in two formats:**
 
 - [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe* without Python. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
 - [Code](#code): [main.py](main.py)
@@ -38,7 +46,7 @@ Please refer to their installation instructions and make sure that they have bee
 - Run *main_app.py* to start GUI
 
 ### Welcome page: Loading eye-tracking data and movie
-![Welcome figure](App_fig/Fig_welcome_page_App.PNG)
+![Welcome figure](App_fig/Fig_welcome_page_App.png)
 
 **Eye-tracking data**
 
@@ -79,7 +87,9 @@ Please refer to their installation instructions and make sure that they have bee
 - Basic information about the eye-tracking data and movie data will be extracted and shown. If anything is not correct, please exit and check the data.
 
 ### Entering the information page
-![Enter the information figure](App_fig/Fig_enter_info.PNG)
+![image](https://github.com/user-attachments/assets/8623bea4-a40d-4255-b1cb-30300e6e2e15)
+
+
 Information that cannot be extracted from the files needs to be entered manually by the user:
 
 - Difference in durations: The toolbox will extract the duration of the movie based on its frame rate and its number of frames available (ret = True in OpenCV) and the duration of the eye-tracking data based on the last row of the timestamp. It is highly possible that the two lengths are not exactly the same. If this is the case, there are two options:
@@ -91,6 +101,12 @@ Information that cannot be extracted from the files needs to be entered manually
 - Maximum luminance of the screen: This is the physical luminance level of the luminance when the color white is shown and can be measured with a photometer
 
 - Resolution for the coordinate system of eye-tracking data (also the resolution of the screen): Height and width of the eye-tracking coordinate system. Note that it should be the absolute length, not the maximum coordinates of the eye-tracking coordinate system.
+
+- Physical width of the screen (in cm)
+
+- Physical distance between the eye and the monitor (in cm)
+
+- Visual angle of the regional weight map (relative to the visual angle of the movie): The default value is 2 but we suggest that this value should be smaller if the visual angle of the movie is already large.
 
 ### Select the position of the video relative to the screen 
 If the aspect ratio (Height/width) of the video and the eye-tracking data are not the same, then the user needs to choose which of the following four positions is used: 
@@ -130,6 +146,28 @@ If there is already a pickle file with the name in the "Visual events" folder, t
 `Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as two columns (first column: names; second column: values) in a .csv file named *"[movieName]_[subjectName]_parameters.csv"* in a "csv results" folder (Only when eye-tracking data is available)
 
 `Save model prediction`: Save the actual pupil size and predicted pupil size as a .csv file named *"[movieName]_[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
+
+#### Regional weights
+
+The default map for regional weights in this version of toolbox is circular and the default number of regional weights is 44. Users can choose other 'mapType' and the 'nWeight' in the code. 
+
+Currently, two 'mapType' are available: circular and square
+
+- For 'circular' map, users can choose between 2 weights (left vs. right) or 44 weights.
+![image](https://github.com/user-attachments/assets/bfde0b86-4fa9-42a7-a2ec-3b51a8e82e19)
+
+(Allocation of 44 regions)
+
+- For 'square' map, users can choose between 2 weights (left vs. right) or 6 weights (original version, also used in v1) 48 weights.
+  
+![image](https://github.com/user-attachments/assets/a6aef429-4198-437e-aeb5-d4b3c9e735ce)
+
+(Allocation of 48 regions)
+
+![image](https://github.com/user-attachments/assets/d4c17bb1-e141-4597-a842-0954ec59e9e3)
+
+(Allocation of 6 weights)
+
 
 ### Interactive plot
 

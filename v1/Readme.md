@@ -1,10 +1,13 @@
-# Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
+# Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox (Updated)
 
 Please cite: Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
 
-**The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. Open-DPSM can be used in two formats:**
 
-- [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe* without Python. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
+The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. 
+
+**Open-DPSM can be used in two formats:**
+
+- [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM_v2.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe* without Python. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
 - [Code](#code): [main.py](main.py)
 
 **Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details of each step.**
@@ -80,6 +83,7 @@ Please refer to their installation instructions and make sure that they have bee
 
 ### Entering the information page
 ![Enter the information figure](App_fig/Fig_enter_info.PNG)
+
 Information that cannot be extracted from the files needs to be entered manually by the user:
 
 - Difference in durations: The toolbox will extract the duration of the movie based on its frame rate and its number of frames available (ret = True in OpenCV) and the duration of the eye-tracking data based on the last row of the timestamp. It is highly possible that the two lengths are not exactly the same. If this is the case, there are two options:
@@ -91,6 +95,7 @@ Information that cannot be extracted from the files needs to be entered manually
 - Maximum luminance of the screen: This is the physical luminance level of the luminance when the color white is shown and can be measured with a photometer
 
 - Resolution for the coordinate system of eye-tracking data (also the resolution of the screen): Height and width of the eye-tracking coordinate system. Note that it should be the absolute length, not the maximum coordinates of the eye-tracking coordinate system.
+
 
 ### Select the position of the video relative to the screen 
 If the aspect ratio (Height/width) of the video and the eye-tracking data are not the same, then the user needs to choose which of the following four positions is used: 
