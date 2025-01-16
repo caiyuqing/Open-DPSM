@@ -412,7 +412,7 @@ class pupil_prediction:
         self.modelDataDict[subject]["contrastData"] = self.contrastData
         self.modelDataDict[subject]["timeStamps"] = self.sampledTimeStamps
 
-        with open(f"modelDataDict_subj{self.subject}_nWeight{self.nWeight}.pickle", "wb") as f:
+        with open(f"modelDataDict_{self.subject}_nWeight{self.nWeight}.pickle", "wb") as f:
             pickle.dump(self.modelDataDict, f)
     def responsefunction(self, n, tmax, amplitude_weight,):
         rf_t_num = int(round((3*self.sampledFps))+1)

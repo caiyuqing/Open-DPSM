@@ -27,15 +27,15 @@ class interactive_plot:
         os.chdir(self.dataDir) 
         os.chdir(foldername)
         #Create dictionaries to save results
-        if os.path.exists("modelDataDict.pickle"):
-            with open("modelDataDict.pickle", "rb") as handle:
+        if os.path.exists(f"modelDataDict_{self.subject}_nWeight{self.nWeight}.pickle"):
+            with open(f"modelDataDict_{self.subject}_nWeight{self.nWeight}.pickle", "rb") as handle:
                 modelDataDict = pickle.load(handle)
                 handle.close() 
         else:
             modelDataDict = {}
                 
-        if os.path.exists("modelResultDict.pickle"):
-            with open("modelResultDict.pickle", "rb") as handle:
+        if os.path.exists(f"modelResultDict_{self.subject}_nWeight{self.nWeight}.pickle"):
+            with open(f"modelResultDict_{self.subject}_nWeight{self.nWeight}.pickle", "rb") as handle:
                 modelResultDict = pickle.load(handle)
                 handle.close() 
         self.modelResultDict = modelResultDict

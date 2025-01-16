@@ -143,3 +143,7 @@ io/
 **/not used/
 **/v2/Example_test2/
 **/v2/Example/driving_chopped2.mp4
+**/v2/dist/
+**/v2/build
+**/v2/gaze_center_pickle_creation.log
+**/v2/main_app.spec

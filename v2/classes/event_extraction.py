@@ -266,7 +266,7 @@ class event_extraction:
         if gazex <0 or gazex > self.eyetracking_width:
             if np.abs(gazex) > finalImgWidth/2 or np.abs(gazex) - self.eyetracking_width > finalImgWidth/2:
                 gazex = np.nan
-        if gazex <0 or gazey > self.eyetracking_height:
+        if gazey <0 or gazey > self.eyetracking_height:
             if np.abs(gazey) > finalImgHeight/2 or np.abs(gazey) - self.eyetracking_height > finalImgHeight/2:
                 gazey = np.nan
         if np.isfinite(gazex) and np.isfinite(gazey):

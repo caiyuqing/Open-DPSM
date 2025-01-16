@@ -38,14 +38,14 @@ import math
 # Directories
 initialDir = os.getcwd()
 
-dataDir = initialDir + '\\Example' # This should be the folder saving the eyetracking data and the video data 
+dataDir = initialDir + '\\Example_test2' # This should be the folder saving the eyetracking data and the video data 
 ## eyetracking data:
 ###- should have four columns in the order as: time stamps, gaze position x, gaze position y, pupil size
 ###- time stamps should be in seconds (not miliseconds). If not, please convert it to seconds
-subjectFileName = "eyetracking_driving.csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
+subjectFileName = "testData.csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
 ## video data
 ### Format can be used: .mp4,.avi,.mkv,.mwv,.mov,.flv,.webm (other format can also be used as long as it can be read by cv2)
-movieName =  "driving_chopped2.mp4" # name of the movie (data file should be contained by "dataDir")
+movieName =  "01.mp4" # name of the movie (data file should be contained by "dataDir")
 
 ## If the movie and the eyetracking data are not the same, what to do?
 stretchToMatch = True # True: stretch the eyelinkdata to match the movie data; False: cut whichever is longer
@@ -354,7 +354,7 @@ if saveData:
     
     df.to_csv(f"{subjectName}_modelPrediction.csv")
 ###################################
-# Do regularization
+#%% Do regularization
 if regularizationType == "ridge": # This is the only type of regularization tested
     foldername = "Modeling result"
     os.chdir(dataDir)
@@ -419,6 +419,8 @@ plotObj.screenBgColorG = screenBgColorG
 plotObj.screenBgColorB = screenBgColorB
 plotObj.videoScreenSameRatio = videoScreenSameRatio 
 plotObj.videoStretched = videoStretched
+plotObj.subject = subjectName
+plotObj.nWeight = nWeight
 logging.getLogger('matplotlib.font_manager').setLevel(logging.ERROR)
 plotObj.plot()
 #%%######################################Pupil prediction (no eye-tracking data)#######################################
