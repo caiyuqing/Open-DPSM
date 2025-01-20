@@ -23,7 +23,7 @@ The initial plot looks like this. This shows the inputs of the model:
 
 **(1st row, left side)** A predetermined shape of response function for pupil responses to luminance changes 
 
-![image](https://github.com/user-attachments/assets/e59db993-b608-4350-87d4-545d813d6a43)
+![image](https://github.com/user-attachments/assets/b1d81e2f-36e3-43b6-92d6-00e5fee910c6)
 
 Then the model (or you) starts to select values for regional weights. Here is a random example for the combination of weight1 = 2, weight2 = 1. 
 
@@ -33,10 +33,16 @@ Then the model (or you) starts to select values for regional weights. Here is a 
 
 **(4th row, right side)** The single convolved result is then accumulated because pupil responses to luminance changes are sustained. And this is the predicted pupil size changes with this combination of weights (brown line). The model performance evaluation (r and RMSE) is also presented on the left. Note that as this is a fake data, the best weights will give us a r of 0.98.
 
-Now it's your turn! Can you change the combination of weights to find answer? (Also observe that the regional weights are not determined by the relative strengths of luminance changes in the two sides).
+![image](https://github.com/user-attachments/assets/dded4f94-1368-4f20-8aea-65dc01518471)
+
+This looks quite off. Let's try to decrease weight1.
+
+![image](https://github.com/user-attachments/assets/409d621e-d01f-4d49-a08b-f0619df5f034)
+
+Looks better but not yet perfect.
+
+Now it's your turn! Can you change the combination of weights to find answer? 
+
+In the meanwhilem, also observe that the regional weights are not determined by the relative strengths of luminance changes in the two sides.
 
 After you find the answer, can you multiple weight1 and weight2 with a random number (above 0) and test the answer again? You will find that any number would work. This means that the absolute values of regional weights do not mean anything. Only the relative values of them matters!
-
-![image](https://github.com/user-attachments/assets/226df435-ec98-4dec-9ab3-f80b8bd2a0cc)
-
-
