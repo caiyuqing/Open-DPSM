@@ -44,4 +44,4 @@ This time the result looks better but not yet perfect. Can you try other combina
 
 Please also observe that the regional weights are not determined by the relative strengths of luminance changes in the two sides.
 
-After you find the answer, can you multiple weight1 and weight2 with a random number (above 0) and test the answer again? You will find that any number would work. This means that the absolute values of regional weights do not mean anything. Only the relative values of them matters!
+After you find the answer, can you multiply weight1 and weight2 with a random number (above 0) and test the answer again? You will find that any number would work. This means that the absolute values of regional weights do not mean anything. Only the relative values of them matters!
