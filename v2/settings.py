@@ -49,15 +49,8 @@ scrGamFac = 2.2
 skipNFirstFrame = 0
 # gaze-contingent
 gazecentered = True
-# shape of map: can choose between square and circular
-mapType = "circular"
 
-# number of weight: 
-# if mapType is sqaure, can choose among 2 (left or right), 6 (original open-DPSM paper) and 48 (all regions separately)
-# if mapType is circluar, can choose between 2 (left or right), and 44 (all regions separately)
-nWeight = 44
-# Do regularization or not: choose between "" and "ridge"
-regularizationType = 'ridge'
+
 
 ############pupil prediction parameters##############
 # Response function type

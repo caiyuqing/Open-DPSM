@@ -353,7 +353,7 @@ class tkfunctions:
             # Size of the regional weights map
             tk.Label(self.window, text = f"The visual angle of the regional weight map should be ( ) times of the visual angle of the video",font = ("Arial", 10), justify = tk.RIGHT,anchor = "e", width = 100,  bg = "#d9d9d9").grid(column = 0, row = 9, pady = 10)
             self.entry_visualanglemap = ttk.Entry(self.window)
-            self.entry_visualanglemap.insert(0, "2") # this is our data
+            self.entry_visualanglemap.insert(0, "1") # this is our data
             self.entry_visualanglemap.grid(column = 1, row = 9)
 
             self.nextButton = ttk.Button(self.window,text='Continue', command = self.buttonFunc_ratioCheck)
@@ -485,7 +485,11 @@ class tkfunctions:
             pass
         else:
             self.subjectName = "NoEyetrackingData"
-        picklename = self.movieName + "_"+ self.subjectName + "_VF_" +self.colorSpace + "_" + self.imageSector + ".pickle"
+        if self.mapType == "square":
+            picklename ="square_" + self.movieName + "_"+ self.subjectName + "_VF_" + self.colorSpace + "_" + self.imageSector + ".pickle"
+        elif self.mapType == "circular":
+            picklename ="circular_" + self.movieName + "_"+ self.subjectName + "_VF_" +self.colorSpace + "_nWeight_" + str(44) + ".pickle"#load feature data
+        
         self.picklename = picklename
         os.chdir(self.dataDir) 
         if not os.path.exists(foldername):
@@ -709,6 +713,7 @@ class tkfunctions:
             os.chdir(self.dataDir)
             os.chdir(foldername)
             modelObj.regularizationType = self.regularizationType
+            modelObj.params = self.modelResultDict[self.subjectName]["modelContrast"]["parameters"]
             modelObj.regularization()
             
         
@@ -787,13 +792,15 @@ class tkfunctions:
                 df.columns = ["parameterName", "value"]
                 df.to_csv(f"{self.subjectName}_parameters_regularization.csv")    
             elif self.RF == "KB":
-                paramNames =  ['r', 'rmse'] +self. modelResultDict[self.subjectName]["modelRegularization"]["parametersNames"]
+                paramNames =  ['r', 'rmse'] +self.modelResultDict[self.subjectName]["modelRegularization"]["parametersNames"]
                 params = np.insert(params,5,1)
                 params = np.insert(params,0,self.r)
                 params = np.insert(params,1,self.rmse)
                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                 df.columns = ["parameterName", "value"]
                 df.to_csv(f"{self.subjectName}_parameters_regularization.csv")
+            
+
         #tk.Label(text = "Parameters saved!", fg = "green").grid(column = 0, row = 18)
         
     def buttonFunc_save_model_prediction(self):
@@ -804,6 +811,7 @@ class tkfunctions:
         if not os.path.exists(foldername):
            os.makedirs(foldername)
         os.chdir(foldername)
+        # modeling result (without regularization)
         y_pred = self.modelResultDict[self.subjectName]["modelContrast"]["predAll"] 
         lumConv = self.modelResultDict[self.subjectName]["modelContrast"]["lumConv"] 
         contrastConv = self.modelResultDict[self.subjectName]["modelContrast"]["contrastConv"] 
@@ -816,6 +824,19 @@ class tkfunctions:
             df.columns = ["timeStamps", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
 
         df.to_csv(f"{self.subjectName}_modelPrediction.csv")
+        # with regularization
+        y_pred = self.modelResultDict[self.subjectName]["modelRegularization"]["predAll"] 
+        lumConv = self.modelResultDict[self.subjectName]["modelRegularization"]["lumConv"] 
+        contrastConv = self.modelResultDict[self.subjectName]["modelRegularization"]["contrastConv"] 
+        if hasattr(self, "filename_csv"):
+            self.sampledpupilData_z = (self.sampledpupilData -np.nanmean(self.sampledpupilData)) /np.nanstd(self.sampledpupilData)
+            df = pd.DataFrame(np.vstack([self.sampledTimeStamps,self.sampledpupilData, y_pred,lumConv,contrastConv]).T)
+            df.columns = ["timeStamps", "Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
+        else:
+            df = pd.DataFrame(np.vstack([self.sampledTimeStamps,y_pred,lumConv,contrastConv]).T)
+            df.columns = ["timeStamps", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
+
+        df.to_csv(f"{self.subjectName}_modelPrediction_regularization.csv")
         showinfo(title = "", message = "Model prediction result saved!")
         #tk.Label(text = "Model prediction result saved!", fg = "green").grid(column = 1, row = 18,sticky=tk.E)
         self.exitButton.grid(column = 1, row = 20)
@@ -859,7 +880,8 @@ class tkfunctions:
         plotObj.videoScreenSameRatio = self.videoScreenSameRatio 
         plotObj.videoStretched = self.videoStretched
         plotObj.window = self.window
-        
+        plotObj.subject = self.subjectName
+        plotObj.nWeight = self.nWeight
         plotObj.plot()
         
         

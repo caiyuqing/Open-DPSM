@@ -47,9 +47,9 @@ class interactive_plot:
         sampledgazeyData = self.modelDataDict[self.subjectName]["gazey"] 
         lumData = self.modelDataDict[self.subjectName]["lumData"] 
         contrastData = self.modelDataDict[self.subjectName]["contrastData"] 
-        y_pred = self.modelResultDict[self.subjectName]["modelContrast"]["predAll"] 
-        lumConv = self.modelResultDict[self.subjectName]["modelContrast"]["lumConv"] 
-        contrastConv = self.modelResultDict[self.subjectName]["modelContrast"]["contrastConv"] 
+        y_pred = self.modelResultDict[self.subjectName]["modelRegularization"]["predAll"] 
+        lumConv = self.modelResultDict[self.subjectName]["modelRegularization"]["lumConv"] 
+        contrastConv = self.modelResultDict[self.subjectName]["modelRegularization"]["contrastConv"] 
         
         # tkinter grid
         # widget_list = self.all_children()

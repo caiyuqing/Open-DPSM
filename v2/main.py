@@ -35,17 +35,27 @@ import math
 ########################################################################################################################################################
 #####################################################Information entered by the user####################################################################
 ########################################################################################################################################################
-# Directories
-initialDir = os.getcwd()
+# # Directories
+# initialDir = os.getcwd()
 
-dataDir = initialDir + '\\Example_test2' # This should be the folder saving the eyetracking data and the video data 
+# dataDir = initialDir + '\\commercial' # This should be the folder saving the eyetracking data and the video data 
+# ## eyetracking data:
+# ###- should have four columns in the order as: time stamps, gaze position x, gaze position y, pupil size
+# ###- time stamps should be in seconds (not miliseconds). If not, please convert it to seconds
+# subjectFileName = "Subject_1_Movie_1.csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
+# ## video data
+# ### Format can be used: .mp4,.avi,.mkv,.mwv,.mov,.flv,.webm (other format can also be used as long as it can be read by cv2)
+# movieName =  "2015-1-Albert Heijn - Bedankt meneer van Dalen.mp4" # name of the movie (data file should be contained by "dataDir")
+initialDir = 'D:/Users/7009291/Desktop/Open-DPSM/v2'
+
+dataDir = initialDir + '\\data' # This should be the folder saving the eyetracking data and the video data 
 ## eyetracking data:
 ###- should have four columns in the order as: time stamps, gaze position x, gaze position y, pupil size
 ###- time stamps should be in seconds (not miliseconds). If not, please convert it to seconds
-subjectFileName = "testData.csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
+subjectFileName = "88.csv" # name of the subject (data file should be contained by "dataDir") [Comment out this line if no eyetracking data]
 ## video data
 ### Format can be used: .mp4,.avi,.mkv,.mwv,.mov,.flv,.webm (other format can also be used as long as it can be read by cv2)
-movieName =  "01.mp4" # name of the movie (data file should be contained by "dataDir")
+movieName =  "88.mp4" # name of the movie (data file should be contained by "dataDir")
 
 ## If the movie and the eyetracking data are not the same, what to do?
 stretchToMatch = True # True: stretch the eyelinkdata to match the movie data; False: cut whichever is longer
@@ -70,7 +80,7 @@ eye_to_screen = 75
 
 # What should be the size of the regional weight map? (relative to the size of the video) 
 # Default value is twice as the size of the video horizontal visual angle. If the video is very large, consider make it smaller
-degVF_param = 2
+degVF_param = 1
 
 ## if video resolution is not the same as eyetracking resolution, what color is the screen covered with? (enter rgb value, E.g. r,b,g = 0 means black)
 screenBgColorR = 0
@@ -123,7 +133,7 @@ movieName = movieName.split(".")[0]
 if 'subjectFileName' in globals():
     filename_csv = dataDir + "\\" + subjectFileName
     # read eyetracking data and check information
-    df_eyetracking = pd.read_csv(filename_csv, index_col=None, header = None)
+    df_eyetracking = pd.read_csv(filename_csv, index_col=None, header = None,sep = ";")
     # change the beginning as 0s
     df_eyetracking.iloc[:,0] = df_eyetracking.iloc[:,0]-df_eyetracking.iloc[0,0]
     eyetracking_duration = df_eyetracking.iloc[-1,0]
@@ -170,7 +180,7 @@ os.chdir(foldername)
 if mapType == "square":
     picklename ="square_" + movieName + "_"+ subjectName + "_VF_" +colorSpace + "_" + imageSector + ".pickle"
 elif mapType == "circular":
-    picklename ="circular_" + movieName + "_"+ subjectName + "_VF_" +colorSpace + "_nWeight_" + str(nWeight) + ".pickle"
+    picklename ="circular_" + movieName + "_"+ subjectName + "_VF_" +colorSpace + "_nWeight_" + str(44) + ".pickle"
 # feature extraction class
 eeObj = event_extraction()
 
@@ -311,6 +321,7 @@ modelObj.modelDataDict = modelDataDict
 modelObj.modelResultDict = modelResultDict
 # 
 modelObj.pupil_prediction()
+modelResultDict = modelObj.modelResultDict
 
 sampledTimeStamps = modelObj.sampledTimeStamps
 sampledpupilData = modelObj.sampledpupilData
@@ -354,13 +365,15 @@ if saveData:
     
     df.to_csv(f"{subjectName}_modelPrediction.csv")
 ###################################
-#%% Do regularization
+# Do regularization
 if regularizationType == "ridge": # This is the only type of regularization tested
     foldername = "Modeling result"
     os.chdir(dataDir)
     os.chdir(foldername)
     modelObj.regularizationType = regularizationType
+    modelObj.params = modelResultDict[subjectName]["modelContrast"]["parameters"]
     modelObj.regularization()
+    modelResultDict = modelObj.modelResultDict
     # save the modeling results (data do not need to save because they are not different from the model without regularization)
     if saveParams:
         foldername = "csv results"
@@ -383,14 +396,27 @@ if regularizationType == "ridge": # This is the only type of regularization test
             df = pd.DataFrame(np.vstack([paramNames,params]).T)
             df.columns = ["parameterName", "value"]
             df.to_csv(f"{subjectName}_parameters_regularization.csv")
-
+    if saveData:
+        foldername = "csv results"
+        os.chdir(dataDir) 
+        if not os.path.exists(foldername):
+           os.makedirs(foldername)
+        os.chdir(foldername)
+        y_pred = modelResultDict[subjectName]["modelContrast"]["predAll"] 
+        lumConv = modelResultDict[subjectName]["modelContrast"]["lumConv"] 
+        contrastConv = modelResultDict[subjectName]["modelContrast"]["contrastConv"] 
+        sampledpupilData_z = (sampledpupilData -np.nanmean(sampledpupilData)) /np.nanstd(sampledpupilData)
+        df = pd.DataFrame(np.vstack([sampledTimeStamps,sampledpupilData, y_pred,lumConv,contrastConv]).T)
+        df.columns = ["timeStamps", "Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
+        
+        df.to_csv(f"{subjectName}_modelPrediction_regularization.csv")
 
 #%%##################################### interactive plot##############################################
 # making plot
 # This step have to be done after pupil prediction
 eeObj = event_extraction()
 eeObj.mapType = mapType
-eeObj.degVF = degVF
+eeObj.degVF = degVF_param
 eeObj.eye_to_screen =eye_to_screen
 eeObj.eyetracking_width =eyetracking_width
 eeObj.eyetracking_height =eyetracking_height

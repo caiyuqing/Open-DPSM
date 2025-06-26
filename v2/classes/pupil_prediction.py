@@ -36,10 +36,10 @@ class pupil_prediction:
 
         if self.RF == "HL": 
             if self.sameWeightFeature:
-                bounds1 = [(5, 30), (0.001,1.5), (5,30),(0.001,1.5),(0.0000001,2)] + [(0.0000001,2)] * self.nWeight
+                bounds1 = [(5, 30), (0.1,5), (5,30),(0.1,5),(0.0001,2)] + [(0.0000001,2)] * self.nWeight
                 x0 =  [15,1,15,1,1]+[1] * self.nWeight 
             else:
-                bounds1 = [(5, 30), (0,1.5), (5,30),(0,1.5),(0.0001,2),(0,2),(0,2)]
+                bounds1 = [(5, 30), (0.1,1.5), (5,30),(0,1.5),(0.0001,2),(0,2),(0,2)]
                 x0 =  [15,1,15,1,1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
             
         elif self.RF == "KB":
@@ -104,11 +104,11 @@ class pupil_prediction:
         # Generate X and y data used for regularization
         ## response function parameters
         if self.sameWeightFeature:
-            rf_params = self.res.x[0:5]
+            rf_params = self.params[0:5]
             self.rf_params = rf_params
             rf_lum_param1,rf_lum_param2,rf_contrast_param1,rf_contrast_param2,amplitudeWeightContrast= map(float, rf_params)
         else:
-            rf_params = self.res.x[0:5]
+            rf_params = self.params[0:5]
             rf_params = rf_params+ [1]
             self.rf_params = rf_params 
             rf_lum_param1,rf_lum_param2,rf_contrast_param1,rf_contrast_param2,amplitudeWeightContrast= map(float, rf_params)
@@ -159,7 +159,22 @@ class pupil_prediction:
                 selected_mean = selected.mean(axis = 0)
                 y_pred_combined = np.vstack((y_pred_combined,selected_mean))
             y_pred = y_pred_combined[1:,:]  
-        
+            #luminance
+            y_pred_lum_combined = np.empty(y_pred_lum.shape[1])#pd.DataFrame({})
+            for i in list(np.unique(self.weightRegionArr)):
+                mask = self.weightRegionArr == i
+                selected = y_pred_lum[list(mask),:]
+                selected_mean = selected.mean(axis = 0)
+                y_pred_lum_combined = np.vstack((y_pred_lum_combined,selected_mean))
+            y_pred_lum = y_pred_lum_combined[1:,:]  
+            #contrast
+            y_pred_contrast_combined = np.empty(y_pred_contrast.shape[1])#pd.DataFrame({})
+            for i in list(np.unique(self.weightRegionArr)):
+                mask = self.weightRegionArr == i
+                selected = y_pred_contrast[list(mask),:]
+                selected_mean = selected.mean(axis = 0)
+                y_pred_contrast_combined = np.vstack((y_pred_contrast_combined,selected_mean))
+            y_pred_contrast = y_pred_contrast_combined[1:,:]  
         # independent variable is the convolved result for each region
         X = y_pred.T
         X_train = y_pred[:,0:int(y_pred.shape[1]*0.7)].T
@@ -169,6 +184,14 @@ class pupil_prediction:
         y  = self.sampledpupilData
         y_train = y[0:int(len(y)*0.7)]
         y_test = y[int(len(y)*0.7):]
+        X_train = X_train[~np.isnan(y_train),:]
+        y_train = y_train[~np.isnan(y_train)]
+        X_test = X_test[~np.isnan(y_test),:]
+        y_test = y_test[~np.isnan(y_test)]
+        # X = X[~np.isnan(y),:]
+        # y_pred_lum = y_pred_lum.T[~np.isnan(y),:]
+        # y_pred_contrast = y_pred_contrast.T[~np.isnan(y),:]
+        # y = y[~np.isnan(y)]
         if self.regularizationType == 'ridge':
             # Define the number of elements in the array
             num_elements = 200
@@ -188,16 +211,16 @@ class pupil_prediction:
             mse_all = []
             n_alpha = 0
             for alpha in alphas:
-                ridge = Ridge(alpha = alpha,positive = True)
+                ridge = Ridge(alpha = alpha)
                 # use train and test
                 ridge.fit(X_train,y_train)
                 predictions_train = ridge.predict(X_train)
                 predictions_test = ridge.predict(X_test)
                 #coefficients_test = ridge.coef_
                 # not use train and test
-                ridge = Ridge(alpha = alpha,positive = True)
-                ridge.fit(X,y)
-                predictions = ridge.predict(X)
+                # ridge = Ridge(alpha = alpha,positive = True)
+                # ridge.fit(X,y)
+                # predictions = ridge.predict(X)
                 #coefficients = ridge.coef_
 
                 # df_coef = pd.DataFrame(coefficients).T
@@ -208,18 +231,18 @@ class pupil_prediction:
                 # Calculate mean squared error (MSE) on the test set
                 mse_train = mean_squared_error(y_train, predictions_train)
                 mse_test = mean_squared_error(y_test, predictions_test)
-                mse = mean_squared_error(y, predictions)
+                #mse = mean_squared_error(y, predictions)
 
                 #print("Mean Squared Error (train): ", mse_train)
                 #print("Mean Squared Error (test): ", mse_test)
                 mse_train_all.append(mse_train)
                 mse_test_all.append(mse_test)
-                mse_all.append(mse)
+                #mse_all.append(mse)
                 n_alpha = n_alpha+1
                 print(n_alpha)
             # if minimum mse_test for test is smaller than train, then use the minimal alpha as the final alpha
             index_min = mse_test_all.index(min(mse_test_all))
-            alpha_simplified = mse_all.index(min(mse_all))
+            #alpha_simplified = mse_all.index(min(mse_all))
             alpha_select1 = alphas[index_min]
             difference_test_train = np.array(mse_test_all)- np.array(mse_train_all)
             if min(mse_test_all) < mse_train_all[index_min]:
@@ -259,13 +282,15 @@ class pupil_prediction:
                 
             # calculate final prediction result
             # Note: This is exactly the same as that used in the paper. If the amount of data is not enough, may lead to some weired result.
-            ridge = Ridge(alpha = alpha_final,positive = True)
-            ridge.fit(X, y)
+            ridge = Ridge(alpha = alpha_final)
+            ridge.fit(X_train, y_train)
             # replace the modeling result without regularization with the regularization result
-            self.y_pred = ridge.predict(X)
+            self.y_pred = self.zscore(ridge.predict(X))
+            self.lumConv = self.zscore(ridge.predict(y_pred_lum.T))
+            self.contrastConv = self.zscore(ridge.predict(y_pred_contrast.T))
             self.reg_coefficients = ridge.coef_
             self.alpha_final = alpha_final
-            self.list_modelResults = self.calculalte_parameters(self.y_pred, y, 44, len(self.y_pred))
+            self.list_modelResults = self.calculalte_parameters(self.y_pred, y, self.nWeight, len(self.y_pred))
             self.save_modelResults_reg(self.subject)
             self.r = self.list_modelResults[1]
             self.rmse = self.list_modelResults[0]
@@ -391,7 +416,9 @@ class pupil_prediction:
         self.modelResultDict[subject]["modelRegularization"] = {}
         self.modelResultDict[subject]["modelRegularization"]["parameters"]= {}
         self.modelResultDict[subject]["modelRegularization"]["parametersNames"]= {}
-
+        self.modelResultDict[subject]["modelRegularization"]["predAll"] = self.y_pred
+        self.modelResultDict[subject]["modelRegularization"]["lumConv"] = self.lumConv
+        self.modelResultDict[subject]["modelRegularization"]["contrastConv"] = self.contrastConv
         self.modelResultDict[subject]["modelRegularization"]["modelResults"] = self.list_modelResults
         # save the results of the parameters selected in this model 
         parameters = list(self.rf_params) + list(self.reg_coefficients)
