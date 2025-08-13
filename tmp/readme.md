@@ -5,10 +5,9 @@
 - [GUI](#gui)
 - [Code](#code)
 - [Example data](#example-data)
-- [No eyetracking data](#no-eyetracking-data)
 
 ## Introduction ##
-If you encounter any issue, feel free to contact me: y.cai2[at]uu.nl. 
+**If you encounter any issue, feel free to contact me: y.cai2[at]uu.nl**
 
 Please cite: 
 
@@ -73,6 +72,8 @@ Example
 
 - The toolbox will automatically model all the movies together under one participant's folder. If you don't want to model all the movies, just remove the files from the participant folder.
 
+- IMPORTANT: Don't use the same data folder for different sets of parameters (e.g., map type, number of weights, etc) in the toolbox.
+
 **Eye-tracking data**
 
    - Load a .csv file with four columns, in the **_exact order_** of:
@@ -98,7 +99,8 @@ Example
      
    - No index_col and header should be included in the csv file 
 
-     > Note: Eye-tracking data is not a must for the toolbox. If no eye-tracking data is loaded, the toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
+     > Note: Eye-tracking data is not a must for the toolbox. If there is no eyetracking data, don't create the folder "Eyetracking" in "Input" folder. The toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
+
 
 **Movies**
 
@@ -271,7 +273,7 @@ And an button window:
 
 ### Preprocessing and visual even extraction
 
-- Run this part to perform visual event extraction iteratively for each participant and each movie (see [Check information & event extraction](#Check-information-&-event-extraction)) for more information
+- Run this part to perform visual event extraction iteratively for each participant and each movie (see "Check information & event extraction" in [GUI](#gui)) for more information
   
 - The main codes of this section are:
   
@@ -281,10 +283,15 @@ And an button window:
  
 All the other codes are to load data and predetermined parameters to the *eeObj* object
 
-Similar to the GUI version, if the visual events pickle file is already in the "Visual events" folder, then this step can be skipped.
+Similar to the GUI version, if the visual events pickle file is already in the "Visual events" folder, this step will be skipped.
 
 ### Pupil modeling 
+
+Perform modeling after event extraction has been done for all participants.
+
 - Run this part only when eye-tracking data is available. The pupil size changes will be modeled with the visual events extracted in the previous step.
+
+- Modeling will be performed for each participant iteratively.
   
 - The main codes of this section are:
   
@@ -292,14 +299,17 @@ Similar to the GUI version, if the visual events pickle file is already in the "
 
 ```modelObj.pupil_prediction()```: call function *pupil_prediction* in the class pupil_prediction
 
-All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
- 
-- When it is completed, the model performance will be printed. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
+All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object.
+
+Similar to the GUI version, if modeling is already done for one participant, this step will be skipped.
+
+- When it is completed, the model performance and parameters selected by the model will be printed and saved (see "Pupil prediction" in [GUI](#gui) for more information).
 
 ### Interactive plot
-- This part of the code can be run together with the *Pupil modeling* part
 
-- Run it will open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
+Select one participant and one movie to plot.
+
+- Run this part will open a window with the interactive plot (see "Interactive plot" in [GUI](#gui) for more information)
 
 - The main codes of this section are:
   
@@ -309,9 +319,7 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 All the other codes are to load data and predetermined parameters to the *plotObj* object
 
-## No eyetracking data ##
 
-If there is no eyetracking data, don't create the folder "Eyetracking" in "Input" folder
 
 ### Pupil prediction (no eye-tracking data)
 - Run this part when eye-tracking data is not available
@@ -352,7 +360,10 @@ All the other codes are for the purpose to load data and predetermined parameter
 Similar to the GUI, we recommend keeping all predetermined parameters at default. However, if the users want to change any of them, those parameters can be found and adjusted in *settings.py*
 
 ## Example data
-The folder "example" contains a sample eye-tracking data of a participant watching a 5-minute video of driving on the road. This clip is not one of the clips from our dataset and only serves as an example for a possible user case. 
+
+The folder "Example" contains sample eye-tracking data and movie files (2 movies) from 2 participants.
+
+The event extraction & modeling have already been performed with the default setups. To try all the steps with the example data, users can delete all the subfolders in "Output" .
 
 To run the example, the user needs to first download the video from: https://www.youtube.com/watch?v=sIsegSg5tps (with a youtube downloader such as: https://en.savefrom.net/1-youtube-video-downloader-528en/). 
 
