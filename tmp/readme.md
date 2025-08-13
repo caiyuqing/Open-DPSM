@@ -1,10 +1,15 @@
 # Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
+**Please read this page carefully for the instruction of each step before using the toolbox.**
+
+If you encounter any issue, feel free to contact me: y.cai2[at]uu.nl. 
 
 Please cite: 
 
 - Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
 
 - Yuqing Cai, Stefan Van der Stigchel, Julia Ganama, et al. Uncovering covert attention in complex environments with pupillometry. Authorea. November 08, 2024.
+
+**Summary for features of v3**
 
 Same as v1 and v2:
 
@@ -21,9 +26,9 @@ Updated features:
 **Open-DPSM can be used in two formats:**
 
 - [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe* without Python. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
-- [Code](#code): [main.py](main.py)
+- [Code](#code): [main.py](main.py) (Contain notes and instructions and should be mostly self-explanatory)
 
-**Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details of each step.**
+
 
 Also see: [Example data](#example-data) for details of the data provided as an exemplary user-case
 
@@ -31,7 +36,7 @@ Also see: [Example data](#example-data) for details of the data provided as an e
 No installation is required. Simply clone or download the current repository.
 
 ## Python environment
-The toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
+We recommand users to use Spyder IDE because the toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
 
 Besides Spyder, Jupiter Notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
 
