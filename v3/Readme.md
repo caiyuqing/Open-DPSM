@@ -71,7 +71,8 @@ Example
 - 01.mp4, 02.mp4,etc: Movie files. The names must be the same as the eyetracking data.
 
 - The toolbox will automatically model all the movies together under one participant's folder. Keep the movies you want to model together in the participant folder
-- IMPORTANT: Don't use the same data folder for different sets of parameters (e.g., map type, number of weights, etc) in the toolbox.
+  
+- IMPORTANT: Don't use the same data folder for different sets of parameters (e.g., map type, number of weights, etc) in the toolbox. Please create a new forlder.
 
 **Eye-tracking data**
 
@@ -84,9 +85,9 @@ Example
    
    - See Eyetracking folder in [Example](Example) for exemplary eye-tracking csv files.
 
-   - The toolbox assume that the eyetracking data starts and ends together with the movie. If not, please cut if first.
+   - The toolbox assumes that the eyetracking data start and end together with the movie. If not, please cut if first.
       
-   - It is important that the **left corner of the screen** should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
+   - It is important that the gaze position coordinates x = 0 and y =0 are at **left corner of the screen**. Please convert the gaze positions if it is not the case.
 
    - Pupil size should be measured in diameter. We therefore recommend conversion if data are not given in millimeters before entering data into the toolbox (see PsPM, Korn et al., 2017 for a number of conversion techniques).
    
@@ -94,11 +95,11 @@ Example
  
    - Gaze position and pupil size can be data of the left eye or the right eye or an average of both eyes, depending on the preference of the user.
 
-   - The unit of Timestamps should be in seconds.  
+   - The unit of Timestamps should be in **seconds**.  
      
-   - No index_col and header should be included in the csv file 
+   - No "index_col" and "header" should be included in the csv file 
 
-     > Note: Eye-tracking data is not a must for the toolbox. If there is no eyetracking data, don't create the folder "Eyetracking" in "Input" folder. The toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
+   - Note: Eye-tracking data is not a must for the toolbox. If there is no eyetracking data, don't create the folder "Eyetracking" in "Input" folder. The toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
 
 
 **Movies**
@@ -107,15 +108,13 @@ Example
 
   - The movies do not have to be presented full screen. Further information will be required later.
 
-  - However, the movies must be displayed with the same size and it must be presented at the center of the screen. Please modify the movie if it is not.
-
-  - The movies can also be screen recordings of the experiment or video recordings of the screen.
+  - However, the movies must be displayed with the same size and it must be presented at the center of the screen. Please modify the movie files if it is not the case.
 
 **Regional weights**
 
 One purpose of the toolbox is to predict luminance changes (visual events) in which part of the movie contribute more to pupil size changes (i.e., Regional weights). Refer to our papers for details.
 
-The default map for regional weights in this version of toolbox is circular and the default number of regional weights is 44. Users can choose other map type (mapType) and number of weight (nWeight)
+The default map for regional weights in this version of toolbox is circular and the default number of regional weights is 44. But users can also choose other map type (mapType) and number of weight (nWeight).
 
 Currently, two 'mapType' are available: circular and square
 
