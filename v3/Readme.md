@@ -202,31 +202,31 @@ Information that needs to be entered manually by the user:
 
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/ae1fcfe5-5a03-46ff-acd1-2f02878d48b0" />
 
-<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/94d95987-243b-482f-a663-b5ef6de5523c" />
+<img width="1854" height="987" alt="image" src="https://github.com/user-attachments/assets/d1e14253-a3ba-4475-9388-1a9d2cd2bec0" />
 
 
 ### Check information & event extraction
 <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/87ec9359-16b0-4409-97b7-7d8c354b1e0d" />
 
-- Display basic information about the eye-tracking data and movie data for one movie from one subject. If anything is not correct, please exit and modify the data.
+- Display basic information about the eye-tracking data and movie data for one movie from one subject. If anything is not correct, please exit and check the data.
 
 - Press `Next` then `Start event extraction` to do event extraction for one movie
 
-- When it is completed, event trace (luminance changes) per image region will be automatically saved as a pickle file in "Visual events" folder (under "Output" folder). Press `Next movie` to move on to the next eye-tracking file.
+- When it is completed, event trace (luminance changes) per image region will be automatically saved as a pickle file in **"Visual events"** folder (under "Output" folder). Press `Next movie` to move on to the next eye-tracking file.
 
-- If use the screen-centered mode, event extraction will only be performed to one "participant" named "sc". All the participants will use the same events extracted in modeling step.
+- If use the screen-centered mode, event extraction will only be performed to one "participant" named "sc". All the participants will use the same files of events extracted in modeling step.
 
 - If event extraction has done for this movie, this step will be skipped and a pop up window will show to remind the user.
     
 ### Pupil prediction
 
-After all the movies were extracted, modeling window will pop up. 
+After all the movies are extracted, modeling window will pop up. 
 
 <img width="297" height="83" alt="image" src="https://github.com/user-attachments/assets/8f13ae26-fe51-42b3-9090-359e96f29833" />
 
-- `Start modeling`: Model pupil size changes to the visual events (all the existing movies together for each participant iteratively). (If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.)
+- `Start modeling`: Model pupil size changes to the visual events (all the existing movies together for each participant iteratively). (If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data.)
 
-- If event extraction has done for this participant, this step will be skipped and a pop up window will show to remind the user.
+- If the modeling has done for this participant, this step will be skipped and a pop up window will show to remind the user.
 
 When the modeling for one participant is done:
 
@@ -339,13 +339,13 @@ Load the parameters found with our data. RF = response function; HL = "Erlang ga
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
 
-- When it is completed, pupil prediction will be saved (see "pupil prediction" part for more information).
+- When it is completed, pupil prediction will be saved (see "pupil prediction" part in [GUI](#gui) for more information).
   
 ### Interactive plot (no eye-tracking data)
 
 - This part of the code can be run after the *Pupil prediction (no eye-tracking data)* part
 
-- Run it to open a window with the interactive plot (see "Interactive plot" for more information)
+- Run it to open a window with the interactive plot (see "Interactive plot" in [GUI](#gui) for more information)
 
 - The main codes of this section are:
   
@@ -357,7 +357,7 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 ## Example data
 
-- The folder "Example" contains sample eye-tracking data and movie files (2 movies) from 2 participants.
+- The folder "Example" contains sample eye-tracking data and movie files (01.mp4, 02.mp4) from 2 participants (p20,p21).
 
 - See Cai et al., 2025 for more detailed description of this data
 
