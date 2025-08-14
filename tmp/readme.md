@@ -13,7 +13,7 @@ Please cite:
 
 - Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
 
-- Yuqing Cai, Stefan Van der Stigchel, Julia Ganama, et al. Uncovering covert attention in complex environments with pupillometry. Authorea. November 08, 2024.
+- Cai, Y., Van der Stigchel, S., Ganama, J., Naber, M. and Strauch, C. (2025), Uncovering Distinct Drivers of Covert Attention in Complex Environments With Pupillometry. Psychophysiology, 62: e70036.
 
 **Summary for features of v3**
 
@@ -320,9 +320,10 @@ Select one participant and one movie to plot.
 All the other codes are to load data and predetermined parameters to the *plotObj* object
 
 
-
 ### Pupil prediction (no eye-tracking data)
 - Run this part when eye-tracking data is not available
+
+- The toolbox will use the extract the visual events from the movie to generate a predicted pupil trace based on the default values of parameters.
 
 - The main codes of this section are:
   
@@ -340,13 +341,13 @@ Load the parameters found with our data. RF = response function; HL = "Erlang ga
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
 
-- When it is completed, pupil prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
+- When it is completed, pupil prediction will be saved (see "pupil prediction" part for more information).
   
-### Interactive plot
+### Interactive plot (no eye-tracking data)
 
 - This part of the code can be run after the *Pupil prediction (no eye-tracking data)* part
 
-- Run it to open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
+- Run it to open a window with the interactive plot (see "Interactive plot" for more information)
 
 - The main codes of this section are:
   
@@ -356,40 +357,11 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
 
-### Final note for code version
-Similar to the GUI, we recommend keeping all predetermined parameters at default. However, if the users want to change any of them, those parameters can be found and adjusted in *settings.py*
-
 ## Example data
 
-The folder "Example" contains sample eye-tracking data and movie files (2 movies) from 2 participants.
+- The folder "Example" contains sample eye-tracking data and movie files (2 movies) from 2 participants.
 
-The event extraction & modeling have already been performed with the default setups. To try all the steps with the example data, users can delete all the subfolders in "Output" .
+- See Cai et al., 2025 for more detailed description of this data
 
-To run the example, the user needs to first download the video from: https://www.youtube.com/watch?v=sIsegSg5tps (with a youtube downloader such as: https://en.savefrom.net/1-youtube-video-downloader-528en/). 
-
-After downloading, please run:
-```python
-# import moviepy
-from moviepy.editor import *
-import os
-# change path
-MoviePath = [change the path to the folder you save the movie]
-MovieName = [change the name to the name of the movie file]
-# read movie
-os.chdir(MoviePath)
-clip = VideoFileClip(MovieName)
-# cut the movie: from 00:17:00 to 00:22:00
-clip_cut = clip1.subclip(1020,1320)
-# check the movie resolution
-w1 = clip1.w
-h1 = clip1.h
-ratio = w1/h1
-print(ratio) # The ratio should be 1920/1080
-clip_cut.write_videofile("driving.mp4") 
-```
-> Note: For those who are using the executable version of the toolbox, cut the movie into 5 minutes from 00:17:00 to 00:22:00 using any video editor application and rename it as "driving.mp4". If possible, also check the resolution of the video in the property of the file. It should be 1920x1080.
-
-Then move *driving.mp4* to the example folder and the example is ready to go. 
-
-As the visual event extraction has been done (saved in the "Visual event" folder), the user can skip the "Visual events extraction" section in the code version. In other folders, there are also exemplary results and figures generated with the toolbox. 
+- The event extraction & modeling have already been performed with the default setups. To try all the steps with the example data, users can delete the subfolders in "Output" and run the toolbox.
 
