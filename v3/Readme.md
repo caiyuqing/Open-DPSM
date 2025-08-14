@@ -60,18 +60,17 @@ Example
 └───Output
 ```
 
-- Example: is the head folder. Can be any name.
+- Example: is the head folder. Can have any name.
 
-- Input, Output, Eyetracking, Movies: Those folders have to be arranged in this exact structure and name beforehand
+- Input, Output, Eyetracking, Movies: Those folders have to be arranged in this exact structure and named in this way
 
 - p01, p02,etc: Participant name. Can be anything.
 
-- 01.csv, 02.csv,etc: Eyetracking data for movie "01", "02". The names must be the same as movie names ("01.mp4", "02.mp4"). Different participant can have different number of movies but they must all exist in the "Movies" folder 
+- 01.csv, 02.csv,etc: Eyetracking data for movie "01", "02". The names must be the same as movie names ("01.mp4", "02.mp4"). Different participant can have different movies but they must all exist in the "Movies" folder 
 
 - 01.mp4, 02.mp4,etc: Movie files. The names must be the same as the eyetracking data.
 
-- The toolbox will automatically model all the movies together under one participant's folder. If you don't want to model all the movies, just remove the files from the participant folder.
-
+- The toolbox will automatically model all the movies together under one participant's folder. Keep the movies you want to model together in the participant folder
 - IMPORTANT: Don't use the same data folder for different sets of parameters (e.g., map type, number of weights, etc) in the toolbox.
 
 **Eye-tracking data**
