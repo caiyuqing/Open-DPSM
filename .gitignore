@@ -147,3 +147,5 @@ io/
 **/v2/build
 **/v2/gaze_center_pickle_creation.log
 **/v2/main_app.spec
+**/v3/Example-app/
+**/v3/Example2/

@@ -264,7 +264,7 @@ class tkfunctions:
 
         # Check the information of eyetracking data and movie
         self.top_checkinfo = tk.Toplevel(self.window)
-        self.top_checkinfo.geometry("800x300")
+        self.top_checkinfo.geometry("500x300")
         self.top_checkinfo.title( "Check the information")
         self.top_checkinfo.configure(bg = "#d9d9d9")
         if not hasattr(self, "filename_csv"):
@@ -569,27 +569,21 @@ class tkfunctions:
             eeObj.scrGamFac = self.scrGamFac
             eeObj.maxlum = self.maxlum
             eeObj.useApp = self.useApp
-        
-            # resample eyetracking data
-            
-            # load movie
-    
-            #videoObj.loadVideo(self.filename_movie)  # load a video into a capture object videoObj.cap
             eeObj.vidInfo = self.prepObj.vidInfo # extract vidInfo from preprocessing object
             eeObj.window = self.window
             self.eeObj = eeObj
             eeObj.event_extraction()
-            #save new pickle dictionary
             
             
         self.window.update_idletasks() 
-        self.nextButton.grid_forget()
-        self.exitButton.grid_forget()
-        t3 = threading.Thread(target=self.buttonFunc_modeling)
-        t3.daemon = True
-        button_modeling= ttk.Button(self.window,text='Start modeling', command = t3.start)
-        button_modeling.grid(column = 1, row = 15)
-
+        # self.nextButton.grid_forget()
+        # self.exitButton.grid_forget()
+        # t3 = threading.Thread(target=self.buttonFunc_modeling)
+        # t3.daemon = True
+        # button_modeling= ttk.Button(self.window,text='Start modeling', command = t3.start)
+        # button_modeling.grid(column = 1, row = 15)
+        nextMovie = ttk.Button(self.window,text='Next movie', command = self.close_top_checkinfo)
+        nextMovie.grid(column = 1, row = 19)
         self.exitButton.grid(column = 1, row = 20)
         
 

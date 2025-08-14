@@ -49,7 +49,8 @@ scrGamFac = 2.2
 skipNFirstFrame = 0
 # gaze-contingent
 gazecentered = True
-
+if not gazecentered:
+    mapType = "square"
 
 
 ############pupil prediction parameters##############
