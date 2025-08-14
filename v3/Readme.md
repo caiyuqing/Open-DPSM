@@ -202,7 +202,7 @@ Information that needs to be entered manually by the user:
 
 <img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/ae1fcfe5-5a03-46ff-acd1-2f02878d48b0" />
 
-<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/94d95987-243b-482f-a663-b5ef6de5523c" />
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/94d95987-243b-482f-a663-b5ef6de5523c" />
 
 
 ### Check information & event extraction
