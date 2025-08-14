@@ -1,52 +1,78 @@
-# Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox
+# Open Dynamic Pupil Size Modeling (Open-DPSM) Toolbox #
+**Please read this page carefully for the instruction of each step before using the toolbox.**
+## Table of Contents
+- [Introduction](#introduction)
+- [GUI](#gui)
+- [Code](#code)
+- [Example data](#example-data)
+
+## Introduction ##
+**If you encounter any issue, feel free to contact me: y.cai2[at]uu.nl**
 
 Please cite: 
 
 - Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
 
-- Yuqing Cai, Stefan Van der Stigchel, Julia Ganama, et al. Uncovering covert attention in complex environments with pupillometry. Authorea. November 08, 2024.
+- Cai, Y., Van der Stigchel, S., Ganama, J., Naber, M. and Strauch, C. (2025), Uncovering Distinct Drivers of Covert Attention in Complex Environments With Pupillometry. Psychophysiology, 62: e70036.
 
-Same as v1: The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting. 
+**Summary for features of v3**
 
-Different to v1: This updated version incorporated more features to estimate regional weights, including the shape and number of weights (see below).
+Same as v1 and v2:
 
-**Open-DPSM can be used in two formats:**
+- The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting.
+  
+- Incorporated different features to estimate regional weights, including the shape and number of weights (see below).
 
-- [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe* without Python. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
-- [Code](#code): [main.py](main.py)
+- Can also generate expected pupil trace if there is no eyetracking data
 
-**Both contain notes and instructions and should be mostly self-explanatory. See the two main scripts for details. Refer to this page for details of each step.**
+Updated features:
 
-Also see: [Example data](#example-data) for details of the data provided as an exemplary user-case
+- Previous version only allowed to extract visual events and perform modeling for one movie. The current version allows processing multiple subjects and movies at the same time.
 
-## Loading the toolbox
-No installation is required. Simply clone or download the current repository.
+- The modeling is performed on all the movies for individual subjects
 
-## Python environment
-The toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
+**Data folder structure**
 
-Besides Spyder, Jupiter Notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
-
-Note: With Jupiter notebook/JupiterLab, create a new .ipynb file under the same directory and run the following codes to start the GUI:
-```python
-import os
-script_path = "main_app.py"
-os.system(f'python {script_path}')
+Please arrange your data folder as the following structure.  
+```
+Example
+|
+└───Input
+│     │
+|     └───Eyetracking
+│     │     │
+│     │     └───p01
+│     │     |     |
+|     │     │     └───01.csv
+|     │     │     └───02.csv
+|     │     │     └───...
+│     │     └───p02
+│     │     |     |
+|     │     │     └───01.csv
+|     │     │     └───02.csv
+|     │     │     └───...
+│     │     └───...
+|     └───Movies
+│     │     │
+│     │     └───01.mp4
+│     │     └───02.mp4
+│     │     └───...
+└───Output
 ```
 
-## Packages
-The toolbox depends on those packages: [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [scipy](https://scipy.org/install/), [OpenCV](https://pypi.org/project/opencv-python/), [moviepy](https://zulko.github.io/moviepy/install.html), [matplotlib](https://matplotlib.org/stable/users/installing/index.html), [pillow](https://pillow.readthedocs.io/en/stable/installation.html), [sklearn](https://scikit-learn.org/1.6/install.html)
+- Example: is the head folder. Can be any name.
 
-Please refer to their installation instructions and make sure that they have been correctly installed before using it.
+- Input, Output, Eyetracking, Movies: Those folders have to be arranged in this exact structure and name beforehand
 
-## GUI 
+- p01, p02,etc: Participant name. Can be anything.
 
-- Before run *main_app.py*, *initialDir* and *dataDir* need to be changed. *initialDir* should be the directory of Open-DPSM and the *dataDir* should be the directory of where your data is saved (all the results will also be saved under *dataDir*)
+- 01.csv, 02.csv,etc: Eyetracking data for movie "01", "02". The names must be the same as movie names ("01.mp4", "02.mp4"). Different participant can have different number of movies but they must all exist in the "Movies" folder 
 
-- Run *main_app.py* to start GUI
+- 01.mp4, 02.mp4,etc: Movie files. The names must be the same as the eyetracking data.
 
-### Welcome page: Loading eye-tracking data and movie
-![Welcome figure](App_fig/Fig_welcome_page_App.png)
+- The toolbox will automatically model all the movies together under one participant's folder. If you don't want to model all the movies, just remove the files from the participant folder.
+
+- IMPORTANT: Don't use the same data folder for different sets of parameters (e.g., map type, number of weights, etc) in the toolbox.
 
 **Eye-tracking data**
 
@@ -57,7 +83,9 @@ Please refer to their installation instructions and make sure that they have bee
   3. Gaze position (y) 
   4. Pupil size
    
-   - See [eyetracking_driving.csv](Example/eyetracking_driving.csv) for a exemplary eye-tracking csv file.
+   - See Eyetracking folder in [Example](Example) for exemplary eye-tracking csv files.
+
+   - The toolbox assume that the eyetracking data starts and ends together with the movie. If not, please cut if first.
       
    - It is important that the **left corner of the screen** should have the gaze position coordinates x = 0 and y =0. Please convert the gaze positions if it is not the case.
 
@@ -67,133 +95,185 @@ Please refer to their installation instructions and make sure that they have bee
  
    - Gaze position and pupil size can be data of the left eye or the right eye or an average of both eyes, depending on the preference of the user.
 
-   - The unit of Timestamps should be in seconds or milliseconds. The default set-up is in seconds. If in milliseconds, it will be converted to seconds in later steps. 
+   - The unit of Timestamps should be in seconds.  
      
-   - The first row should be the header as given above
+   - No index_col and header should be included in the csv file 
 
-     > Note: Eye-tracking data is not a must for the toolbox. If no eye-tracking data is loaded, the toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
+     > Note: Eye-tracking data is not a must for the toolbox. If there is no eyetracking data, don't create the folder "Eyetracking" in "Input" folder. The toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
 
-**Movie**
 
-  - The tested formats are listed on the welcome page. As we use OpenCV to process the video, in principle, any format that can be used in OpenCV can be used.
+**Movies**
 
-  - The movie can be a screen recording of the experiment or a video recording of the screen. It is recommended that the video loaded is full-screen in the experiment, which means that it has the same resolution as the eye-tracking data.
+  - Formats tested: .mp4 (recommanded),.avi,.mkv,.mwv,.mov,.flv,.webm. As we use OpenCV to process the video, in principle, any format that can be used in OpenCV can be used.
 
-  - If the movie is not full-screen, further information is required in the later pages. However, it is a must that the center of the video is the center of the screen. Please cut it by yourself if it is not.
+  - The movies do not have to be presented full screen. Further information will be required later.
 
-### Checking the information page
-![Check the information figure](App_fig/Fig_check_information.PNG)
+  - However, the movies must be displayed with the same size and it must be presented at the center of the screen. Please modify the movie if it is not.
 
-- Basic information about the eye-tracking data and movie data will be extracted and shown. If anything is not correct, please exit and check the data.
+  - The movies can also be screen recordings of the experiment or video recordings of the screen.
+
+**Regional weights**
+
+One purpose of the toolbox is to predict luminance changes (visual events) in which part of the movie contribute more to pupil size changes (i.e., Regional weights). Refer to our papers for details.
+
+The default map for regional weights in this version of toolbox is circular and the default number of regional weights is 44. Users can choose other map type (mapType) and number of weight (nWeight)
+
+Currently, two 'mapType' are available: circular and square
+
+- For 'circular' map, users can choose between 2 weights, 20 weights or 44 weights.
+
+- For 'square' map, users can choose between 2 weights, 6 weights (original version, also used in v1) or 48 weights.
+
+Allocation of regions:
+  
+<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/aaa74ec3-7aba-459a-9ead-03ebb547733e" />
+
+
+**Open-DPSM can be used in two formats:**
+
+- [GUI](#gui): [main_app.py](main_app.py) (For those who don't use Python, a .exe form of the GUI can be found on https://osf.io/qvn64/. Download *Open-DPSM.zip* and unzip it. The GUI version of Open-DPSM can be started directly by running *Open-DPSM.exe* without Python. Please note that the *App_fig* folder should be in the same directory as the .exe. The executable file will take about 10 seconds to open. Also, using this form means that the user accepts all the default parameters as they cannot be changed.)
+- [Code](#code): [main.py](main.py) (Contain notes and instructions and should be mostly self-explanatory)
+
+Also see: [Example data](#example-data) for details of the data provided as an exemplary user-case
+
+
+**Loading the toolbox**
+
+No installation is required. Simply clone or download the current repository.
+
+**Python environment**
+
+We recommand Spyder IDE because the toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
+
+Besides Spyder, Jupiter Notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
+
+**Packages**
+
+The toolbox depends on those packages: [numpy](https://numpy.org/install/), [pandas](https://pandas.pydata.org/docs/getting_started/install.html), [scipy](https://scipy.org/install/), [OpenCV](https://pypi.org/project/opencv-python/), [moviepy](https://zulko.github.io/moviepy/install.html), [matplotlib](https://matplotlib.org/stable/users/installing/index.html), [pillow](https://pillow.readthedocs.io/en/stable/installation.html), [sklearn](https://scikit-learn.org/1.6/install.html)
+
+Please refer to their installation instructions and make sure that they have been correctly installed before using it.
+
+## GUI
+
+- Run *main_app.py* to start GUI
+
+Note: With Jupiter notebook/JupiterLab, create a new .ipynb file under the same directory and run the following codes to start the GUI:
+```python
+import os
+script_path = "main_app.py"
+os.system(f'python {script_path}')
+```
+### Welcome page: Loading eye-tracking data and movie & select parameters for event extraction and modeling
+<img width="745" height="444" alt="image" src="https://github.com/user-attachments/assets/685d7ae0-f636-4c58-a524-98ae11bf1096" />
+
+**Open folder**: select the head folder of the data (e.g., "Example" folder)
+
+**Select parameters** (If you are not sure, please use the default ones):
+
+(1) Event extraction mode: gaze-centered or screen-centered (default: gaze-centered)
+
+(2) Map type: circular or square (default: circular; Exception: When screen-centered, map type can only be square.) 
+
+(3) Number of weights: 2 (circular or square), 6 (square), 20 (circular), 44 (circular), 48 (square) (default: 44)
+
 
 ### Entering the information page
-![image](https://github.com/user-attachments/assets/8623bea4-a40d-4255-b1cb-30300e6e2e15)
+<img width="743" height="446" alt="image" src="https://github.com/user-attachments/assets/3338b951-a921-4342-ba6b-907a8768d4d6" />
 
-
-Information that cannot be extracted from the files needs to be entered manually by the user:
-
-- Difference in durations: The toolbox will extract the duration of the movie based on its frame rate and its number of frames available (ret = True in OpenCV) and the duration of the eye-tracking data based on the last row of the timestamp. It is highly possible that the two lengths are not exactly the same. If this is the case, there are two options:
-
-  (1) Stretch to match: This means that the two lengths will be considered the same (no matter which one is longer) and the eye-tracking data will be downsampled to the framerate of the video with its original length
-  
-  (2) Cut the last part of the longer file: This means that the file with a longer length will be chopped at the end before the downsampling of the eye-tracking data.
+Information that needs to be entered manually by the user:
 
 - Maximum luminance of the screen: This is the physical luminance level of the luminance when the color white is shown and can be measured with a photometer
 
-- Resolution for the coordinate system of eye-tracking data (also the resolution of the screen): Height and width of the eye-tracking coordinate system. Note that it should be the absolute length, not the maximum coordinates of the eye-tracking coordinate system.
+- Resolution for the coordinate system of eye-tracking data (also the resolution of the screen): Height and width of the eye-tracking coordinate system. Note that it should be the absolute length, not the maximum coordinates of the eye-tracking coordinate system (in pixels)
+
+- Resolution for the movies: Height and width of the video displayed on the screen. It can be the same or smaller than the resolution for eye-tracking data/screen (if movies were not shown full screen) (see Figure below)
+
+- Color (r,g,b values) of the screen outside the movie (if the movies were not shown full screen) (see Figure below)
 
 - Physical width of the screen (in cm)
 
 - Physical distance between the eye and the monitor (in cm)
 
-- Visual angle of the regional weight map (relative to the visual angle of the movie): The default value is 2 but we suggest that this value should be smaller if the visual angle of the movie is already large.
+- Factor for visual angle of the regional weight map relative to the visual angle of the movie (degVF_param): The default value is 1. It means that if your movie is displayed with a visual angle of 60°, then the size of the map used for event extraction is also 60° (see Figure below)
 
-### Select the position of the video relative to the screen 
-If the aspect ratio (Height/width) of the video and the eye-tracking data are not the same, then the user needs to choose which of the following four positions is used: 
+- Difference in durations: The toolbox will extract the duration of the movie from the movie file and the duration of the eye-tracking data based on the last row of the timestamps in csv files. It is highly possible that the two lengths are not exactly the same (But do make sure that their difference is not exceeding 1s). If this is the case, there are two options:
 
-**A**: The aspect ratio of the video is smaller than that of eye-tracking data & the video is full-screen;
+  (1) Stretch to match: This means that the two lengths will be considered the same (no matter which one is longer) and the eye-tracking data will be downsampled to the framerate of the video with its original length (default)
+  
+  (2) Cut the last part of the longer file: This means that the file with a longer length will be chopped at the end.
 
-**B**: The aspect ratio of the video is smaller than that of eye-tracking data & the video is not full-screen; 
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/ae1fcfe5-5a03-46ff-acd1-2f02878d48b0" />
 
-**C**: The aspect ratio of the video is larger than that of eye-tracking data & the video is full-screen;
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/94d95987-243b-482f-a663-b5ef6de5523c" />
 
-**D**: The aspect ratio of the video is larger than that of eye-tracking data & the video is not full-screen
 
-> Full-screen: Either height or width of the video is the same as the screen and the actual height and width of the video will be determined by toolbox. If not full-screen, the actual height and the width of the video will be required on the next page.
+### Check information & event extraction
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/87ec9359-16b0-4409-97b7-7d8c354b1e0d" />
 
-![Screen video relation figure](App_fig/Fig_screen_video_relationship_all.png)
+- Display basic information about the eye-tracking data and movie data for one movie from one subject. If anything is not correct, please exit and modify the data.
 
-### Entering more information page (optional)
-![Enter the information figure](App_fig/Fig_enter_info_extra.PNG)
+- Press `Next` then `Start event extraction` to do event extraction for one movie
 
-If the video is not full-screen, extra information is needed:
+- When it is completed, event trace (luminance changes) per image region will be automatically saved as a pickle file in "Visual events" folder (under "Output" folder). Press `Next movie` to move on to the next eye-tracking file.
 
-- Actual height and width of the video: Height and width of the video relative to the eye-tracking data resolution. *Note that it is __not__ the resolution in the video file.* For example, if the resolution of the eye-tracking data is 1000x500 and the physical height and width of the video displayed is half of the physical height and width of the screen, then 500 and 250 should be entered.
+- If use the screen-centered mode, event extraction will only be performed to one "participant" named "sc". All the participants will use the same events extracted in modeling step.
 
-- Background color of the screen: Color for the part of the screen surrounding the video. Entering the RGB values (0-255). For example, enter R=0, G=0 and B=0 if it is black.
-
-### Visual events extraction 
-![Enter the information figure](App_fig/Fig_event_extraction_and_prediction.PNG)
-
-`Start event extraction`: Start visual event extraction. When it is completed, video information, timestamps, and event trace per image region will be automatically saved as a pickle file named *"[movieName]_[subjectName]_VF_LAB_6X8.pickle"* in a *"Visual events"* folder (under the *dataDir*). If no eye-tracking data is loaded, the pickle file name will be *"[movieName]_NoEyetrackingData_VF_LAB_6X8.pickle"*.
-
-If there is already a pickle file with the name in the "Visual events" folder, then this step will be skipped and the pickle file will be loaded.
+- If event extraction has done for this movie, this step will be skipped and a pop up window will show to remind the user.
     
 ### Pupil prediction
 
-`Start modeling`: Model pupil size changes to the visual events. If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.
+After all the movies were extracted, modeling window will pop up. 
 
-`Save parameters & model evaluation`: Save the free parameters found by the model and the model performance as two columns (first column: names; second column: values) in a .csv file named *"[movieName]_[subjectName]_parameters.csv"* in a "csv results" folder (Only when eye-tracking data is available)
+<img width="297" height="83" alt="image" src="https://github.com/user-attachments/assets/8f13ae26-fe51-42b3-9090-359e96f29833" />
 
-`Save model prediction`: Save the actual pupil size and predicted pupil size as a .csv file named *"[movieName]_[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
+- `Start modeling`: Model pupil size changes to the visual events (all the existing movies together for each participant iteratively). (If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data. When it is completed, the model performance will be printed on the left.)
 
-#### Regional weights
+- If event extraction has done for this participant, this step will be skipped and a pop up window will show to remind the user.
 
-The default map for regional weights in this version of toolbox is circular and the default number of regional weights is 44. Users can choose other 'mapType' and the 'nWeight' in the code. 
+When the modeling for one participant is done:
 
-Currently, two 'mapType' are available: circular and square
+- A pop-up window will shown to display the model performance (Correlation coefficient and root-mean squared error between predicted and observed pupil size changes)
 
-- For 'circular' map, users can choose between 2 weights (left vs. right) or 44 weights.
-![image](https://github.com/user-attachments/assets/bfde0b86-4fa9-42a7-a2ec-3b51a8e82e19)
+<img width="179" height="107" alt="image" src="https://github.com/user-attachments/assets/791d9fee-766c-4e98-bcf1-add39127255b" />
 
-(Allocation of 44 regions)
+- Free parameters found by the model and the model performance for each participant will be saved as two columns (first column: names; second column: values) in a .csv file named *"[subjectName]_parameters.csv"* in "csv results" folder under "Output" folder(Only when eye-tracking data is available)
 
-- For 'square' map, users can choose between 2 weights (left vs. right) or 6 weights (original version, also used in v1) 48 weights.
-  
-![image](https://github.com/user-attachments/assets/a6aef429-4198-437e-aeb5-d4b3c9e735ce)
-
-(Allocation of 48 regions)
-
-![image](https://github.com/user-attachments/assets/d4c17bb1-e141-4597-a842-0954ec59e9e3)
-
-(Allocation of 6 weights)
-
+- Observed pupil size and predicted pupil size will be saved as a .csv file named *"[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
 
 ### Interactive plot
 
-`Interactive plot`: Open a new window with an interactive plot
+After all the movies were modeled, plotting window will pop up. Select one participant and one movie to make an interactive plot.
+ 
+<img width="269" height="135" alt="image" src="https://github.com/user-attachments/assets/6588f859-3430-40ec-a5c7-9847a5723c5f" />
 
-![Interactive plot figure](App_fig/Fig_interactive_plot.png)
-`Save fig`: Save the whole figure or a specific subplot
+Press `plot` will open an interactive plot window:
 
-### Final note for GUI version
-We recommend keeping all predetermined parameters as they are. However, if the users want to change any of them, those parameters can be found in `classes.App: tkfunctions.__init__`
+- Drag the scale at the bottom to select one frame to display.
+
+<img width="548" height="364" alt="image" src="https://github.com/user-attachments/assets/090ab43c-e3dc-4cd8-a2ca-7399f1ecdd7a" />
+
+And an button window:
+
+- Select traces to display
+
+- Save figure or parts of figure in "Figure" folder (under Output folder)
+
+<img width="95" height="191" alt="image" src="https://github.com/user-attachments/assets/46082595-b96b-478e-a37c-6e56a334ba19" />
 
 ## Code
-- The code version uses the same three classes of functions as the GUI version. Hence, all the steps are nearly identical.
+
+- The code version uses the same three classes of functions as the GUI version. Hence, all the steps are nearly identical. Refer to [GUI](#gui) for details. 
 
 - Similar to the GUI pages, Code version is divided into different sections.
   
-- To start, open *main.py* and change all the things under the section "Information entered by the user".
+- To start, open *main.py* and change all the things under the section "Information entered by the user" 
   
-- If no eye tracking data are provided, it is important that the line ```subjectFileName"``` line is commented out.
+- If no eye tracking data are provided, it is important that the line ```eyetrackingDir``` line is commented out.
   
 
-### Preprocessing section
-This part is to extract some basic information from the video and eye-tracking file. The results will be printed.
+### Preprocessing and visual even extraction
 
-### Visual events extraction section
-- Run this part to perform visual event extraction (see [Visual events extraction](#visual-events-extraction) for more information
+- Run this part to perform visual event extraction iteratively for each participant and each movie (see "Check information & event extraction" in [GUI](#gui)) for more information
   
 - The main codes of this section are:
   
@@ -203,10 +283,15 @@ This part is to extract some basic information from the video and eye-tracking f
  
 All the other codes are to load data and predetermined parameters to the *eeObj* object
 
-Similar to the GUI version, if the visual events pickle file is already in the "Visual events" folder, then this step can be skipped and the pickle file will be loaded (please do not run this section and run next section directly
+Similar to the GUI version, if the visual events pickle file is already in the "Visual events" folder, this step will be skipped.
 
 ### Pupil modeling 
+
+Perform modeling after event extraction has been done for all participants.
+
 - Run this part only when eye-tracking data is available. The pupil size changes will be modeled with the visual events extracted in the previous step.
+
+- Modeling will be performed for each participant iteratively.
   
 - The main codes of this section are:
   
@@ -214,14 +299,17 @@ Similar to the GUI version, if the visual events pickle file is already in the "
 
 ```modelObj.pupil_prediction()```: call function *pupil_prediction* in the class pupil_prediction
 
-All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
- 
-- When it is completed, the model performance will be printed. Parameters selected by the model, model performance and model prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
+All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object.
+
+Similar to the GUI version, if modeling is already done for one participant, this step will be skipped.
+
+- When it is completed, the model performance and parameters selected by the model will be printed and saved (see "Pupil prediction" in [GUI](#gui) for more information).
 
 ### Interactive plot
-- This part of the code can be run together with the *Pupil modeling* part
 
-- Run it will open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
+Select one participant and one movie to plot.
+
+- Run this part will open a window with the interactive plot (see "Interactive plot" in [GUI](#gui) for more information)
 
 - The main codes of this section are:
   
@@ -234,6 +322,8 @@ All the other codes are to load data and predetermined parameters to the *plotOb
 
 ### Pupil prediction (no eye-tracking data)
 - Run this part when eye-tracking data is not available
+
+- The toolbox will use the extract the visual events from the movie to generate a predicted pupil trace based on the default values of parameters.
 
 - The main codes of this section are:
   
@@ -251,13 +341,13 @@ Load the parameters found with our data. RF = response function; HL = "Erlang ga
 
 All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
 
-- When it is completed, pupil prediction will be saved (see [Pupil prediction](#pupil-prediction) for more information).
+- When it is completed, pupil prediction will be saved (see "pupil prediction" part for more information).
   
-### Interactive plot
+### Interactive plot (no eye-tracking data)
 
 - This part of the code can be run after the *Pupil prediction (no eye-tracking data)* part
 
-- Run it to open a window with the interactive plot (see [Interactive plot](#interactive-plot) for more information)
+- Run it to open a window with the interactive plot (see "Interactive plot" for more information)
 
 - The main codes of this section are:
   
@@ -267,36 +357,11 @@ All the other codes are for the purpose to load data and predetermined parameter
 
 All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
 
-### Final note for code version
-Similar to the GUI, we recommend keeping all predetermined parameters at default. However, if the users want to change any of them, those parameters can be found and adjusted in *settings.py*
-
 ## Example data
-The folder "example" contains a sample eye-tracking data of a participant watching a 5-minute video of driving on the road. This clip is not one of the clips from our dataset and only serves as an example for a possible user case. 
 
-To run the example, the user needs to first download the video from: https://www.youtube.com/watch?v=sIsegSg5tps (with a youtube downloader such as: https://en.savefrom.net/1-youtube-video-downloader-528en/). 
+- The folder "Example" contains sample eye-tracking data and movie files (2 movies) from 2 participants.
 
-After downloading, please run:
-```python
-# import moviepy
-from moviepy.editor import *
-import os
-# change path
-MoviePath = [change the path to the folder you save the movie]
-MovieName = [change the name to the name of the movie file]
-# read movie
-os.chdir(MoviePath)
-clip = VideoFileClip(MovieName)
-# cut the movie: from 00:17:00 to 00:22:00
-clip_cut = clip1.subclip(1020,1320)
-# check the movie resolution
-w1 = clip1.w
-h1 = clip1.h
-ratio = w1/h1
-print(ratio) # The ratio should be 1920/1080
-clip_cut.write_videofile("driving.mp4") 
-```
-> Note: For those who are using the executable version of the toolbox, cut the movie into 5 minutes from 00:17:00 to 00:22:00 using any video editor application and rename it as "driving.mp4". If possible, also check the resolution of the video in the property of the file. It should be 1920x1080.
+- See Cai et al., 2025 for more detailed description of this data
 
-Then move *driving.mp4* to the example folder and the example is ready to go. 
+- The event extraction & modeling have already been performed with the default setups. To try all the steps with the example data, users can delete the subfolders in "Output" and run the toolbox.
 
-As the visual event extraction has been done (saved in the "Visual event" folder), the user can skip the "Visual events extraction" section in the code version. In other folders, there are also exemplary results and figures generated with the toolbox. 
