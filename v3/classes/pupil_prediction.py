@@ -68,20 +68,24 @@ class pupil_prediction:
         vidInfo,timeStamps, magnPerImPart, luminanceMagnPerImPartTime= self.import_movieFeature(movieNum, "Luminance")
         
         # downsampling the eyetracking data
-        video_nFrame = vidInfo['nFrames']
+        video_nFrame = len(timeStamps)
         video_fps = vidInfo['fps_end']
+        self.video_fps = video_fps
         
         if self.useEtData:
+            timeStampsSec = self.synchronize(timeStampsSec)
+            gazexdata = self.synchronize(gazexdata)
+            gazeydata = self.synchronize(gazeydata)
+            pupildata = self.synchronize(pupildata)
+            
+            
             sampledTimeStamps  =self.prepare_sampleData(timeStampsSec,video_nFrame)
             sampledgazexData =self.prepare_sampleData(gazexdata,video_nFrame)
             sampledgazeyData=self.prepare_sampleData(gazeydata,video_nFrame)
             sampledpupilData=self.prepare_sampleData(pupildata,video_nFrame)
             sampledFps = 1/(sampledTimeStamps[-1]/(len(sampledTimeStamps)))
     
-            sampledTimeStamps = self.synchronize(sampledTimeStamps)
-            sampledgazexData = self.synchronize(sampledgazexData)
-            sampledgazeyData = self.synchronize(sampledgazeyData)
-            sampledpupilData = self.synchronize(sampledpupilData)
+            
             if self.pupil_zscore:
                 sampledpupilData= self.zscore(sampledpupilData)
             self.sampledFps = sampledFps
@@ -91,9 +95,9 @@ class pupil_prediction:
             self.sampledTimeStamps = sampledTimeStamps
         else:
             self.sampledFps = video_fps
-        if hasattr(self, "numRemoveFrame"):
-            luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,self.numRemoveFrame:]
-            timeStamps =timeStamps[self.numRemoveFrame:]
+        # if hasattr(self, "numRemoveFrame"):
+        #     luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,self.numRemoveFrame:]
+        #     timeStamps =timeStamps[self.numRemoveFrame:]
         
         self.luminanceMagnPerImPartTime =luminanceMagnPerImPartTime
         
@@ -128,7 +132,10 @@ class pupil_prediction:
                     matShape[2],
                 )
             )
-        
+        # synchronize eyetracking data to match the change of the movie feature
+        self.numRemoveFrame = int(self.nFramesSeqImageDiff -1)
+        luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,self.numRemoveFrame:]
+        timeStamps =timeStamps[self.numRemoveFrame:]
         #print(luminanceMagnPerImPartTime.shape)
         return vidInfo,timeStamps,magnPerImPart,luminanceMagnPerImPartTime
     def pupil_prediction(self):
@@ -140,9 +147,7 @@ class pupil_prediction:
             if self.sameWeightFeature:
                 bounds1 = [(5, 30), (0.1,5), (5,30),(0.1,5),(0.0001,2)] + [(0.0000001,2)] * self.nWeight
                 x0 =  [15,1,15,1,1]+[1] * self.nWeight 
-            else:
-                bounds1 = [(5, 30), (0.1,1.5), (5,30),(0,1.5),(0.0001,2),(0,2),(0,2)]
-                x0 =  [15,1,15,1,1,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
+           
             
         elif self.RF == "KB":
             if self.sameWeightFeature:
@@ -291,18 +296,26 @@ class pupil_prediction:
                 y_pred_contrast_combined = np.vstack((y_pred_contrast_combined,selected_mean))
             y_pred_contrast_all = y_pred_contrast_combined[1:,:]  
         # independent variable is the convolved result for each region
+        nTrain = round(len(nSample) * 0.7)
+        nSample_train = np.sum(nSample[0:nTrain])
+
         X = y_pred_all.T
-        X_train = y_pred_all[:,0:int(y_pred_all.shape[1]*0.7)].T
-        X_test = y_pred_all[:,int(y_pred_all.shape[1]*0.7):].T
+        X_train = y_pred_all[:,0:nSample_train].T
+        X_test = y_pred_all[:,nSample_train:].T
+       
 
         # dependent variable is the sampled pupil data
+        
         y  = self.sampledPupilDataAll
-        y_train = y[0:int(len(y)*0.7)]
-        y_test = y[int(len(y)*0.7):]
+        y_train = y[0:nSample_train]
+        print(X_train)
+        print(y_train)
+        y_test = y[nSample_train:]
         X_train = X_train[~np.isnan(y_train),:]
         y_train = y_train[~np.isnan(y_train)]
         X_test = X_test[~np.isnan(y_test),:]
         y_test = y_test[~np.isnan(y_test)]
+        
         # X = X[~np.isnan(y),:]
         # y_pred_lum = y_pred_lum.T[~np.isnan(y),:]
         # y_pred_contrast = y_pred_contrast.T[~np.isnan(y),:]
@@ -323,9 +336,12 @@ class pupil_prediction:
             
             mse_train_all = []
             mse_test_all = []
+            r_train_all = []
+            r_test_all = []
             mse_all = []
             n_alpha = 0
             print("Regularization...")
+            
             for alpha in alphas:
                 ridge = Ridge(alpha = alpha)
                 # use train and test
@@ -347,12 +363,17 @@ class pupil_prediction:
                 # Calculate mean squared error (MSE) on the test set
                 mse_train = mean_squared_error(y_train, predictions_train)
                 mse_test = mean_squared_error(y_test, predictions_test)
+                r_train, p_train = self.correlation(y_train, predictions_train)
+                r_test, p_test = self.correlation(y_test, predictions_test)
+
                 #mse = mean_squared_error(y, predictions)
 
                 #print("Mean Squared Error (train): ", mse_train)
                 #print("Mean Squared Error (test): ", mse_test)
                 mse_train_all.append(mse_train)
                 mse_test_all.append(mse_test)
+                r_train_all.append(r_train)
+                r_test_all.append(r_test)
                 #mse_all.append(mse)
                 n_alpha = n_alpha+1
              
@@ -371,6 +392,9 @@ class pupil_prediction:
                 ind_final =list(combined).index(min(combined))
             alpha_final = alphas[ind_final]
             mse_final = mse_test_all[ind_final]
+            r_train = r_train_all[ind_final]
+            r_test = r_test_all[ind_final]
+
             # plot the regularization result
             if plot_reg:
                 
@@ -430,9 +454,10 @@ class pupil_prediction:
                 self.save_modelResults_reg_permovie(self.subject, movie)
             self.r = self.list_modelResults[1]
             self.rmse = self.list_modelResults[0]
-        
+            print(f"Training r = {r_train}; Testing r = {r_test}")
             print(f"Regularization done. R = {self.r.round(2)}; rmse={self.rmse.round(2)}")
             print(f"Weights: {self.reg_coefficients}")
+            print(f"Best alpha: {alpha_final}")
 
     def pupil_predictionNoEyetracking(self, params):
         self.modelContrast(params)
@@ -554,7 +579,7 @@ class pupil_prediction:
                     y_pred = contrastConv*amplitudeWeightContrast+lumConv
                     y_pred = np.array(y_pred) - np.nanmean(y_pred)
 
-            y_pred[~np.isfinite(y_pred)] =0
+            #y_pred[~np.isfinite(y_pred)] =0
             #print(y_pred.shape)
             self.y_pred = y_pred
             self.lumConv = lumConv
@@ -639,8 +664,8 @@ class pupil_prediction:
                     matShape[2],
                 )
             )
-        if hasattr(self, "numRemoveFrame"):
-            luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,self.numRemoveFrame:]
+        # if hasattr(self, "numRemoveFrame"):
+        #     luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,self.numRemoveFrame:]
         self.luminanceMagnPerImPartTime = luminanceMagnPerImPartTime
         lumData = self.prepare_feature(luminanceMagnPerImPartTime,weightList_lum, self.weightRegionArr)
         #contrastData = self.prepare_feature(luminanceMagnPerImPartTime,self.skipNFirstFrame,weightList_contrast, self.weightRegionArr)
@@ -909,9 +934,7 @@ class pupil_prediction:
         sampledData = dataBeforeSample[sampleTimes]
         return sampledData
     def synchronize(self, dataBeforeSynchronize):
-        # synchronize eyetracking data to match the change of the movie feature
-        self.numRemoveFrame = int(self.nFramesSeqImageDiff -1)
-        numFrame = int(len(dataBeforeSynchronize)-self.numRemoveFrame)
+        
         # remove the the last data of eyetracking according to nFramesSeqImageDiff
-        dataSynchronized = dataBeforeSynchronize[:numFrame]
+        dataSynchronized = dataBeforeSynchronize[:-round(self.eyetracking_samplingrate/self.video_fps)]
         return dataSynchronized

@@ -114,7 +114,6 @@ class event_extraction:
                     print(f"original(movie file): {self.frame.shape}")
                     if self.mapType == "square":
                         print(f"check if aspect ratio is correct: {self.aspectRatio}")
-                        
                 # only shows last calculated feature (e.g. B in LAB)
                 if (self.showVideoFrames) and (self.countIm > 1):
 
@@ -155,7 +154,7 @@ class event_extraction:
         else:
             print("Saving the pickle file")
         # save as a pickle file
-        
+       
         with open(
             self.picklename,
             "wb",
@@ -259,6 +258,7 @@ class event_extraction:
         # bigImg_centery = int((bigImg.shape[0] -1 )/2)
         gazex = sampledgazexData[frameNum-1]
         gazey = sampledgazeyData[frameNum-1]
+     
         if self.mapType == "circular":
             finalImgWidth = finalImgHeight = self.circleMask.shape[0]
         elif self.mapType == "square":

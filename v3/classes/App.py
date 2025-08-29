@@ -846,7 +846,6 @@ class tkfunctions:
                     self.subjectDir = self.eyetrackingDir + f"\\{subjectName}"
                     csvFiles = [file for file in os.listdir(self.subjectDir) if file.endswith('.csv')]
                     movieList = [file.replace('.csv','') for file in csvFiles]
-                
                     # pupil prediction class
                     modelObj = pupil_prediction()
                     modelObj.window = self.top_modeling
@@ -870,6 +869,7 @@ class tkfunctions:
                         modelObj.stretchToMatch = False
                     modelObj.nFramesSeqImageDiff = self.nFramesSeqImageDiff
                     modelObj.mapType = self.mapType
+                    modelObj.eyetracking_samplingrate = self.eyetracking_samplingrate
                     # load eyetracking data
                     modelObj.useEtData = True
                     modelObj.gazecentered = self.gazecentered
