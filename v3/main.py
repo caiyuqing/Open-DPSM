@@ -48,7 +48,7 @@ import math
 # Movie data  requiarement:
 # Format can be used: .mp4,.avi,.mkv,.mwv,.mov,.flv,.webm (other format can also be used as long as it can be read by cv2)
 
-dataDir = initialDir + '\\Example3' # change it to the head directiory of the data folder
+dataDir = initialDir + '\\Example' # change it to the head directiory of the data folder
 inputDir = dataDir + '\\Input' # change it to the head directiory of the data folder
 outputDir = dataDir + "\\Output"
 
