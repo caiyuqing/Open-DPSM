@@ -318,7 +318,8 @@ class event_extraction:
         # #bigImg[:] = np.nan
         # bigImg_centerx = int((bigImg.shape[1] -1 )/2) # This will be the new center of the data
         # bigImg_centery = int((bigImg.shape[0] -1 )/2)
-        if np.isnan(sampledgazexData) and np.isnan(sampledgazeyData):
+        #print(sampledgazexData, sampledgazeyData)
+        if np.isnan(sampledgazexData).all() and np.isnan(sampledgazeyData).all():
             gazex = self.eyetracking_width/2
             gazey = self.eyetracking_height/2
         else:

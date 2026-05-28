@@ -102,8 +102,7 @@ class tkfunctions:
         # whether save extra csv results
         self.saveParams = True
         self.saveData = True
-        # whether modeling all the movies together or separately (default: separately)
-        self.modelingType = 'separate' # separate or all
+        
     
     def run_tk(self):
         # create the root window
@@ -194,19 +193,33 @@ class tkfunctions:
         choicebox_gt_num['state']= 'readonly'
         choicebox_gt_num.grid(column = 1, row =3)
         choice_gt_num.trace('w', callback)
-        
+        # modelingType
+        types = ['all', 'separate']
+        label_info_type = tk.Label(self.bottom_canvas, text = f"Modeling type:",  font = ("Arial", 10), bg = "#d9d9d9")
+        label_info_type.grid(column = 0, row = 4) 
+        choices_type= tuple(types)
+        def callback(*arg):
+            self.modelingType = choice_gt_type.get()
+        choice_gt_type= tk.StringVar()
+        choice_gt_type.set("separate")
+        self.modelingType = "separate"
+        choicebox_gt_type= ttk.Combobox(self.bottom_canvas, textvariable= choice_gt_type, width = 20,font = ("Arial", 10))
+        choicebox_gt_type['values']= choices_type
+        choicebox_gt_type['state']= 'readonly'
+        choicebox_gt_type.grid(column = 1, row =4)
+        choice_gt_type.trace('w', callback)
         # self.t1 = threading.Thread(target=self.buttonFunc_check_data)
         # self.t1.daemon = True
         #t1 = self.threadingFunc(function = self.buttonFunc_check_data)
         label_info = tk.Label(self.bottom_canvas, text = f"Constrains:\n- (1)If screen-centered, map type can only be square;\n- (2) If map type is circular, number of weights can only be 2, 20, 44;\n- (3) If map type is square, number of weights can only be 2, 6, 48",  font = ("Arial", 10),bg = "#d9d9d9")
-        label_info.grid(column = 0, row =5,columnspan = 4)   
+        label_info.grid(column = 0, row =6,columnspan = 4)   
         button_check_data = ttk.Button(self.bottom_canvas, text = "Continue", command=self.check_parameters)#threading.Thread(target=self.buttonFunc_check_data).start)
         button_exit = ttk.Button(self.bottom_canvas,text = "Exit",command = self.close)
         
         button_openfile_folder.grid(column = 0, row = 1)
         #button_openfile_movie.grid(column = 0, row = 2)
-        button_check_data.grid(column = 0,row =6,columnspan = 2)
-        button_exit.grid(column = 0,row = 7,columnspan = 2)
+        button_check_data.grid(column = 0,row =7,columnspan = 2)
+        button_exit.grid(column = 0,row = 8,columnspan = 2)
         #tk.Label(text = "*If no eye tracking data folder (Input --> Eyetracking) is loaded, model optimazation will not be preformed. Parameters used to generate predicted pupil trace will be the ones found by our study.",bg='#d9d9d9').grid(column = 0, row = 3, pady = 20)
         tk.Label(text = "Please cite: Y. Cai., C. Strauch., S. Van der Stigchel., & M. Naber. Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs.").grid(column = 0, row = 5, pady = 170, sticky = tk.S)
         # run the application
@@ -301,7 +314,7 @@ class tkfunctions:
             self.nVertMatPartsPerLevel = [3,6]  # [4, 8, 16, 32]
             self.aspectRatio = 0.75
             self.imageSector = "6x8" # number of visual field regions (used for naming the new visual feature)
-        print(f"Selected parameters: \n- gazecentered: {self.gazecentered}\n- map type: {self.mapType}\n- number of weight: {self.nWeight}")
+        print(f"Selected parameters: \n- gazecentered: {self.gazecentered}\n- map type: {self.mapType}\n- number of weight: {self.nWeight}\n- modeling type: {self.modelingType}")
 
         # remove all the things from the previous window
         widget_list = self.all_children()
@@ -995,6 +1008,7 @@ class tkfunctions:
                         self.modelResultDict = modelObj.modelResultDict
                         self.modelDataDict = modelObj.modelDataDict
                         self.sampledFps = modelObj.sampledFps
+                        modelResultDict = modelObj.modelResultDict
                         # save csv files
             
                         if self.saveParams:
@@ -1006,20 +1020,20 @@ class tkfunctions:
                             params = self.modelResultDict[subjectName][key]["modelContrast"]["parameters"]
                             if self.RF == "HL":
                                 paramNames =  ['r', 'rmse'] + self.modelResultDict[subjectName][key]["modelContrast"]["parametersNames"]
-                                params = np.insert(params,0,modelResultDict[subjectName][key]["modelContrast"]['modelResults'][1])
-                                params = np.insert(params,1,modelResultDict[subjectName][key]["modelContrast"]['modelResults'][0])
+                                params = np.insert(params,0,self.modelResultDict[subjectName][key]["modelContrast"]['modelResults'][1])
+                                params = np.insert(params,1,self.modelResultDict[subjectName][key]["modelContrast"]['modelResults'][0])
 
                                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                                 df.columns = ["parameterName", "value"]
-                                df.to_csv(f"{subjectName}_parameters_nWeight{self.nWeight}.csv")    
+                                df.to_csv(f"{subjectName}_{key}_parameters_nWeight{self.nWeight}.csv")    
                             elif self.RF == "KB":
-                                paramNames =  ['r', 'rmse'] + self.modelResultDict[subjectName]["modelContrast"]["parametersNames"]
-                                params = np.insert(params,0,modelResultDict[subjectName][key]["modelContrast"]['modelResults'][1])
-                                params = np.insert(params,1,modelResultDict[subjectName][key]["modelContrast"]['modelResults'][0])
+                                paramNames =  ['r', 'rmse'] + self.modelResultDict[subjectName][key]["modelContrast"]["parametersNames"]
+                                params = np.insert(params,0,self.modelResultDict[subjectName][key]["modelContrast"]['modelResults'][1])
+                                params = np.insert(params,1,self.modelResultDict[subjectName][key]["modelContrast"]['modelResults'][0])
 
                                 df = pd.DataFrame(np.vstack([paramNames,params]).T)
                                 df.columns = ["parameterName", "value"]
-                                df.to_csv(f"{subjectName}_parameters_nWeight{self.nWeight}.csv")
+                                df.to_csv(f"{subjectName}_{key}_parameters_nWeight{self.nWeight}.csv")
                         # save modeling data
                         if self.saveData:
                             
@@ -1029,18 +1043,18 @@ class tkfunctions:
                                 os.makedirs(foldername)
                             os.chdir(foldername)
                             if self.modelingType == "all":
-                                movies = modelResultDict[subjectName]["modelContrast"].keys()
+                                movies = self.modelResultDict[subjectName]["modelContrast"].keys()
                             else:
                                 movies = [key]
                             for key in movies:
-                                y_pred = self.modelResultDict[subjectName]["modelContrast"][key]["predAll"] 
-                                lumConv = self.modelResultDict[subjectName]["modelContrast"][key]["lumConvAll"] 
-                                contrastConv = self.modelResultDict[subjectName]["modelContrast"][key]["contrastConvAll"] 
+                                y_pred = self.modelResultDict[subjectName]["modelContrast"][key]["pred"] 
+                                lumConv = self.modelResultDict[subjectName]["modelContrast"][key]["lumConv"] 
+                                contrastConv = self.modelResultDict[subjectName]["modelContrast"][key]["contrastConv"] 
                                 sampledpupilData_z = modelObj.sampledPupilDataAll 
                                 df = pd.DataFrame(np.vstack([sampledpupilData_z, y_pred,lumConv,contrastConv]).T)
                                 df.columns = ["Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
                                 
-                                df.to_csv(f"{subjectName}_modelPrediction_nWeight{self.nWeight}.csv")
+                                df.to_csv(f"{subjectName}_{key}_modelPrediction_nWeight{self.nWeight}.csv")
                     ###################################
                     # Do regularization
                     if self.regularizationType == "ridge": # This is the only type of regularization tested
@@ -1200,7 +1214,7 @@ class tkfunctions:
         
         label_info_m = tk.Label(self.top_plotting, text = f"Movie:",  font = ("Arial", 10),  bg = "#d9d9d9")
         label_info_m.grid(column = 0, row = 3) 
-        movies = list(modelDataDict[self.subjectName_plot].keys())
+        movies = list(modelDataDict[self.subjectName_plot].keys()) 
         choices_m= tuple(movies)
         def callback(*arg):
             self.movieName_plot = choice_gt_movie.get()
@@ -1529,12 +1543,39 @@ class tkfunctions:
         self.top = top
 
     def close(self):
-        self.window.destroy()
-        self.window.quit()
-        # python = sys.executable
-        # os.execl(python, python, *sys.argv)
-        #self.sys_exit()
-        #self.window.mainloop()
+        # close all child/toplevel windows first
+        for win in self.window.winfo_children():
+            try:
+                win.destroy()
+            except tk.TclError:
+                pass
+
+        # close any stored Toplevel attributes
+        for attr in [
+            "top",
+            "top_milli",
+            "top_checkinfo",
+            "top_modeling",
+            "top_ratioCheck",
+            "top_plotting",
+            "top_interactive_figure",
+        ]:
+            win = getattr(self, attr, None)
+            if win is not None:
+                try:
+                    win.destroy()
+                except tk.TclError:
+                    pass
+
+        # close matplotlib figures if any were opened
+        plt.close("all")
+
+        # close root window
+        try:
+            self.window.quit()
+            self.window.destroy()
+        except tk.TclError:
+            pass
     def close_top_figure(self):
         self.top_interactive_figure.destroy()
     def close_top_milli(self):
