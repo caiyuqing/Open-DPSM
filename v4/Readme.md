@@ -13,23 +13,17 @@ Please cite:
 
 - Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An open-source toolkit for modeling pupil size changes to dynamic visual inputs. Behavior Research Methods. https://doi.org/10.3758/s13428-023-02292-1
 
-- Cai, Y., Van der Stigchel, S., Ganama, J., Naber, M. and Strauch, C. (2025), Uncovering Distinct Drivers of Covert Attention in Complex Environments With Pupillometry. Psychophysiology, 62: e70036.
+- Cai, Y., Naber, M., Van der Stigchel, S. and Strauch, C. Luminance-corrected Pupillometry for Reliable Effort-tracking in Dynamic Environments. 
 
-**Summary for features of v3**
+**Summary for features of v4**
 
-Same as v1 and v2:
-
-- The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting.
+The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting.
   
-- Incorporated different features to estimate regional weights, including the shape and number of weights (see below).
+Different from previous versions which aimed at predicting changes in pupil size, the current version predicts absolute pupil size over time so that the predicted pupil size can be removed from the observed pupil size to correct for the influences of luminance changes.
 
-- Can also generate expected pupil trace if there is no eyetracking data
+Open-DPSM provides a default method for estimating baseline pupil size using the model: baseline pupil size ~ overall luminance + (1 | participant). To use this default method, the dataset should include multiple movies and enough participants so that the mixed-effects model can be fitted properly. However, users may also use other methods to estimate baseline pupil size. The resulting estimates should be saved as a CSV file in the Input folder. Please refer to the example file structure in the Example/Input folder (see below). 
 
-Updated features:
-
-- Previous version only allowed to extract visual events and perform modeling for one movie. The current version allows processing multiple subjects and movies at the same time.
-
-- The modeling is performed on all the movies for individual subjects
+User can choose modelling all the movies together for one participant (modelingType = 'all') if each movie is short or model each movie separately (modelingType = "separate") if each movie is at least about 5 minutes.
 
 **Data folder structure**
 
@@ -57,6 +51,7 @@ Example
 │     │     └───01.mp4
 │     │     └───02.mp4
 │     │     └───...
+|     └───df_pupil_lum.csv (optional)
 └───Output
 ```
 
@@ -114,6 +109,8 @@ Example
 
 One purpose of the toolbox is to predict luminance changes (visual events) in which part of the movie contribute more to pupil size changes (i.e., Regional weights). Refer to our papers for details.
 
+However, in the current version of the toolbox, the regularization step is skipped because estimating regional weights is not the main goal. Therefore, the predicted regional weights may be affected by collinearity. If your main purpose is to obtain reliable regional weights, please use a previous version of the toolbox.
+
 The default map for regional weights in this version of toolbox is circular and the default number of regional weights is 44. But users can also choose other map type (mapType) and number of weight (nWeight).
 
 Currently, two 'mapType' are available: circular and square
@@ -126,6 +123,7 @@ Allocation of regions:
   
 <img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/aaa74ec3-7aba-459a-9ead-03ebb547733e" />
 
+For the purpose of the current version of model, we recommend the users just to use the default parameters.
 
 **Open-DPSM can be used in two formats:**
 
@@ -141,9 +139,9 @@ No installation is required. Simply clone or download the current repository.
 
 **Python environment**
 
-We recommand Spyder IDE because the toolbox has been built and tested with the Spyder IDE (version 5) with Python 3.9.7. 
+We recommand Spyder IDE or VS code because the toolbox has been built with them using Python 3.9.7. 
 
-Besides Spyder, Jupiter Notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
+Jupiter Notebook (6.4.5)/JupiterLab (3.2.1) and PyCharm (2013.1.4) have also been also tested. 
 
 **Packages**
 
@@ -173,6 +171,8 @@ os.system(f'python {script_path}')
 (2) Map type: circular or square (default: circular; Exception: When screen-centered, map type can only be square.) 
 
 (3) Number of weights: 2 (circular or square), 6 (square), 20 (circular), 44 (circular), 48 (square) (default: 44)
+
+(4) Modeling type: all or seperate (default: separate)
 
 
 ### Entering the information page
@@ -212,7 +212,7 @@ Information that needs to be entered manually by the user:
 
 - Press `Next` then `Start event extraction` to do event extraction for one movie
 
-- When it is completed, event trace (luminance changes) per image region will be automatically saved as a pickle file in **"Visual events"** folder (under "Output" folder). Press `Next movie` to move on to the next eye-tracking file.
+- When it is completed, event trace (luminance changes) per image region will be automatically saved as a pickle file in **"Visual events"** folder (under "Output" folder). 
 
 - If use the screen-centered mode, event extraction will only be performed to one "participant" named "sc". All the participants will use the same files of events extracted in modeling step.
 
@@ -317,49 +317,9 @@ Select one participant and one movie to plot.
 
 All the other codes are to load data and predetermined parameters to the *plotObj* object
 
-
-### Pupil prediction (no eye-tracking data)
-- Run this part when eye-tracking data is not available
-
-- The toolbox will use the extract the visual events from the movie to generate a predicted pupil trace based on the default values of parameters.
-
-- The main codes of this section are:
-  
-```modelObj = pupil_prediction()```: create an object with the class pupil_prediction
-
-```
-if RF == 'HL':
-    params = [9.67,0.19,0.8,0.52,0.3, 1,1,1,1,1] 
-else:
-    params = [0.12,4.59,0.14,6.78,0.28,1,1,1,1,1]
-```
-Load the parameters found with our data. RF = response function; HL = "Erlang gamma function". The first four parameters are free parameters in response functions (2 for luminance change and 2 for contrast change). The fifth parameter is the weight of the contrast response relative to the luminance response. The last 5 parameters are regional weights, which are set to 1 because we do not consider regional weights here as the visual angles in different datasets can be very different
-
-```modelObj.pupil_predictionNoEyetracking(params)```: Calculate predicted pupil size with the parameters 
-
-All the other codes are for the purpose to load data and predetermined parameters to the *modelObj* object
-
-- When it is completed, pupil prediction will be saved (see "pupil prediction" part in [GUI](#gui) for more information).
-  
-### Interactive plot (no eye-tracking data)
-
-- This part of the code can be run after the *Pupil prediction (no eye-tracking data)* part
-
-- Run it to open a window with the interactive plot (see "Interactive plot" in [GUI](#gui) for more information)
-
-- The main codes of this section are:
-  
-```plotObj = interactive_plot()```: create an object with the class interactive_plot
-
-```plotObj.plot_NoEyetracking()```: call function *plot_NoEyetracking* in the class interactive_plot
-
-All the other codes are for the purpose to load data and predetermined parameters to the *plotObj* object
-
 ## Example data
 
-- The folder "Example" contains sample eye-tracking data and movie files (01.mp4, 02.mp4) from 2 participants (p20,p21).
-
-- See Cai et al., 2025 for more detailed description of this data
+- The folder "Example" contains sample eye-tracking data and movie files (1-2.mp4, 1-3.mp4) from 2 participants (s30,s31), and the baseline pupil size data (df_pupil_lum.csv)
 
 - The event extraction & modeling have already been performed with the default setups. To try all the steps with the example data, users can delete the subfolders in "Output" and run the toolbox.
 
