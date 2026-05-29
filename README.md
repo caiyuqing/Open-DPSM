@@ -21,15 +21,11 @@ Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (2023). Open-DPSM: An op
 
 For specific uses of the toolbox, please also cite the relevant paper:
 
-- **Regional weights**
-
-If you use Open-DPSM to estimate, analyze, or interpret regional weights that describe how luminance changes in different parts of the visual field contribute to pupil-size changes, please also cite:
+- **Regional weights**: If you use Open-DPSM to estimate, analyze, or interpret regional weights that describe how luminance changes in different parts of the visual field contribute to pupil-size changes, please also cite:
 
 Cai, Y., Van der Stigchel, S., Ganama, J., Naber, M. and Strauch, C. (2025), Uncovering Distinct Drivers of Covert Attention in Complex Environments With Pupillometry. Psychophysiology, 62: e70036.
 
-- **Luminance correction**
-
-If you use Open-DPSM to model and correct for luminance-driven pupil-size changes in order to better infer higher-order effects on the pupil, please also cite:
+- **Luminance correction**: If you use Open-DPSM to model and correct for luminance-driven pupil-size changes in order to better infer higher-order effects on the pupil, please also cite:
 
 Cai, Y., Naber, M., Van der Stigchel, S. and Strauch, C. (preprint). Luminance-corrected Pupillometry for Reliable Effort-tracking in Dynamic Environments.
 
