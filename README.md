@@ -38,3 +38,6 @@ Cai, Y., Naber, M., Van der Stigchel, S. and Strauch, C. (preprint). Luminance-c
 Cai, Y., Strauch, C., Van der Stigchel, S., Brink, A. F. T., Cornelissen, F. W., & Naber, M. (2025). Mapping simulated visual field defects with movie-viewing pupil perimetry. Graefe’s Archive for Clinical and Experimental Ophthalmology, 263(6), 1641–1650. https://doi.org/10.1007/s00417-024-06733-1
 
 Cai, Y., Strauch, C., Van der Stigchel, S., & Naber, M. (revised). Spatial biases of covert attention with dynamic gaze position. Cognition.
+
+Wang, Y., Bednarik, R., Raubal, M., & Kiefer, P. (2026). Convolution-Based Modeling of Pupil Dynamics: Integrating Luminance for Enhanced Arousal Prediction. Proceedings of the ACM on Human-Computer Interaction, 10(3), ETRA007:1-ETRA007:18. https://doi.org/10.1145/3806021
+
