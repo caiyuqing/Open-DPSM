@@ -6,8 +6,10 @@
 
 - [v3](https://github.com/caiyuqing/Open-DPSM/tree/master/v3): Incorporated the feature of modeling multiple movies together. 
 
-- [v4](https://github.com/caiyuqing/Open-DPSM/tree/master/v4): Predicting absolute pupil size for luminance-correction
+- [v4](https://github.com/caiyuqing/Open-DPSM/tree/master/v4): Predicting absolute pupil size for removing the influence of luminance under dynamic environments
 
 - [Regional_weights_illustration](Regional_weights_illustration): An interactive illustration for the regional weights. 
 
 See specific folders for more instructions!
+
+
