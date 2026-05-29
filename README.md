@@ -26,7 +26,7 @@ If you use Open-DPSM to estimate, analyze, or interpret regional weights that de
 
 Cai, Y., Van der Stigchel, S., Ganama, J., Naber, M. and Strauch, C. (2025), Uncovering Distinct Drivers of Covert Attention in Complex Environments With Pupillometry. Psychophysiology, 62: e70036.
 
--**Luminance correction**
+- **Luminance correction**
 If you use Open-DPSM to model and correct for luminance-driven pupil-size changes in order to better infer higher-order effects on the pupil, please also cite:
 
 Cai, Y., Naber, M., Van der Stigchel, S. and Strauch, C. (preprint). Luminance-corrected Pupillometry for Reliable Effort-tracking in Dynamic Environments.
