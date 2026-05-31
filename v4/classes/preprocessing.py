@@ -15,8 +15,8 @@ import numpy as np
 from scipy.interpolate import PchipInterpolator
 from matplotlib import pyplot as plt
 import pickle
-from moviepy.video.io import *
-import moviepy.video.io
+#from moviepy.video.io import *
+#import moviepy.video.io
 import cv2
 class preprocessing:
     def __init__(self):
@@ -51,8 +51,8 @@ class preprocessing:
             self.gazexdata_br = gazex
             self.gazeydata_br = gazey
         lengthEyelinkData = self.timeStampsSec_br[-1]
-        self.fps_end = round(1/(lengthEyelinkData/self.vidInfo['frameN_end']))
-        self.vidInfo['fps_end'] = self.fps_end
+        self.fps_end = self.vidInfo['fps_end']#round(1/(lengthEyelinkData/self.vidInfo['frameN_end']))
+        #self.vidInfo['fps_end'] = self.fps_end
         self.synchronize()
         self.sampledgazexData= self.prepare_sampleData_gaze(self.gazexdata_syn, numVideoFrames)
         self.sampledgazeyData= self.prepare_sampleData_gaze(self.gazeydata_syn, numVideoFrames)
@@ -76,17 +76,18 @@ class preprocessing:
                 print(frameCount)
             else:
                 break        
+        
         # get the information of the video from moviepy (seems to be more accurate)
-        moviepy_clip = VideoFileClip.VideoFileClip(self.videoFileName)
-        fps = moviepy_clip.fps
-        duration = moviepy_clip.duration
-        frames = int(moviepy_clip.fps * moviepy_clip.duration)
-        if frameCount != frames:
-            print("MoviePy and CV2 generate different result, use frame number from CV2")
+        # moviepy_clip = VideoFileClip.VideoFileClip(self.videoFileName)
+        # fps = moviepy_clip.fps
+        # duration = moviepy_clip.duration
+        # frames = int(moviepy_clip.fps * moviepy_clip.duration)
+        # if frameCount != frames:
+        #     print("MoviePy and CV2 generate different result, use frame number from CV2")
             
         self.vidInfo['frameN_end'] = frameCount
-        self.vidInfo['fps_end'] = fps
-        self.vidInfo['duration_end'] = duration
+        self.vidInfo['fps_end'] = self.vidInfo['fps']
+        self.vidInfo['duration_end'] = self.vidInfo['frameN_end'] / self.vidInfo['fps_end']
 
     def load_eyelinkData(self):
         with open(self.eyelinkDataDir, "rb") as handle:

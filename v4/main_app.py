@@ -13,7 +13,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 initialDir =os.getcwd()# "D:\\Users\\7009291\\Desktop\\Movie pupil perimetry\\codes for both data\\Open-DPSM"# This should be the folder of the Open-DPSM
 
 # Import packages
-import tkinter as tk
+import tkinter as tko 
 from tkinter import ttk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
@@ -26,4 +26,3 @@ tkObj.initialDir = initialDir
 tkObj.run_tk()
 
 
-# %%

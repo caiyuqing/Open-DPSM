@@ -719,7 +719,7 @@ class interactive_plot:
         var_predict = tk.IntVar()
         var_predict.set(1)
     
-        tk.Checkbutton(self.top_buttom, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=5, column = 1, columnspan = 2, sticky=tk.W)
+        tk.Checkbutton(self.top_buttom, text="Predicted", variable=var_predict, fg = "#744700").grid(row=5, column = 1, columnspan = 2, sticky=tk.W)
         var_lumConv = tk.IntVar()
         var_lumConv.set(0)
     
