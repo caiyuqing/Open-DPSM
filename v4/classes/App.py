@@ -673,7 +673,7 @@ class tkfunctions:
         self.top_modeling = tk.Toplevel(self.window)
         self.top_modeling.geometry("400x300+0+0")
     
-        self.top_modeling.title(f"Modeling {subjectName}")
+        self.top_modeling.title(f"Modeling")
         self.top_modeling.configure(bg = "#d9d9d9")
         label = tk.Label(self.top_modeling, text = "Event extraction has been done for all the subjects and movies.",font=('Arial', 10),bg = "#d9d9d9")
         label.grid(column = 0, row = 0,columnspan =2)
@@ -915,6 +915,8 @@ class tkfunctions:
             subjects = ["NoEyetrackingData"] # name the events file as NoEyetrackingData
             self.gazecentered = False # not use gaze data
         for subjectName in subjects:
+            self.top_modeling.title(f"Modeling subject {subjectName}")
+
             if "Eyetracking" in os.listdir(self.inputDir):
                 self.subjectDir = self.eyetrackingDir + f"\\{subjectName}"
                 csvFiles = [file for file in os.listdir(self.subjectDir) if file.endswith('.csv')]
@@ -993,7 +995,7 @@ class tkfunctions:
                         modelObj.modelResultDict = modelResultDict
                         modelObj.movieList = movieList
                         modelObj.df_pupil_lum = df_pupil_lum
-                        modelObj.folder_modeling_result = foldername
+                        modelObj.folder_modeling_result = "Modeling result"
                         modelObj.condition = key
                         modelObj.model = key
                         # start modeling
@@ -1050,14 +1052,17 @@ class tkfunctions:
                                 y_pred = self.modelResultDict[subjectName]["modelContrast"][key]["pred"] 
                                 lumConv = self.modelResultDict[subjectName]["modelContrast"][key]["lumConv"] 
                                 contrastConv = self.modelResultDict[subjectName]["modelContrast"][key]["contrastConv"] 
-                                sampledpupilData_z = modelObj.sampledPupilDataAll 
-                                df = pd.DataFrame(np.vstack([sampledpupilData_z, y_pred,lumConv,contrastConv]).T)
-                                df.columns = ["Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
+                                sampledpupilData = modelDataDict[subjectName][key]['pupil']
+                    
+                                residue = sampledpupilData - y_pred 
+                                
+                                df = pd.DataFrame(np.vstack([sampledpupilData, y_pred,residue]).T)
+                                df.columns = ["Actual pupil", "Predicted pupil", "residue"]
                                 
                                 df.to_csv(f"{subjectName}_{key}_modelPrediction_nWeight{self.nWeight}.csv")
                     ###################################
                     # Do regularization
-                    if self.regularizationType == "ridge": # This is the only type of regularization tested
+                    if self.regularizationType == "ridge": # Regularizaton is skipped in this version
                         # modeling_progress.grid_forget()
                         # modeling_progress = tk.Label(self.top_modeling, text = f"Regularization for subject {subjectName}...",fg = "green")
                         # modeling_progress.grid(column = 0, row = 2,columnspan = 2)
@@ -1110,83 +1115,11 @@ class tkfunctions:
                             df.columns = [ "Actual pupil (z)", "Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
                             
                             df.to_csv(f"{subjectName}_modelPrediction_regularization_nWeight{self.nWeight}.csv")
-            else:
-                # new folder for modeling results
-                foldername = "Modeling result"
-                os.chdir(self.outputDir) 
-                if not os.path.exists(foldername):
-                   os.makedirs(foldername)
-                os.chdir(foldername)
-                #Create dictionaries to save results
-                if os.path.exists(f"modelDataDict_noETdata.pickle"):
-                    with open(f"modelDataDict_noETdata.pickle", "rb") as handle:
-                        modelDataDict = pickle.load(handle)
-                        handle.close() 
-                else:
-                    modelDataDict = {}
-                        
-                if os.path.exists(f"modelResultDict_noETdata.pickle"):
-                    with open(f"modelResultDict_noETdata.pickle", "rb") as handle:
-                        modelResultDict = pickle.load(handle)
-                        handle.close() 
-                    #subjectProcessed = list(modelResultDict.keys())
-                    #subjects = [subject for subject in subjects if subject not in subjectProcessed]
-                else:
-                    modelResultDict = {}
-                # To-do: sameWeightFeature may not work
-                # if subject is already in the dictionary, skip modeling
-                subjectName= "NoEyetrackingData"
-                if subjectName in list(modelResultDict.keys()):
-                    print("Modeling already done.")
-                    showinfo(title = "", message = "Modeling result existed.")
-                else:
-                    # pupil prediction class
-                    modelObj = pupil_prediction()
-                    modelObj.useEtData = False
-                    if self.RF == 'HL':
-                        params = [9.67,0.19,0.8,0.52,0.3] + [1] * self.nWeight # Those are the parameters gained from the our data
-                    
-                    else:
-                        params = [0.12,4.59,0.14,6.78,0.28]+ [1] * self.nWeight
-                    #modelObj.sampledTimeStamps = timeStamps
-                    #modelObj.sampledFps = 1/(modelObj.sampledTimeStamps [-1]/(len(modelObj.sampledTimeStamps)))
-                    movieList = [file.split(".")[0] for file in os.listdir(self.movieDir)]
-
-                    modelObj.numRemoveMovFrame = 0
-                    modelObj.outputDir = self.outputDir
-                    modelObj.modelDataDict = modelDataDict
-                    modelObj.modelResultDict = modelResultDict
-                    modelObj.sameWeightFeature = self.sameWeightFeature
-                    modelObj.RF = self.RF
-                    modelObj.subject = subjectName
-                    modelObj.nWeight= self.nWeight
-                    modelObj.movieList = movieList
-                    modelObj.feature_pickle_directory =  f"{self.outputDir}\\visual events"
-                    modelObj.gazecentered = self.gazecentered
-                    modelObj.mapType = self.mapType
-                    modelObj.pupil_zscore = self.pupil_zscore
-                    
-                    modelObj.connect_data(movieList)
-                    modelObj.pupil_predictionNoEyetracking(params)
-                    ####################################
-                    # save model results
-                    foldername = "csv results"
-                    os.chdir(self.outputDir) 
-                    if not os.path.exists(foldername):
-                       os.makedirs(foldername)
-                    os.chdir(foldername)
-                    # save data used for pupil prediction
-                    if self.saveData:
-                        y_pred = modelResultDict[subjectName]["modelContrast"]["predAll"] 
-                        lumConv = modelResultDict[subjectName]["modelContrast"]["lumConvAll"] 
-                        contrastConv = modelResultDict[subjectName]["modelContrast"]["contrastConvAll"] 
-                        
-                        df = pd.DataFrame(np.vstack([y_pred,lumConv,contrastConv]).T)
-                        df.columns = ["Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
-                        
-                        df.to_csv(f"{subjectName}_modelPrediction.csv")
+            
         # interactive plot
         ######## Open a new window for plotting##############
+        #modelResultDict = modelObj.modelResultDict
+        #modelDataDict = modelObj.modelDataDict
         self.top_modeling.destroy()
         self.top_plotting = tk.Toplevel(self.window)
         self.top_plotting.geometry("500x300+0+0")
@@ -1214,7 +1147,7 @@ class tkfunctions:
         
         label_info_m = tk.Label(self.top_plotting, text = f"Movie:",  font = ("Arial", 10),  bg = "#d9d9d9")
         label_info_m.grid(column = 0, row = 3) 
-        movies = list(modelDataDict[self.subjectName_plot].keys()) 
+        movies = [m for m in list(modelDataDict[self.subjectName_plot].keys()) if m !="lenSampledData"]
         choices_m= tuple(movies)
         def callback(*arg):
             self.movieName_plot = choice_gt_movie.get()

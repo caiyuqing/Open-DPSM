@@ -402,8 +402,6 @@ subjects = os.listdir(eyetrackingDir)
 
 #
 for subjectName in subjects:
-    # if subject is already in the dictionary, skip
-    
     # Start of modeling
     subjectDir = eyetrackingDir + f"\\{subjectName}"
     csvFiles = [file for file in os.listdir(subjectDir) if file.endswith('.csv')]
@@ -521,8 +519,8 @@ for subjectName in subjects:
 #%%##################################### interactive plot##############################################
 # making plot (for one movie from one subject)
 ## select a subject to plot
-subjectName = 'p21'
-movieName = "01.mp4"
+subjectName = 's31'
+movieName = "1-2" 
 # This step have to be done after pupil prediction
 eeObj = event_extraction()
 eeObj.mapType = mapType
@@ -532,7 +530,7 @@ eeObj.eyetracking_width =eyetracking_width
 eeObj.eyetracking_height =eyetracking_height
 eeObj.screen_width =screen_width
 eeObj.nWeight = nWeight
-eeObj.createMapMask()
+eeObj.createMapMask(mapType)
 plotObj = interactive_plot()
 
 plotObj.subject = subjectName
@@ -557,102 +555,6 @@ plotObj.videoScreenSameRatio = videoScreenSameRatio
 plotObj.videoStretched = videoStretched
 plotObj.nWeight = nWeight
 plotObj.gazecentered = gazecentered
+plotObj.df_pupil_lum = df_pupil_lum
 logging.getLogger('matplotlib.font_manager').setLevel(logging.ERROR)
 plotObj.plot()
-#%%######################################Pupil prediction (no eye-tracking data)#######################################
-# NOTE: run this part if eyetracking data is not available    
-# new folder for modeling results
-foldername = "Modeling result"
-os.chdir(outputDir) 
-if not os.path.exists(foldername):
-   os.makedirs(foldername)
-os.chdir(foldername)
-#Create dictionaries to save results
-if os.path.exists(f"modelDataDict_noETdata.pickle"):
-    with open(f"modelDataDict_noETdata.pickle", "rb") as handle:
-        modelDataDict = pickle.load(handle)
-        handle.close() 
-else:
-    modelDataDict = {}
-        
-if os.path.exists(f"modelResultDict_noETdata.pickle"):
-    with open(f"modelResultDict_noETdata.pickle", "rb") as handle:
-        modelResultDict = pickle.load(handle)
-        handle.close() 
-    #subjectProcessed = list(modelResultDict.keys())
-    #subjects = [subject for subject in subjects if subject not in subjectProcessed]
-else:
-    modelResultDict = {}
-# To-do: sameWeightFeature may not work
-# if subject is already in the dictionary, skip modeling
-subjectName= "NoEyetrackingData"
-if subjectName in list(modelResultDict.keys()):
-    print("Modeling already done.")
-else:
-    # pupil prediction class
-    modelObj = pupil_prediction()
-    modelObj.useEtData = False
-    if RF == 'HL':
-        params = [9.67,0.19,0.8,0.52,0.3] + [1] * nWeight # Those are the parameters gained from the our data
-    
-    else:
-        params = [0.12,4.59,0.14,6.78,0.28]+ [1] * nWeight
-    #modelObj.sampledTimeStamps = timeStamps
-    #modelObj.sampledFps = 1/(modelObj.sampledTimeStamps [-1]/(len(modelObj.sampledTimeStamps)))
-    movieList = [file.split(".")[0] for file in os.listdir(movieDir)]
-
-    modelObj.numRemoveMovFrame = 0
-    modelObj.outputDir = outputDir
-    modelObj.modelDataDict = modelDataDict
-    modelObj.modelResultDict = modelResultDict
-    modelObj.sameWeightFeature = sameWeightFeature
-    modelObj.RF = RF
-    modelObj.subject = subjectName
-    modelObj.nWeight= nWeight
-    modelObj.movieList = movieList
-    modelObj.feature_pickle_directory =  f"{outputDir}\\visual events"
-    modelObj.gazecentered = gazecentered
-    modelObj.mapType = mapType
-    modelObj.pupil_zscore = pupil_zscore    
-    modelObj.connect_data(movieList)
-    modelObj.pupil_predictionNoEyetracking(params)
-    ####################################
-    # save model results
-    foldername = "csv results"
-    os.chdir(outputDir) 
-    if not os.path.exists(foldername):
-       os.makedirs(foldername)
-    os.chdir(foldername)
-    # save data used for pupil prediction
-    if saveData:
-        y_pred = modelResultDict[subjectName]["modelContrast"]["predAll"] 
-        lumConv = modelResultDict[subjectName]["modelContrast"]["lumConvAll"] 
-        contrastConv = modelResultDict[subjectName]["modelContrast"]["contrastConvAll"] 
-        
-        df = pd.DataFrame(np.vstack([y_pred,lumConv,contrastConv]).T)
-        df.columns = ["Predicted pupil (z)", "Predicted pupil - luminance (z)", "Predicted pupil - contrast (z)"]
-        
-        df.to_csv(f"{subjectName}_modelPrediction.csv")
-
-#%%
-#########################interactive plot###########################################################
-# making plot 
-# select one movie to plot
-movieName = "01.mp4" 
-# This step have to be done after pupil prediction
-plotObj = interactive_plot()
-# subject and movie to plot
-plotObj.subjectName = subjectName
-plotObj.movieName = movieName.split('.')[0]
-# other parameters
-plotObj.useApp = useApp
-plotObj.dataDir = dataDir
-plotObj.A = 1
-plotObj.skipNFirstFrame =skipNFirstFrame
-
-plotObj.outputDir = outputDir
-plotObj.movieDir = movieDir
-# plotObj.videoScreenSameRatio = videoScreenSameRatio 
-# plotObj.videoStretched = videoStretched
-logging.getLogger('matplotlib.font_manager').setLevel(logging.ERROR)
-plotObj.plot_NoEyetracking()

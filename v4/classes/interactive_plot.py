@@ -212,15 +212,16 @@ class interactive_plot:
         lines_feature = [l_lum, l_contrast]
     
         # plot the model (actual and prediction)
-        l_actualPupil, = axes[4].plot(frameAxe, sampledpupilData, color = "grey", label = "actual pupil", linewidth = linesize)
+        l_actualPupil, = axes[4].plot(frameAxe, sampledpupilData, color = "black", label = "actual pupil", linewidth = linesize)
         l_predictedPupil, = axes[4].plot(frameAxe, y_pred, color = "#744700", label = "predicted pupil", linewidth = linesize)
-        l_predictedPupilLum, = axes[4].plot(frameAxe, lumConv, color = "#4c004c", label = "predicted pupil luminance", linewidth = linesize)
-        l_predictedPupilContrast, = axes[4].plot(frameAxe, contrastConv, color = "green", label = "predicted pupil contrast", linewidth = linesize)
-        l_baseline, = axes[4].plot(frameAxe, [pupil_baseline]*len(frameAxe), color = "blue", label = "baseline (predicted from overall luminance)", linewidth = linesize, linestyle = "dashed")
-        l_predictedPupilLum.set_visible(False)
-        l_predictedPupilContrast.set_visible(False)
-        l_baseline.set_visible(False)
-    
+        l_residue, = axes[4].plot(frameAxe, sampledpupilData-y_pred, color = "grey", label = "residue (actual - predicted)", linewidth = linesize)
+        #l_predictedPupilLum, = axes[4].plot(frameAxe, lumConv, color = "#4c004c", label = "predicted pupil luminance", linewidth = linesize)
+        #l_predictedPupilContrast, = axes[4].plot(frameAxe, contrastConv, color = "green", label = "predicted pupil contrast", linewidth = linesize)
+        #l_baseline, = axes[4].plot(frameAxe, [pupil_baseline]*len(frameAxe), color = "blue", label = "baseline (predicted from overall luminance)", linewidth = linesize, linestyle = "dashed")
+        #l_predictedPupilLum.set_visible(False)
+        #l_predictedPupilContrast.set_visible(False)
+        #l_baseline.set_visible(False)
+        l_residue.set_visible(False)
         axes[4].set_xlim([0,sampledTimeStamps[-1]])
         axes[4].legend().set_visible(False)
         axes[4].spines["right"].set_visible(False)
@@ -229,7 +230,7 @@ class interactive_plot:
         axes[4].spines["bottom"].set_linewidth(linesize -1)
         axes[4].set_title("Model prediction")
         #axes[4].set_ylim([np.nanmin([np.nanmin(sampledpupilData), np.nanmin(y_pred)])-0.5, np.nanmax([np.nanmax(sampledpupilData), np.nanmax(y_pred)])+0.5])
-        lines_model = [l_actualPupil,l_predictedPupil,l_predictedPupilLum,l_predictedPupilContrast,l_baseline]
+        #lines_model = [l_actualPupil,l_predictedPupil,l_predictedPupilLum,l_predictedPupilContrast,l_baseline]
         #
         # ax[4].set_ylim([-2,2])
         # ax[4].set_xlim([0,len(timeStamps)])
@@ -276,9 +277,10 @@ class interactive_plot:
     
             var_actual_value = var_actual.get()
             var_predict_value = var_predict.get()
-            var_lumConv_value = var_lumConv.get()
-            var_contrastConv_value = var_contrastConv.get()
-            var_baseline_value = var_baseline.get()
+            var_residue_value = var_residue.get()
+            #var_lumConv_value = var_lumConv.get()
+            #var_contrastConv_value = var_contrastConv.get()
+            #var_baseline_value = var_baseline.get()
             if var_actual_value == 1:
                 l_actualPupil.set_visible(True)
             else: 
@@ -287,18 +289,22 @@ class interactive_plot:
                 l_predictedPupil.set_visible(True)
             else: 
                 l_predictedPupil.set_visible(False)  
-            if var_lumConv_value == 1:
-                l_predictedPupilLum.set_visible(True)
+            if var_residue_value == 1:
+                l_residue.set_visible(True)
             else: 
-                l_predictedPupilLum.set_visible(False)
-            if var_contrastConv_value == 1:
-                l_predictedPupilContrast.set_visible(True)
-            else: 
-                l_predictedPupilContrast.set_visible(False) 
-            if var_baseline_value == 1:
-                l_baseline.set_visible(True)
-            else: 
-                l_baseline.set_visible(False)
+                l_residue.set_visible(False)
+            #if var_lumConv_value == 1:
+            #    l_predictedPupilLum.set_visible(True)
+            #else: 
+            #    l_predictedPupilLum.set_visible(False)
+            #if var_contrastConv_value == 1:
+            #    l_predictedPupilContrast.set_visible(True)
+            #else: 
+            #    l_predictedPupilContrast.set_visible(False) 
+            #if var_baseline_value == 1:
+            #    l_baseline.set_visible(True)
+            #else: 
+            #    l_baseline.set_visible(False)
             plt.draw()
         # luminance and contrast
         print(self.subject)
@@ -318,22 +324,25 @@ class interactive_plot:
 
         var_actual = tk.IntVar()
         var_actual.set(1)
-        tk.Checkbutton(self.top_buttom, text="Actual pupil", variable=var_actual, fg = "grey").grid(row=5, column = 1, sticky=tk.W,  columnspan = 2)
+        tk.Checkbutton(self.top_buttom, text="Actual pupil", variable=var_actual, fg = "black").grid(row=5, column = 1, sticky=tk.W,  columnspan = 2)
         
         var_predict = tk.IntVar()
         var_predict.set(1)
         tk.Checkbutton(self.top_buttom, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=6, column = 1, columnspan = 2, sticky=tk.W)
+        var_residue = tk.IntVar()
+        var_residue.set(0)
+        tk.Checkbutton(self.top_buttom, text="Residue", variable=var_residue, fg = "grey").grid(row=7, column = 1, columnspan = 2, sticky=tk.W)
+
+        #var_lumConv = tk.IntVar()
+        #var_lumConv.set(0)
+        #tk.Checkbutton(self.top_buttom, text="Predicted(luminance)", fg = "#4c004c", variable=var_lumConv).grid(row=7, column = 1, sticky=tk.W, columnspan = 2)
+        #var_contrastConv = tk.IntVar()
+        #var_contrastConv.set(0)
+        #tk.Checkbutton(self.top_buttom, text="Predicted(contrast)", fg = "green", variable=var_contrastConv).grid(row=8, column = 1, sticky=tk.W, columnspan = 2)
         
-        var_lumConv = tk.IntVar()
-        var_lumConv.set(0)
-        tk.Checkbutton(self.top_buttom, text="Predicted(luminance)", fg = "#4c004c", variable=var_lumConv).grid(row=7, column = 1, sticky=tk.W, columnspan = 2)
-        var_contrastConv = tk.IntVar()
-        var_contrastConv.set(0)
-        tk.Checkbutton(self.top_buttom, text="Predicted(contrast)", fg = "green", variable=var_contrastConv).grid(row=8, column = 1, sticky=tk.W, columnspan = 2)
-        
-        var_baseline = tk.IntVar()
-        var_baseline.set(0)
-        tk.Checkbutton(self.top_buttom, text="Baseline", fg = "blue", variable=var_baseline).grid(row=9, column = 1, sticky=tk.W, columnspan = 2)
+        #var_baseline = tk.IntVar()
+        #var_baseline.set(0)
+        #tk.Checkbutton(self.top_buttom, text="Baseline", fg = "blue", variable=var_baseline).grid(row=9, column = 1, sticky=tk.W, columnspan = 2)
        
         tk.Button(self.top_buttom, text='Update figure', command=buttomFunc_updateFig1).grid(row=3, column =1, sticky=tk.W+tk.E,columnspan = 2)
     
