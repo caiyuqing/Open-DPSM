@@ -328,7 +328,7 @@ class interactive_plot:
         
         var_predict = tk.IntVar()
         var_predict.set(1)
-        tk.Checkbutton(self.top_buttom, text="Predicted(luminance+contrast)", variable=var_predict, fg = "#744700").grid(row=6, column = 1, columnspan = 2, sticky=tk.W)
+        tk.Checkbutton(self.top_buttom, text="Predicted", variable=var_predict, fg = "#744700").grid(row=6, column = 1, columnspan = 2, sticky=tk.W)
         var_residue = tk.IntVar()
         var_residue.set(0)
         tk.Checkbutton(self.top_buttom, text="Residue", variable=var_residue, fg = "grey").grid(row=7, column = 1, columnspan = 2, sticky=tk.W)

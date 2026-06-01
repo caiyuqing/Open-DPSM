@@ -57,7 +57,7 @@ inputDir = dataDir + '\\Input' # change it to the head directiory of the data fo
 outputDir = dataDir + "\\Output"
 
 movieDir = inputDir + '\\Movies'
-eyetrackingDir = inputDir + '\\Eyetracking' # comment out this line if no eyetracking data mode is used
+eyetrackingDir = inputDir + '\\Eyetracking' 
 folder_modeling_result = "Modeling result"
 folder_csv_result = "csv results"
 # change to initial directory
@@ -68,7 +68,6 @@ os.chdir(initialDir)
 maxlum = 212
 
 ### What is the resolution of eyetracking data (also is the screen resolution)
-# Note: enter screen width and height in pixels when there is no eyetracking data
 eyetracking_height = 1080
 eyetracking_width = 1920
 eyetracking_samplingrate = 300
@@ -81,7 +80,6 @@ videoRealWidth = 1920
 screen_width = 59.5
 
 # what is the distance between the eye and the monitor? (in cm)
-# Note: use the default 75 when there is no eyetracking data
 eye_to_screen = 65
 
 # What should be the size of the regional weight map? (relative to the size of the video) 
@@ -133,20 +131,12 @@ print(f"Selected parameters: \n- gazecentered: {gazecentered}\n- map type: {mapT
 # read video data and check information
 prepObj = preprocessing()
 if "eyetrackingDir" not in globals():
-    
-    # rename subjectName as NoEyetracking data if there is no eyetracking data
-    subjects = ["NoEyetrackingData"] # name the events file as NoEyetrackingData
-    # if there is no eyetracking data, only option is screen-cenetered event extraction, square map and 48 weights
-    gazecentered = False # not use gaze data
-    mapType = "square"
-    nWeight = 48
-    print("No eyetracking data. Model prediction will not be preformed. Predicted pupil trace will be generated with the default response function and weights.")
+    print("No eyetracking data! Please check the data.")
 else:
     if gazecentered:
         print("Eyetracking folder found.")
         subjects = os.listdir(eyetrackingDir)
     else:
-        # rename subjectName as "sc" (screen-centered) data if there is no eyetracking data
         # all the subjects will have the same pickle files
         subjects = ['sc'] 
 # iteratively extract events for all the subjects and all the movies
