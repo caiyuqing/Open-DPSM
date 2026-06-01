@@ -256,9 +256,7 @@ And an button window:
 - Similar to the GUI pages, Code version is divided into different sections.
   
 - To start, open *main.py* and change all the things under the section "Information entered by the user" 
-  
-- If no eye tracking data are provided, it is important that the line ```eyetrackingDir``` line is commented out.
-  
+    
 
 ### Preprocessing and visual even extraction
 
