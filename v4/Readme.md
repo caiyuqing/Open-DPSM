@@ -94,9 +94,6 @@ Example
      
    - No "index_col" and "header" should be included in the csv file 
 
-   - Note: Eye-tracking data is not a must for the toolbox. If there is no eyetracking data, don't create the folder "Eyetracking" in "Input" folder. The toolbox will extract the visual events from the movie and generate a predicted pupil trace based on the parameters we obtained from our data.
-
-
 **Movies**
 
   - Formats tested: .mp4 (recommanded),.avi,.mkv,.mwv,.mov,.flv,.webm. As we use OpenCV to process the video, in principle, any format that can be used in OpenCV can be used.
@@ -160,7 +157,7 @@ script_path = "main_app.py"
 os.system(f'python {script_path}')
 ```
 ### Welcome page: Loading eye-tracking data and movie & select parameters for event extraction and modeling
-<img width="745" height="444" alt="image" src="https://github.com/user-attachments/assets/685d7ae0-f636-4c58-a524-98ae11bf1096" />
+<img width="1001" height="630" alt="image" src="https://github.com/user-attachments/assets/a31198e8-b562-49e7-bb04-afef74a32c55" />
 
 **Open folder**: select the head folder of the data (e.g., "Example" folder)
 
@@ -168,7 +165,7 @@ os.system(f'python {script_path}')
 
 (1) Event extraction mode: gaze-centered or screen-centered (default: gaze-centered)
 
-(2) Map type: circular or square (default: circular; Exception: When screen-centered, map type can only be square.) 
+(2) Map type: circular or square (default: circular; Exception: When event extraction mode = screen-centered, map type can only be square.) 
 
 (3) Number of weights: 2 (circular or square), 6 (square), 20 (circular), 44 (circular), 48 (square) (default: 44)
 
@@ -216,29 +213,23 @@ Information that needs to be entered manually by the user:
 
 - If use the screen-centered mode, event extraction will only be performed to one "participant" named "sc". All the participants will use the same files of events extracted in modeling step.
 
-- If event extraction has done for this movie, this step will be skipped and a pop up window will show to remind the user.
-    
+- If event extraction has done for this movie, this step will be skipped.
+
+- At the same time, this step also extracts overall luminance for each movie. The results will also be save in **Visual events** folder.
+- 
 ### Pupil prediction
 
 After all the movies are extracted, modeling window will pop up. 
 
 <img width="297" height="83" alt="image" src="https://github.com/user-attachments/assets/8f13ae26-fe51-42b3-9090-359e96f29833" />
 
-- `Start modeling`: Model pupil size changes to the visual events (all the existing movies together for each participant iteratively). (If no eye-tracking data are available, it will generate a prediction of pupil trace with a set of free parameters acquired with our data.)
+- `Start modeling`: (1) Model baseline pupil size to overall luminance and save the results in df_pupil_lum.csv (under "Input" folder). This step is optional, users can also provide the estimated baseline pupil size themselves with a df_pupil_lum.csv file of same structure. (2) Model pupil size changes to the visual events. Depending on modelingType, the model either runs all the existing movies together for each participant (modelingType = "all") or run each movie separately (modelingType = "separate"). 
 
-- If the modeling has done for this participant, this step will be skipped and a pop up window will show to remind the user.
+- Free parameters found by the model and the model performance for each participant will be saved as two columns (first column: names; second column: values) in a .csv file named *"[subjectName]_[movieName]_parameters.csv"* in "csv results" folder under "Output" folder. If modelingType = "all", then movieName = 'all'.
 
-When the modeling for one participant is done:
+- Observed pupil size and predicted pupil size will be saved as a .csv file named *"[subjectName]_[movieName]_modelPrediction.csv"*. The residue (Actual pupil size - Predicted pupil size) is also provided as a third column.
 
-- A pop-up window will shown to display the model performance (Correlation coefficient and root-mean squared error between predicted and observed pupil size changes)
-
-<img width="179" height="107" alt="image" src="https://github.com/user-attachments/assets/791d9fee-766c-4e98-bcf1-add39127255b" />
-
-- Free parameters found by the model and the model performance for each participant will be saved as two columns (first column: names; second column: values) in a .csv file named *"[subjectName]_parameters.csv"* in "csv results" folder under "Output" folder(Only when eye-tracking data is available)
-
-- Observed pupil size and predicted pupil size will be saved as a .csv file named *"[subjectName]_modelPrediction.csv"*. The residue (Actual pupil size - Predicted pupil size) is also provided as a third column.
-
-### Interactive plot
+### Interactive plot (Optional)
 
 After all the movies were modeled, plotting window will pop up. Select one participant and one movie to make an interactive plot.
  
@@ -248,7 +239,7 @@ Press `plot` will open an interactive plot window:
 
 - Drag the scale at the bottom to select one frame to display.
 
-<img width="548" height="364" alt="image" src="https://github.com/user-attachments/assets/090ab43c-e3dc-4cd8-a2ca-7399f1ecdd7a" />
+<img width="1100" height="730" alt="image" src="https://github.com/user-attachments/assets/47627df2-6ca2-48d6-a129-8e25e42e9581" />
 
 And an button window:
 
@@ -256,7 +247,7 @@ And an button window:
 
 - Save figure or parts of figure in "Figure" folder (under Output folder)
 
-<img width="95" height="191" alt="image" src="https://github.com/user-attachments/assets/46082595-b96b-478e-a37c-6e56a334ba19" />
+<img width="153" height="361" alt="image" src="https://github.com/user-attachments/assets/8c3db76a-e541-45de-90a5-c488f8de7d59" />
 
 ## Code
 
@@ -319,7 +310,7 @@ All the other codes are to load data and predetermined parameters to the *plotOb
 
 ## Example data
 
-- The folder "Example" contains sample eye-tracking data and movie files (1-2.mp4, 1-3.mp4) from 2 participants (s30,s31), and the baseline pupil size data (df_pupil_lum.csv)
+- The folder "Example" contains sample eye-tracking data and movie files (1-2.mp4, 1-3.mp4) from 2 participants (s1,s2), and the baseline pupil size data (df_pupil_lum.csv)
 
 - The event extraction & modeling have already been performed with the default setups. To try all the steps with the example data, users can delete the subfolders in "Output" and run the toolbox.
 
