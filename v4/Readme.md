@@ -19,7 +19,7 @@ Please cite:
 
 The toolbox provides functions for (1) Visual event extraction from video input; (2) Pupil response prediction/modeling; (3) Interactive plotting.
   
-Different from previous versions which aimed at predicting changes in pupil size, the current version predicts absolute pupil size over time so that the predicted pupil size can be removed from the observed pupil size to correct for the influences of luminance changes.
+Different from previous versions which aimed at predicting changes in pupil size, the current version predicts **absolute pupil size** over time so that the predicted pupil size can be removed from the observed pupil size to correct for the influences of luminance changes.
 
 Open-DPSM provides a default method for estimating baseline pupil size using the model: baseline pupil size ~ overall luminance + (1 | participant). To use this default method, the dataset should include multiple movies and enough participants so that the mixed-effects model can be fitted properly. However, users may also use other methods to estimate baseline pupil size. The resulting estimates should be saved as a CSV file in the Input folder. Please refer to the example file structure in the Example/Input folder (see below). 
 
@@ -236,7 +236,7 @@ When the modeling for one participant is done:
 
 - Free parameters found by the model and the model performance for each participant will be saved as two columns (first column: names; second column: values) in a .csv file named *"[subjectName]_parameters.csv"* in "csv results" folder under "Output" folder(Only when eye-tracking data is available)
 
-- Observed pupil size and predicted pupil size will be saved as a .csv file named *"[subjectName]_modelPrediction.csv"*. Predicted pupil size (z-standardized) will be provided with three columns, one for the combined prediction with both luminance and contrast change, one for prediction with luminance change only, and one for prediction with contrast change only.
+- Observed pupil size and predicted pupil size will be saved as a .csv file named *"[subjectName]_modelPrediction.csv"*. The residue (Actual pupil size - Predicted pupil size) is also provided as a third column.
 
 ### Interactive plot
 
