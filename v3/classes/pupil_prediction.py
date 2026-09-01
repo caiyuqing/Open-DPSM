@@ -71,6 +71,8 @@ class pupil_prediction:
         video_nFrame = len(timeStamps)
         video_fps = vidInfo['fps_end']
         self.video_fps = video_fps
+        self.video_duration = vidInfo['duration_end']
+        self.eyetracking_duration = timeStampsSec[-1]
         
         if self.useEtData:
             timeStampsSec = self.synchronize(timeStampsSec)
@@ -85,7 +87,6 @@ class pupil_prediction:
             sampledpupilData=self.prepare_sampleData(pupildata,video_nFrame)
             sampledFps = 1/(sampledTimeStamps[-1]/(len(sampledTimeStamps)))
     
-            
             if self.pupil_zscore:
                 sampledpupilData= self.zscore(sampledpupilData)
             self.sampledFps = sampledFps
@@ -98,7 +99,9 @@ class pupil_prediction:
         # if hasattr(self, "numRemoveFrame"):
         #     luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,self.numRemoveFrame:]
         #     timeStamps =timeStamps[self.numRemoveFrame:]
-        
+        # if movie is longer than eyetracking data, cut last samples of the movie data
+        if not self.stretchToMatch and self.video_duration > self.eyetracking_duration:
+            luminanceMagnPerImPartTime = luminanceMagnPerImPartTime[:,0:self.sampledpupilData.shape[0]]
         self.luminanceMagnPerImPartTime =luminanceMagnPerImPartTime
         
     def import_movieFeature(self,movieNum, featureOfInterest):
